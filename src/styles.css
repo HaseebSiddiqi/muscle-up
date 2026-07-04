@@ -760,7 +760,7 @@ input[type="date"]:focus {
 
 @media (max-width: 768px) {
     body {
-        zoom: 0.75;
+        zoom: 0.7;
     }
 
     .card.login-card {
