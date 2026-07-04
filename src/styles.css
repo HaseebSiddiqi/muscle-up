@@ -680,6 +680,7 @@ input[type="date"]:focus {
         transform: translateY(-100%);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -759,7 +760,7 @@ input[type="date"]:focus {
 
 @media (max-width: 768px) {
     body {
-        zoom: 0.8;
+        zoom: 0.75;
     }
 
     .card.login-card {
@@ -1313,25 +1314,25 @@ td.exercise-name-cell {
    ========================= */
 
 .fade-up {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.8s ease forwards;
-  will-change: transform, opacity;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards;
+    will-change: transform, opacity;
 }
 
 @keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .delay-1 {
-  animation-delay: 0.3s;
+    animation-delay: 0.3s;
 }
 
 .delay-2 {
-  animation-delay: 0.6s;
+    animation-delay: 0.6s;
 }
 
 /* IMPORTANT:
@@ -1344,29 +1345,29 @@ td.exercise-name-cell {
    ========================= */
 
 .landing-container {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
-  position: relative;
-  overflow: hidden;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+    position: relative;
+    overflow: hidden;
 }
 
 .landing-container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.05), transparent 45%),
-    radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.05), transparent 45%);
-  pointer-events: none;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.05), transparent 45%),
+        radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.05), transparent 45%);
+    pointer-events: none;
 }
 
 .landing {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--text-main);
-  text-align: center;
-  padding: 60px 24px 100px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-main);
+    text-align: center;
+    padding: 60px 24px 100px;
 }
 
 
@@ -1375,118 +1376,118 @@ td.exercise-name-cell {
    ========================= */
 
 .hero {
-  width: min(1200px, 100%);
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
+    width: min(1200px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
 }
 
 .hero-copy-wrapper {
-  opacity: 0;
-  transform: translateY(15px);
-  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: opacity, transform;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: opacity, transform;
 }
 
 @keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hero-copy {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 50px 40px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 32px;
-  box-shadow: 
-    0 10px 30px rgba(15, 23, 42, 0.05),
-    0 1px 3px rgba(15, 23, 42, 0.02);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 32px;
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.05),
+        0 1px 3px rgba(15, 23, 42, 0.02);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .hero-copy:hover {
-  transform: translateY(-4px);
-  box-shadow: 
-    0 20px 40px rgba(15, 23, 42, 0.09);
+    transform: translateY(-4px);
+    box-shadow:
+        0 20px 40px rgba(15, 23, 42, 0.09);
 }
 
 .hero h1 {
-  font-size: 3.6rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 20px;
-  line-height: 1.15;
-  color: #0f172a;
+    font-size: 3.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    line-height: 1.15;
+    color: #0f172a;
 }
 
 .text-gradient {
-  color: var(--primary);
-  display: inline-block;
+    color: var(--primary);
+    display: inline-block;
 }
 
 .hero p {
-  font-size: 1.25rem;
-  margin: 0 auto;
-  line-height: 1.7;
-  color: #475569;
-  max-width: 760px;
+    font-size: 1.25rem;
+    margin: 0 auto;
+    line-height: 1.7;
+    color: #475569;
+    max-width: 760px;
 }
 
 .hero-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 32px;
 }
 
 .hero-btn {
-  padding: 14px 32px;
-  border: none;
-  border-radius: 999px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease,
-              box-shadow 0.2s ease,
-              background-color 0.2s ease;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 999px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .hero-btn:hover {
-  transform: translateY(-2px);
+    transform: translateY(-2px);
 }
 
 .hero-btn:active {
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 .primary-btn {
-  background: var(--primary);
-  color: white;
-  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.2);
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.2);
 }
 
 .primary-btn:hover {
-  background: var(--primary-hover);
-  box-shadow: 0 10px 24px rgba(249, 115, 22, 0.3);
+    background: var(--primary-hover);
+    box-shadow: 0 10px 24px rgba(249, 115, 22, 0.3);
 }
 
 .secondary-btn {
-  background: transparent;
-  color: var(--secondary);
-  border: 2px solid var(--secondary);
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.08);
+    background: transparent;
+    color: var(--secondary);
+    border: 2px solid var(--secondary);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.08);
 }
 
 .secondary-btn:hover {
-  background: var(--secondary);
-  color: white;
-  border-color: var(--secondary);
-  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.25);
+    background: var(--secondary);
+    color: white;
+    border-color: var(--secondary);
+    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.25);
 }
 
 
@@ -1495,40 +1496,40 @@ td.exercise-name-cell {
    ========================= */
 
 .features-section {
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-  margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    margin-top: 20px;
 }
 
 .feature-card {
-  display: flex;
-  align-items: center;
-  width: min(100%, 1280px);
-  margin: 0 auto;
-  padding: 38px 36px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 30px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-  box-sizing: border-box;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    width: min(100%, 1280px);
+    margin: 0 auto;
+    padding: 38px 36px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+    box-sizing: border-box;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.3s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
-  border-color: rgba(249, 115, 22, 0.25);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    border-color: rgba(249, 115, 22, 0.25);
 }
 
 .feature-card-right {
-  flex-direction: row-reverse;
+    flex-direction: row-reverse;
 }
 
 .feature-card-right:hover {
-  border-color: rgba(14, 165, 233, 0.25);
+    border-color: rgba(14, 165, 233, 0.25);
 }
 
 
@@ -1537,25 +1538,25 @@ td.exercise-name-cell {
    ========================= */
 
 .scroll-animate {
-  opacity: 0;
-  will-change: transform, opacity;
+    opacity: 0;
+    will-change: transform, opacity;
 }
 
 .slide-in-left {
-  transform: translateX(-40px);
-  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(-40px);
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .slide-in-right {
-  transform: translateX(40px);
-  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(40px);
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .scroll-animate.is-visible {
-  opacity: 1;
-  transform: translateX(0);
+    opacity: 1;
+    transform: translateX(0);
 }
 
 
@@ -1564,27 +1565,27 @@ td.exercise-name-cell {
    ========================= */
 
 .image-container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex: 0 0 auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex: 0 0 auto;
 }
 
 .image-container img {
-  width: auto;
-  height: auto;
-  max-width: 95%;
-  max-height: 95%;
-  display: block;
-  border-radius: 18px;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    width: auto;
+    height: auto;
+    max-width: 95%;
+    max-height: 95%;
+    display: block;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .image-container img:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.16);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 22px 48px rgba(15, 23, 42, 0.16);
 }
 
 
@@ -1593,63 +1594,63 @@ td.exercise-name-cell {
    ========================= */
 
 .feature-description {
-  flex: 1 1 55%;
-  min-width: 320px;
-  max-width: 620px;
-  text-align: left;
-  padding: 12px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-sizing: border-box;
+    flex: 1 1 55%;
+    min-width: 320px;
+    max-width: 620px;
+    text-align: left;
+    padding: 12px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
 }
 
 .feature-description h2 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  line-height: 1.15;
-  color: #0f172a;
-  margin: 0;
-  letter-spacing: -0.02em;
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #0f172a;
+    margin: 0;
+    letter-spacing: -0.02em;
 }
 
 .feature-description ul {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    list-style: none;
 }
 
 .feature-description li {
-  font-size: 1.1rem;
-  line-height: 1.5;
-  color: #475569;
-  font-weight: 500;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #475569;
+    font-weight: 500;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .check-icon {
-  background: rgba(249, 115, 22, 0.1);
-  color: var(--primary);
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  flex-shrink: 0;
-  font-size: 0.8rem;
-  margin-top: 1px;
+    background: rgba(249, 115, 22, 0.1);
+    color: var(--primary);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    margin-top: 1px;
 }
 
 .feature-card-right .check-icon {
-  background: rgba(14, 165, 233, 0.1);
-  color: var(--secondary);
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--secondary);
 }
 
 
@@ -1658,100 +1659,100 @@ td.exercise-name-cell {
    ========================= */
 
 @media (max-width: 960px) {
-  .landing {
-    padding: 40px 16px 60px;
-    box-sizing: border-box;
-  }
+    .landing {
+        padding: 40px 16px 60px;
+        box-sizing: border-box;
+    }
 
-  .hero {
-    gap: 30px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+    .hero {
+        gap: 30px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
 
-  .hero-copy {
-    padding: 36px 20px;
-    border-radius: 24px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+    .hero-copy {
+        padding: 36px 20px;
+        border-radius: 24px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
 
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 2.8rem);
-  }
+    .hero h1 {
+        font-size: clamp(2rem, 5vw, 2.8rem);
+    }
 
-  .hero p {
-    font-size: 1.1rem;
-  }
+    .hero p {
+        font-size: 1.1rem;
+    }
 
-  .feature-card,
-  .feature-card-right {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 24px;
-    padding: 28px 20px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    margin: 0 auto 20px;
-  }
+    .feature-card,
+    .feature-card-right {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 24px;
+        padding: 28px 20px;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0 auto 20px;
+    }
 
-  .image-container {
-    justify-content: center;
-    width: 100%;
-    box-sizing: border-box;
-  }
+    .image-container {
+        justify-content: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
 
-  .image-container img {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+    .image-container img {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
 
-  .feature-description {
-    text-align: center;
-    max-width: 100%;
-    min-width: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+    .feature-description {
+        text-align: center;
+        max-width: 100%;
+        min-width: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-  .feature-description h2 {
-    font-size: 1.8rem;
-  }
+    .feature-description h2 {
+        font-size: 1.8rem;
+    }
 
-  .feature-description li {
-    justify-content: center;
-    text-align: left;
-  }
+    .feature-description li {
+        justify-content: center;
+        text-align: left;
+    }
 }
 
 @media (max-width: 560px) {
-  .landing {
-    padding: 30px 12px 50px;
-  }
+    .landing {
+        padding: 30px 12px 50px;
+    }
 
-  .hero-copy {
-    padding: 24px 12px;
-  }
+    .hero-copy {
+        padding: 24px 12px;
+    }
 
-  .hero-buttons {
-    flex-direction: column;
-    align-items: stretch;
-  }
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-  .hero-btn {
-    width: 100%;
-    padding: 12px 20px;
-  }
+    .hero-btn {
+        width: 100%;
+        padding: 12px 20px;
+    }
 
-  .feature-description h2 {
-    font-size: 1.45rem;
-  }
+    .feature-description h2 {
+        font-size: 1.45rem;
+    }
 
-  .feature-description li {
-    font-size: 0.95rem;
-  }
+    .feature-description li {
+        font-size: 0.95rem;
+    }
 }
