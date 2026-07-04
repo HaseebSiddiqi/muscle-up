@@ -660,36 +660,106 @@ input[type="date"]:focus {
 
 /* Navigation header */
 .nav {
-    background-color: var(--secondary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(90deg, #0c9bd6 0%, var(--secondary) 60%, #0ea5e9 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    padding: 15px 30px;
+    padding: 12px 40px;
+    height: 70px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.18);
+    animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 @media (max-width: 768px) {
     .nav {
-        gap: 8px;
-        padding: 12px 15px;
-        justify-content: flex-start;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        padding: 12px 20px;
     }
 }
 
-.nav a,
-.nav button,
-.nav p {
+.site-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.brand-text {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+}
+
+.brand-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.2));
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-welcome {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-btn {
+    padding: 8px 20px;
+    border-radius: 99px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+}
+
+.nav-btn-primary {
+    background: var(--primary);
     color: white;
-    font-size: 28px;
-    font-weight: bold;
-    transition: color 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+}
+
+.nav-btn-primary:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.3);
+    color: white;
 }
 
 @media (max-width: 768px) {
     body {
-        zoom: 0.7;
+        zoom: 0.8;
     }
 
     .card.login-card {
@@ -699,34 +769,6 @@ input[type="date"]:focus {
         transform: translate(-50%, -50%);
         margin: 0;
     }
-}
-
-@media (max-width: 768px) {
-
-    .nav a,
-    .nav button,
-    .nav p {
-        font-size: 16px;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-}
-
-.nav a,
-.nav button {
-    text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.nav a:hover,
-.nav button:hover {
-    color: #d0d5dd;
-}
-
-.nav p {
-    margin: 0;
 }
 
 /* Add workout controls */
@@ -1302,7 +1344,7 @@ td.exercise-name-cell {
    ========================= */
 
 .landing-container {
-  background: linear-gradient(135deg, #f8fbff 0%, #f4f8ff 48%, #fff8ef 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
   position: relative;
   overflow: hidden;
 }
@@ -1312,8 +1354,8 @@ td.exercise-name-cell {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top left, rgba(14, 165, 233, 0.08), transparent 32%),
-    radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.08), transparent 28%);
+    radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.05), transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.05), transparent 45%);
   pointer-events: none;
 }
 
@@ -1324,88 +1366,91 @@ td.exercise-name-cell {
   align-items: center;
   color: var(--text-main);
   text-align: center;
-  padding: 48px 24px 100px;
+  padding: 60px 24px 100px;
 }
 
 
 /* =========================
-   HERO SECTION
+   HERO SECTION & DECORATIONS
    ========================= */
 
 .hero {
   width: min(1200px, 100%);
   display: flex;
   flex-direction: column;
-  gap: 34px;
+  gap: 50px;
 }
 
 .hero-copy-wrapper {
   opacity: 0;
-  animation: fadeUp 0.8s ease forwards;
+  transform: translateY(15px);
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: opacity, transform;
 }
 
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-copy {
-  max-width: 920px;
-  margin: 0 auto 16px;
-  padding: 40px 44px;
-
-  background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(248,250,252,0.9));
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  border-radius: 34px;
-
-  box-shadow: 0 26px 80px rgba(15, 23, 42, 0.10);
-  backdrop-filter: blur(16px);
-
-  
-  transform: translateY(0);
-
-  transition: transform 0.25s ease,
-              box-shadow 0.25s ease,
-              border-color 0.25s ease;
-
-  will-change: transform;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 50px 40px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 32px;
+  box-shadow: 
+    0 10px 30px rgba(15, 23, 42, 0.05),
+    0 1px 3px rgba(15, 23, 42, 0.02);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .hero-copy:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.12);
-  border-color: rgba(14, 165, 233, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 
+    0 20px 40px rgba(15, 23, 42, 0.09);
 }
 
 .hero h1 {
-  font-size: 3.8rem;
+  font-size: 3.6rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  margin-bottom: 14px;
-  line-height: 1.08;
+  margin-bottom: 20px;
+  line-height: 1.15;
   color: #0f172a;
+}
+
+.text-gradient {
+  color: var(--primary);
+  display: inline-block;
 }
 
 .hero p {
   font-size: 1.25rem;
   margin: 0 auto;
-  line-height: 1.75;
+  line-height: 1.7;
   color: #475569;
-  max-width: 720px;
+  max-width: 760px;
 }
 
 .hero-buttons {
   display: flex;
   justify-content: center;
-  gap: 18px;
+  gap: 20px;
   flex-wrap: wrap;
-  margin-top: 26px;
+  margin-top: 32px;
 }
 
 .hero-btn {
-  padding: 16px 28px;
+  padding: 14px 32px;
   border: none;
   border-radius: 999px;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
-
   transition: transform 0.2s ease,
               box-shadow 0.2s ease,
               background-color 0.2s ease;
@@ -1416,64 +1461,101 @@ td.exercise-name-cell {
 }
 
 .hero-btn:active {
-  transform: translateY(-1px);
+  transform: translateY(0);
 }
 
 .primary-btn {
   background: var(--primary);
   color: white;
-  box-shadow: 0 14px 28px rgba(249, 115, 22, 0.22);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.2);
 }
 
 .primary-btn:hover {
-  box-shadow: 0 18px 34px rgba(249, 115, 22, 0.28);
+  background: var(--primary-hover);
+  box-shadow: 0 10px 24px rgba(249, 115, 22, 0.3);
 }
 
 .secondary-btn {
-  background: white;
+  background: transparent;
   color: var(--secondary);
-  border: 1px solid #dbeafe;
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+  border: 2px solid var(--secondary);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.08);
 }
 
 .secondary-btn:hover {
+  background: var(--secondary);
+  color: white;
   border-color: var(--secondary);
-  background: #f8fbff;
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.25);
 }
 
 
 /* =========================
-   FEATURE CARDS
+   FEATURES SECTION
    ========================= */
+
+.features-section {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  margin-top: 20px;
+}
 
 .feature-card {
   display: flex;
   align-items: center;
-
-  width: min(100%, 1220px);
+  width: min(100%, 1280px);
   margin: 0 auto;
-  padding: 34px 32px;
-
-  background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.95));
-  border: 1px solid #e2e8f0;
+  padding: 38px 36px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: 30px;
-
-  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.09);
-
-  transition: transform 0.25s ease,
-              box-shadow 0.25s ease,
-              border-color 0.25s ease;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  box-sizing: border-box;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.12);
-  border-color: rgba(14, 165, 233, 0.25);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  border-color: rgba(249, 115, 22, 0.25);
 }
 
 .feature-card-right {
-  margin: 0 0 0 auto;
   flex-direction: row-reverse;
+}
+
+.feature-card-right:hover {
+  border-color: rgba(14, 165, 233, 0.25);
+}
+
+
+/* =========================
+   SCROLL-DRIVEN ANIMATIONS
+   ========================= */
+
+.scroll-animate {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.slide-in-left {
+  transform: translateX(-40px);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide-in-right {
+  transform: translateX(40px);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-animate.is-visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 
@@ -1494,17 +1576,15 @@ td.exercise-name-cell {
   max-width: 95%;
   max-height: 95%;
   display: block;
-
   border-radius: 18px;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
-
-  transition: transform 0.25s ease,
-              box-shadow 0.25s ease;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .image-container img:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.18);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.16);
 }
 
 
@@ -1513,44 +1593,63 @@ td.exercise-name-cell {
    ========================= */
 
 .feature-description {
-  min-width: 360px;
+  flex: 1 1 55%;
+  min-width: 320px;
   max-width: 620px;
-  text-align: center;
-
-  padding: 12px 10px;
-
-  flex: 1 1 auto;
+  text-align: left;
+  padding: 12px 24px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
+  box-sizing: border-box;
 }
 
 .feature-description h2 {
-  font-size: 2.25rem;
+  font-size: 2.2rem;
   font-weight: 800;
-  margin-bottom: 6px;
-  line-height: 1.1;
-  letter-spacing: 0.14em;
+  line-height: 1.15;
   color: #0f172a;
-  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .feature-description ul {
   margin: 0;
-  padding-left: 0;
-
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-
+  gap: 14px;
   list-style: none;
 }
 
 .feature-description li {
-  font-size: 1.25rem;
-  line-height: 1.75;
-  color: #334155;
-  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #475569;
+  font-weight: 500;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.check-icon {
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--primary);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  margin-top: 1px;
+}
+
+.feature-card-right .check-icon {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--secondary);
 }
 
 
@@ -1558,26 +1657,84 @@ td.exercise-name-cell {
    MOBILE (RESPONSIVE)
    ========================= */
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .landing {
-    padding: 28px 16px 56px;
-    align-items: flex-start;
+    padding: 40px 16px 60px;
+    box-sizing: border-box;
   }
 
   .hero {
-    gap: 20px;
+    gap: 30px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .hero-copy {
-    padding: 24px 20px;
+    padding: 36px 20px;
     border-radius: 24px;
-    width: min(100%, 680px);
-    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
   }
 
   .hero h1 {
-    font-size: clamp(1.7rem, 6vw, 2.4rem);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+  }
+
+  .feature-card,
+  .feature-card-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    padding: 28px 20px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto 20px;
+  }
+
+  .image-container {
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .feature-description {
+    text-align: center;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .feature-description h2 {
+    font-size: 1.8rem;
+  }
+
+  .feature-description li {
+    justify-content: center;
+    text-align: left;
+  }
+}
+
+@media (max-width: 560px) {
+  .landing {
+    padding: 30px 12px 50px;
+  }
+
+  .hero-copy {
+    padding: 24px 12px;
   }
 
   .hero-buttons {
@@ -1585,60 +1742,13 @@ td.exercise-name-cell {
     align-items: stretch;
   }
 
-  .feature-card,
-  .feature-card-right {
-    flex-direction: column;
-    align-items: stretch;
-    text-align: center;
-
-    width: min(100%, 520px);
-    margin: 0 auto 18px;
-    padding: 18px 16px;
-    gap: 16px;
-  }
-
-  .image-container {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .image-container img {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-  }
-
-  .feature-description {
-    min-width: 0;
-    width: 100%;
-    padding: 0;
-  }
-
-  .feature-description h2 {
-    font-size: clamp(1.35rem, 5vw, 1.7rem);
-  }
-}
-
-@media (max-width: 560px) {
-  .landing {
-    padding: 24px 12px 48px;
-  }
-
-  .hero-copy {
-    padding: 20px 16px;
-  }
-
   .hero-btn {
     width: 100%;
-  }
-
-  .feature-card {
-    padding: 16px 14px;
-    border-radius: 22px;
+    padding: 12px 20px;
   }
 
   .feature-description h2 {
-    font-size: 1.3rem;
+    font-size: 1.45rem;
   }
 
   .feature-description li {
