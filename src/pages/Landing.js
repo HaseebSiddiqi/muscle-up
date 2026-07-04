@@ -39,7 +39,7 @@ export default function Landing() {
 
           <div className="feature-card fade-up delay-1">
             <div className="image-container">
-              <img src="/AddWorkout.png" alt="Workout Types" />
+              <img src="/WorkoutTypes.png" alt="Workout Types" />
             </div>
             <div className="feature-description">
               <h2>Create Workout Templates</h2>

@@ -1396,8 +1396,8 @@ td.exercise-name-cell {
 .image-container img {
   width: auto;
   height: auto;
-  max-width: 88%;
-  max-height: 88%;
+  max-width: 90%;
+  max-height: 90%;
   display: block;
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
@@ -1514,7 +1514,7 @@ td.exercise-name-cell {
 
 @media (max-width: 860px) {
   .landing {
-    padding: 24px 14px 56px;
+    padding: 28px 16px 56px;
     align-items: flex-start;
   }
 
@@ -1525,6 +1525,9 @@ td.exercise-name-cell {
   .hero-copy {
     padding: 24px 20px;
     border-radius: 24px;
+    width: min(100%, 680px);
+    margin: 0 auto;
+    box-sizing: border-box;
   }
 
   .hero h1 {
@@ -1541,13 +1544,16 @@ td.exercise-name-cell {
     flex-direction: column;
     align-items: stretch;
     text-align: center;
-    width: 100%;
-    padding: 18px;
+    width: min(100%, 520px);
+    max-width: 620px;
+    margin: 0 auto 18px;
+    padding: 18px 16px;
     gap: 16px;
+    box-sizing: border-box;
   }
 
   .feature-card-right {
-    margin: 0 auto;
+    margin: 0 auto 18px;
     flex-direction: column;
   }
 
@@ -1591,7 +1597,8 @@ td.exercise-name-cell {
 
 @media (max-width: 560px) {
   .landing {
-    padding: 20px 12px 48px;
+    padding: 24px 12px 48px;
+    zoom: 1.0;
   }
 
   .hero-copy {
@@ -1603,8 +1610,9 @@ td.exercise-name-cell {
   }
 
   .feature-card {
-    padding: 16px;
+    padding: 16px 14px;
     border-radius: 22px;
+    width: 100%;
   }
 
   .feature-description h2 {
