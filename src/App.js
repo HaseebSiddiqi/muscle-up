@@ -4,6 +4,7 @@ import NoPage from './pages/NoPage'
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Landing from "./pages/Landing";
 
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
       <div>
 
         <Routes>
-          <Route index element={<Login />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
