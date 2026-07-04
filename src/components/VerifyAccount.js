@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { confirmSignUp } from 'aws-amplify/auth';
 import { useNavigate } from "react-router-dom";
 import { signIn } from 'aws-amplify/auth';
+import { useAuth } from './AuthContext';
 
 export default function VerifyAccount({ username, password, onSuccess, onBack }) {
 
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { setUser } = useAuth();
     const handleVerify = async (e) => {
         e.preventDefault();
         setError("");
@@ -20,6 +22,7 @@ export default function VerifyAccount({ username, password, onSuccess, onBack })
             alert("Account verified successfully")
 
             await signIn({ username, password });
+            setUser({ username });
 
             onSuccess?.();
         } catch (err) {

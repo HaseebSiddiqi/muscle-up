@@ -5,10 +5,11 @@ import { Link } from "react-router-dom";
 import ResetPassword from '../components/ResetPassword';
 import { getCurrentUser } from 'aws-amplify/auth';
 import VerifyAccount from '../components/VerifyAccount';
-
+import {useAuth} from "../components/AuthContext";
 
 export default function Login() {
     const navigate = useNavigate();
+    const { setUser } = useAuth();
     useEffect(() => {
         const checkUser = async () => {
             try {
@@ -44,7 +45,7 @@ export default function Login() {
                 setShowVerify(true);
                 return;
             }
-
+            setUser({ username });
             navigate('/home');
         } catch (err) {
             console.log("FULL COGNITO ERROR:", err);

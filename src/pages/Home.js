@@ -1,9 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { signOut } from "aws-amplify/auth";
-import { getCurrentUser } from 'aws-amplify/auth';
+
 import { useEffect, useState, useRef } from "react";
-
-
 import Navbar from "../components/Navbar";
 import CreateWorkouts from "../components/CreateWorkouts";
 import AddWorkouts from "../components/AddWorkouts";
@@ -12,10 +8,7 @@ import WorkoutTypes from "../components/WorkoutTypes";
 
 
 export default function Home() {
-    const navigate = useNavigate()
-
-    const [username, setUsername] = useState('');
-
+  
     const [selectedWorkout, setSelectedWorkout] = useState(null);
 
     const [activeComponent, setActiveComponent] = useState("home");
@@ -24,31 +17,11 @@ export default function Home() {
 
     const bottomRef = useRef(null);
 
+  
     const refreshWorkouts = () => {
         setRefreshKey(prev => prev + 1);
     };
 
-    const handleSignOut = async () => {
-        try {
-            await signOut();
-            navigate('/login');
-        } catch (err) {
-            console.error('Error signing out', err);
-        }
-    };
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const user = await getCurrentUser();
-                setUsername(user.username);
-            } catch {
-
-            }
-        };
-        fetchUser();
-
-    }, []);
 
     useEffect(() => {
         if (activeComponent === "add" || activeComponent === "create") {
@@ -65,11 +38,7 @@ export default function Home() {
 
     return (
         <>
-            <Navbar
-                username={username}
-                setActiveComponent={setActiveComponent}
-                handleSignOut={handleSignOut}>
-            </Navbar>
+            <Navbar/>
 
             <div className="pageH">
                 <div className="viewWorkouts">
