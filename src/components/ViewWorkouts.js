@@ -23,9 +23,15 @@ export default function ViewWorkouts({ refreshKey }) {
             try {
                 const res = await apiFetch(`https://workouttracker-production-4d3e.up.railway.app/workoutLogs`);
                 const data = await res.json();
+                const normalized = (data.Items || []).map(w => ({
+                    ...w,
+                    exercises: w.exercises.map(ex => ({
+                        ...ex,
+                        type: ex.type || "weight_reps"   // 🔥 default for old workouts
+                    }))
+                }));
 
-                updateWorkouts(data.Items || []);
-
+                updateWorkouts(normalized);
 
             }
             catch (err) {
@@ -152,58 +158,164 @@ export default function ViewWorkouts({ refreshKey }) {
 
                                                 <tr key={exerciseIndex}>
                                                     <td className="exercise-name-cell">
-                                                        <div className="exercise-name-wrapper">
-                                                            {exerciseIndex === 0 && <div className="set-labels-spacer">&nbsp;</div>}
-                                                            <div className="exercise-name-content">{exercise.name}</div>
-                                                        </div>
+
+                                                        <div className="exercise-name-content">{exercise.name}</div>
+
                                                     </td>
 
                                                     {exercise.sets.map((set, i) => (
                                                         <td className='Sets' key={i}>
                                                             <div className="Sets-content">
-                                                                {exerciseIndex === 0 && (
-                                                                    <div className="set-labels">
-                                                                        <span className="label-w">W</span>
-                                                                        <span className="label-r">R</span>
-                                                                    </div>
-                                                                )}
                                                                 <div className="set-inputs">
+
+
                                                                     {isEditing ? (
                                                                         <>
-                                                                            <input
-                                                                                type="number"
-                                                                                min="0"
-                                                                                max="999"
-                                                                                value={editWorkouts.exercises[exerciseIndex].sets[i].weight ?? ""}
-                                                                                onChange={(e) => {
-                                                                                    const copy = structuredClone(editWorkouts);
-                                                                                    copy.exercises[exerciseIndex].sets[i].weight = Math.min(999, Math.max(0, Number(e.target.value)));
-                                                                                    setEditWorkouts(copy);
-                                                                                }}
-                                                                            />
-                                                                            <input
-                                                                                type="number"
-                                                                                min="0"
-                                                                                max="999"
-                                                                                value={editWorkouts.exercises[exerciseIndex].sets[i].reps ?? ""}
-                                                                                onChange={(e) => {
-                                                                                    const copy = structuredClone(editWorkouts);
-                                                                                    copy.exercises[exerciseIndex].sets[i].reps = Math.min(999, Math.max(0, Number(e.target.value)));
-                                                                                    setEditWorkouts(copy);
-                                                                                }}
-                                                                            />
+
+                                                                            {exercise.type === "weight_reps" && (
+                                                                                <>
+                                                                                    <div className="inputWithUnit">
+                                                                                        <input
+                                                                                            type="number"
+                                                                                            min="0"
+                                                                                            max="999"
+                                                                                            value={editWorkouts.exercises[exerciseIndex].sets[i].weight ?? ""}
+                                                                                            onChange={(e) => {
+                                                                                                const copy = structuredClone(editWorkouts);
+                                                                                                copy.exercises[exerciseIndex].sets[i].weight =
+                                                                                                    e.target.value === ""
+                                                                                                        ? ""
+                                                                                                        : Math.min(999, Math.max(0, Number(e.target.value)));
+                                                                                                setEditWorkouts(copy);
+                                                                                            }}
+                                                                                        />
+                                                                                        {set.weight !== "" && <span className="unit">lbs</span>}
+                                                                                    </div>
+
+                                                                                    <div className="inputWithUnit">
+                                                                                        <input
+                                                                                            type="number"
+                                                                                            min="0"
+                                                                                            max="999"
+                                                                                            value={editWorkouts.exercises[exerciseIndex].sets[i].reps ?? ""}
+                                                                                            onChange={(e) => {
+                                                                                                const copy = structuredClone(editWorkouts);
+                                                                                                copy.exercises[exerciseIndex].sets[i].reps =
+                                                                                                    e.target.value === ""
+                                                                                                        ? ""
+                                                                                                        : Math.min(999, Math.max(0, Number(e.target.value)));
+                                                                                                setEditWorkouts(copy);
+                                                                                            }}
+                                                                                        />
+                                                                                        {set.reps !== "" && <span className="unit">reps</span>}
+                                                                                    </div>
+                                                                                </>
+                                                                            )}
+                                                                            {exercise.type === "reps" && (
+                                                                                <div className="set-input">
+                                                                                    <div className="inputWithUnit">
+                                                                                        <input
+                                                                                            type="number"
+                                                                                            value={editWorkouts.exercises[exerciseIndex].sets[i].reps ?? ""}
+                                                                                            onChange={(e) => {
+                                                                                                const copy = structuredClone(editWorkouts);
+                                                                                                copy.exercises[exerciseIndex].sets[i].reps =
+                                                                                                    e.target.value === ""
+                                                                                                        ? ""
+                                                                                                        : Math.min(999, Math.max(0, Number(e.target.value)));
+                                                                                                setEditWorkouts(copy);
+                                                                                            }}
+                                                                                        />
+                                                                                        {set.reps !== "" && <span className="unit">reps</span>}
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
+
+
+                                                                            {exercise.type === "time" && (
+                                                                                <>
+                                                                                    <div className="inputWithUnit">
+                                                                                        <input
+                                                                                            type="number"
+                                                                                            value={editWorkouts.exercises[exerciseIndex].sets[i].minutes ?? ""}
+                                                                                            onChange={(e) => {
+                                                                                                const copy = structuredClone(editWorkouts);
+                                                                                                copy.exercises[exerciseIndex].sets[i].minutes =
+                                                                                                    e.target.value === ""
+                                                                                                        ? ""
+                                                                                                        : Math.min(99, Math.max(0, Number(e.target.value)));
+                                                                                                setEditWorkouts(copy);
+                                                                                            }}
+                                                                                        />
+                                                                                        {set.minutes !== "" && <span className="unit">min</span>}
+                                                                                    </div>
+
+                                                                                    <div className="inputWithUnit">
+                                                                                        <input
+                                                                                            type="number"
+                                                                                            value={editWorkouts.exercises[exerciseIndex].sets[i].seconds ?? ""}
+                                                                                            onChange={(e) => {
+                                                                                                const copy = structuredClone(editWorkouts);
+                                                                                                copy.exercises[exerciseIndex].sets[i].seconds =
+                                                                                                    e.target.value === ""
+                                                                                                        ? ""
+                                                                                                        : Math.min(59, Math.max(0, Number(e.target.value)));
+                                                                                                setEditWorkouts(copy);
+                                                                                            }}
+                                                                                        />
+                                                                                        {set.seconds !== "" && <span className="unit">sec</span>}
+                                                                                    </div>
+                                                                                </>
+                                                                            )}
 
                                                                         </>
                                                                     ) : (
                                                                         <>
-                                                                            <div className='Weight'>{set.weight}</div>
-                                                                            <div className='Reps'>{set.reps}</div>
+
+                                                                            {exercise.type === "weight_reps" && (
+                                                                                <>
+                                                                                    <div className="inputWithUnit">
+                                                                                        {set.weight}
+                                                                                        {set.weight !== "" && <span className="unit">lbs</span>}
+                                                                                    </div>
+                                                                                    <div className="inputWithUnit">
+                                                                                        {set.reps}
+                                                                                        {set.reps !== "" && <span className="unit">reps</span>}
+                                                                                    </div>
+                                                                                </>
+                                                                            )}
+
+
+                                                                            {exercise.type === "reps" && (
+                                                                                <div className="set-input">
+                                                                                    <div className="inputWithUnit">
+                                                                                        {set.reps}
+                                                                                        {set.reps !== "" && <span className="unit">reps</span>}
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
+
+                                                                            {exercise.type === "time" && (
+                                                                                <>
+                                                                                    <div className="inputWithUnit">
+                                                                                        {set.minutes}
+                                                                                        {set.minutes !== "" && <span className="unit">min</span>}
+                                                                                    </div>
+                                                                                    <div className="inputWithUnit">
+                                                                                        {set.seconds}
+                                                                                        {set.seconds !== "" && <span className="unit">sec</span>}
+
+                                                                                    </div>
+                                                                                </>
+
+                                                                            )}
+
                                                                         </>
 
                                                                     )}
 
-
                                                                 </div>
+
                                                             </div>
                                                         </td>
                                                     ))}

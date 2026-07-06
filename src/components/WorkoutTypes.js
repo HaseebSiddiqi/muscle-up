@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "./apiClient.js";
 
-export default function WorkoutTypes({onSelectWorkout, setActiveComponent, refreshKey}) {
+export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refreshKey }) {
     const [workouts, setWorkouts] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
@@ -65,60 +65,61 @@ export default function WorkoutTypes({onSelectWorkout, setActiveComponent, refre
 
     return (
         <>
-            
+
 
             <div className="table-container">
                 {workouts.length > 0 ? (
-                     <div>
-                    <table className="workout-table created-workouts-table">
-                        <tbody>
-                            <tr>
-                                <td className="spanrow2" colSpan={12}>
-                                    <h2>Your Created Workouts</h2>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th>Name</th>
-                                <th>Exercises</th>
-                                <th>Delete</th>
-                            </tr>
-
-                            {workouts.map((workout, i) => (
-                                <tr key={i}>
-                                    <td className="workout-name-cell" onClick={() => {onSelectWorkout(workout); setActiveComponent("add");}}>
-                                      
-                                        {workout.workoutName}
-                                        
-                                    </td>
-                                    <td className="exercises-td">
-                                        {workout.exercises.join(" | ")}
-                                    </td>
-                                    <td className="workout-name-cell" onClick={() => 
-                                                    {const confirmed = window.confirm("Delete this workout?");
-                                                        if (confirmed) {deleteWorkout(i);}
-                                                    }}>
-                                        ❌
+                    <div>
+                        <table className="workout-table created-workouts-table">
+                            <tbody>
+                                <tr>
+                                    <td className="spanrow2" colSpan={12}>
+                                        <h2>Your Created Workouts</h2>
                                     </td>
                                 </tr>
-                            ))}
-                            <tr>
-                                <td  className='submitbtn' colSpan={3}>
-                                   <button  onClick={() => {onSelectWorkout(null); setActiveComponent("create");}}>
-                                        Add Workout Type
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> 
-                    <h3>Select A Workout Type To Log Your Workouts</h3>
+
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Exercises</th>
+                                    <th>Delete</th>
+                                </tr>
+
+                                {workouts.map((workout, i) => (
+                                    <tr key={i}>
+                                        <td className="workout-name-cell" onClick={() => { onSelectWorkout(workout); setActiveComponent("add"); }}>
+
+                                            {workout.workoutName}
+
+                                        </td>
+                                        <td className="exercises-td">
+
+                                            {workout.exercises.map((ex) => typeof ex === "string" ? ex : ex.name).join(" | ")}
+                                        </td>
+                                        <td className="workout-name-cell" onClick={() => {
+                                            const confirmed = window.confirm("Delete this workout?");
+                                            if (confirmed) { deleteWorkout(i); }
+                                        }}>
+                                            ❌
+                                        </td>
+                                    </tr>
+                                ))}
+                                <tr>
+                                    <td className='submitbtn' colSpan={3}>
+                                        <button onClick={() => { onSelectWorkout(null); setActiveComponent("create"); }}>
+                                            Add Workout Type
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>Select A Workout Type To Log Your Workouts</h3>
                     </div>
-                ):(
+                ) : (
                     <h3>Add Your First Workout Type To Get Started</h3>
                 )}
-                
+
             </div>
-            
+
             {feedback && <h2>{feedback}</h2>}
         </>
     );

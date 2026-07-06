@@ -14,10 +14,6 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
     const [viewWorkouts, setViewWorkouts] = useState([]);
     const [latestWorkout, setLatestWorkout] = useState(null);
 
-
-
-
-
     useEffect(() => {
         if (!selectedWorkout) return;
 
@@ -34,7 +30,13 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
             workoutName: selectedWorkout?.workoutName,
             date: new Date().toLocaleDateString("en-CA"),
             notes: "",
-            exercises: selectedWorkout?.exercises.map(exName => {
+
+            exercises: selectedWorkout?.exercises.map(ex => {
+
+                // OLD FORMAT support (string)
+                console.log(selectedWorkout.exercises);
+                const exName = typeof ex === "string" ? ex : ex.name;
+                const exType = typeof ex === "string" ? "weight_reps" : ex.type;
 
                 const prevExercise = prev?.exercises?.find(
                     e => e.name === exName
@@ -44,10 +46,12 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
                 return {
                     name: exName,
-                    sets: Array.from({ length: setCount }).map(() => ({
-                        weight: "",
-                        reps: ""
-                    }))
+                    type: exType,
+                    sets: Array.from({ length: setCount }).map(() => {
+                        if (exType === "time") return { minutes: "", seconds: "" };
+                        if (exType === "reps") return { reps: "" };
+                        return { weight: "", reps: "" };
+                    })
                 };
             })
 
@@ -173,13 +177,15 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                     <th>Notes</th>
 
                                 </tr>
+                            
                                 {newWorkout?.exercises?.map((exercise, i) => (
                                     <tr key={i}>
+                                        
 
                                         <td className="exercise-name-cell">
                                             <div className="exercise-name-wrapper">
-                                                {i === 0 && <div className="set-labels-spacer">&nbsp;</div>}
                                                 <div className="exercise-name-content">{exercise.name}</div>
+
                                             </div>
                                         </td>
                                         {exercise.sets.map((set, j) => {
@@ -193,82 +199,208 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                             return (
                                                 <td className='Sets' key={j}>
                                                     <div className="Sets-content">
-                                                        {i === 0 && (
-                                                            <div className="set-labels">
-                                                                <span className="label-w">W</span>
-                                                                <span className="label-r">R</span>
-                                                            </div>
-                                                        )}
-                                                        <div className="set-inputs">
-                                                            <div className='Weight'>
-                                                                <input
-                                                                    type="number"
-                                                                    min="0"
-                                                                    max="999"
-                                                                    value={set.weight}
-                                                                    placeholder={prevSet?.weight}
-                                                                    onChange={(e) =>
-                                                                        setNewWorkout(prev => ({
-                                                                            ...prev,
-                                                                            exercises: prev.exercises.map((ex, exIndex) =>
-                                                                                exIndex === i
-                                                                                    ? {
-                                                                                        ...ex,
-                                                                                        sets: ex.sets.map((s, sIndex) =>
-                                                                                            sIndex === j
-                                                                                                ? {
-                                                                                                    ...s,
-                                                                                                    weight: e.target.value === ""
-                                                                                                        ? ""
-                                                                                                        : Math.min(999,
-                                                                                                            Math.max(0, Number(e.target.value))
-                                                                                                        )
-                                                                                                }
-                                                                                                : s
-                                                                                        )
-                                                                                    }
-                                                                                    : ex
-                                                                            )
-                                                                        }))
-                                                                    }
-                                                                />
-                                                            </div>
-                                                            <div className='Reps'>
-                                                                <input
-                                                                    type="number"
-                                                                    min="0"
-                                                                    max="999"
-                                                                    value={set.reps}
-                                                                    placeholder={prevSet?.reps}
-                                                                    onChange={(e) =>
-                                                                        setNewWorkout(prev => ({
-                                                                            ...prev,
-                                                                            exercises: prev.exercises.map((ex, exIndex) =>
-                                                                                exIndex === i
-                                                                                    ? {
-                                                                                        ...ex,
-                                                                                        sets: ex.sets.map((s, sIndex) =>
-                                                                                            sIndex === j
-                                                                                                ? {
-                                                                                                    ...s,
-                                                                                                    reps: e.target.value === ""
-                                                                                                        ? ""
-                                                                                                        : Math.min(999,
-                                                                                                            Math.max(0, Number(e.target.value))
-                                                                                                        )
-                                                                                                }
+
+                                                        {
+                                                            exercise.type === "weight_reps" ? (
+                                                                <div className="set-inputs">
+                                                                    <div className='inputWithUnit '>
+                                                                        <input
+                                                                            type="number"
+                                                                            min="0"
+                                                                            max="999"
+                                                                            value={set.weight}
+                                                                            placeholder={prevSet?.weight}
+                                                                            onChange={(e) =>
+                                                                                setNewWorkout(prev => ({
+                                                                                    ...prev,
+                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
+                                                                                        exIndex === i
+                                                                                            ? {
+                                                                                                ...ex,
+                                                                                                sets: ex.sets.map((s, sIndex) =>
+                                                                                                    sIndex === j
+                                                                                                        ? {
+                                                                                                            ...s,
+                                                                                                            weight: e.target.value === ""
+                                                                                                                ? ""
+                                                                                                                : Math.min(999,
+                                                                                                                    Math.max(0, Number(e.target.value))
+                                                                                                                )
+                                                                                                        }
+                                                                                                        : s
+                                                                                                )
+                                                                                            }
+                                                                                            : ex
+                                                                                    )
+                                                                                }))
+                                                                            }
+                                                                        />
+                                                                        <span className='unit'>lbs</span>
+                                                                    </div>
+                                                                    <div className='inputWithUnit '>
+                                                                        <input
+                                                                            type="number"
+                                                                            min="0"
+                                                                            max="99"
+                                                                            value={set.reps}
+                                                                            placeholder={prevSet?.reps}
+                                                                            onChange={(e) =>
+                                                                                setNewWorkout(prev => ({
+                                                                                    ...prev,
+                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
+                                                                                        exIndex === i
+                                                                                            ? {
+                                                                                                ...ex,
+                                                                                                sets: ex.sets.map((s, sIndex) =>
+                                                                                                    sIndex === j
+                                                                                                        ? {
+                                                                                                            ...s,
+                                                                                                            reps: e.target.value === ""
+                                                                                                                ? ""
+                                                                                                                : Math.min(99,
+                                                                                                                    Math.max(0, Number(e.target.value))
+                                                                                                                )
+                                                                                                        }
 
 
-                                                                                                : s
-                                                                                        )
-                                                                                    }
-                                                                                    : ex
-                                                                            )
-                                                                        }))
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </div>
+                                                                                                        : s
+                                                                                                )
+                                                                                            }
+                                                                                            : ex
+                                                                                    )
+                                                                                }))
+                                                                            }
+                                                                        />
+                                                                        <span className='unit'>reps</span>
+
+                                                                    </div>
+                                                                </div>
+                                                            ) : exercise.type === "reps" ? (
+                                                                <div className="set-input">
+
+                                                                    <div className='inputWithUnit ' colSpan={2}>
+                                                                        <input
+                                                                            type="number"
+                                                                            min="0"
+                                                                            max="99"
+                                                                            value={set.reps}
+                                                                            placeholder={prevSet?.reps}
+                                                                            onChange={(e) =>
+                                                                                setNewWorkout(prev => ({
+                                                                                    ...prev,
+                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
+                                                                                        exIndex === i
+                                                                                            ? {
+                                                                                                ...ex,
+                                                                                                sets: ex.sets.map((s, sIndex) =>
+                                                                                                    sIndex === j
+                                                                                                        ? {
+                                                                                                            ...s,
+                                                                                                            reps: e.target.value === ""
+                                                                                                                ? ""
+                                                                                                                : Math.min(99,
+                                                                                                                    Math.max(0, Number(e.target.value))
+                                                                                                                )
+                                                                                                        }
+
+
+                                                                                                        : s
+                                                                                                )
+                                                                                            }
+                                                                                            : ex
+                                                                                    )
+                                                                                }))
+                                                                            }
+                                                                        />
+                                                                        <span className='unit'>reps</span>
+
+                                                                    </div>
+                                                                </div>
+
+                                                            ) : exercise.type === "time" ? (
+                                                                <div className="set-inputs">
+                                                                    <div className='inputWithUnit '>
+                                                                        <input
+                                                                            type="number"
+                                                                            min="0"
+                                                                            max="99"
+                                                                            value={set.minutes}
+                                                                            placeholder={prevSet?.minutes}
+                                                                            onChange={(e) =>
+                                                                                setNewWorkout(prev => ({
+                                                                                    ...prev,
+                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
+                                                                                        exIndex === i
+                                                                                            ? {
+                                                                                                ...ex,
+                                                                                                sets: ex.sets.map((s, sIndex) =>
+                                                                                                    sIndex === j
+                                                                                                        ? {
+                                                                                                            ...s,
+                                                                                                            minutes: e.target.value === ""
+                                                                                                                ? ""
+                                                                                                                : Math.min(99,
+                                                                                                                    Math.max(0, Number(e.target.value))
+                                                                                                                )
+                                                                                                        }
+
+
+                                                                                                        : s
+                                                                                                )
+                                                                                            }
+                                                                                            : ex
+                                                                                    )
+                                                                                }))
+                                                                            }
+                                                                        />
+                                                                        <span className='unit'>mins</span>
+
+                                                                    </div>
+                                                                    <div className='inputWithUnit '>
+                                                                        <input
+                                                                            type="number"
+                                                                            min="0"
+                                                                            max="59"
+                                                                            value={set.seconds}
+                                                                            placeholder={prevSet?.seconds}
+                                                                            onChange={(e) =>
+                                                                                setNewWorkout(prev => ({
+                                                                                    ...prev,
+                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
+                                                                                        exIndex === i
+                                                                                            ? {
+                                                                                                ...ex,
+                                                                                                sets: ex.sets.map((s, sIndex) =>
+                                                                                                    sIndex === j
+                                                                                                        ? {
+                                                                                                            ...s,
+                                                                                                            seconds: e.target.value === ""
+                                                                                                                ? ""
+                                                                                                                : Math.min(59,
+                                                                                                                    Math.max(0, Number(e.target.value))
+                                                                                                                )
+                                                                                                        }
+
+
+                                                                                                        : s
+                                                                                                )
+                                                                                            }
+                                                                                            : ex
+                                                                                    )
+                                                                                }))
+                                                                            }
+                                                                        />
+                                                                        <span className='unit'>sec</span>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            ) :
+                                                                null
+                                                        }
+
+
                                                     </div>
                                                 </td>
                                             )
