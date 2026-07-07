@@ -1,8 +1,5 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from "react";
 import { apiFetch } from "./apiClient.js";
-
-
 export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
 
@@ -149,8 +146,51 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
             return validSets(exercise.sets);
         });
     };
+
+    const displayExercises = newWorkout?.exercises
+        ?.map((exercise, index) => ({
+            ...exercise,
+            originalIndex: index
+        }))
+        .sort((a, b) => {
+            const order = {
+                weight_reps: 0,
+                reps: 1,
+                time: 2
+            };
+
+            return order[a.type] - order[b.type];
+        });
+
+
+    const updateSet = (exerciseIndex, setIndex, field, value) => {
+
+        setNewWorkout(prev => ({
+            ...prev,
+            exercises: prev.exercises.map((ex, exIndex) =>
+                exIndex === exerciseIndex
+                    ? {
+                        ...ex,
+                        sets: ex.sets.map((s, sIndex) =>
+                            sIndex === setIndex
+                                ? {
+                                    ...s,
+                                    [field]: value === ""
+                                        ? ""
+                                        : Number(value)
+                                }
+                                : s
+                        )
+                    }
+                    : ex
+            )
+        }));
+
+    };
     return (
+
         <>
+
             <div >
 
                 {feedback && <h2>{feedback}</h2>}
@@ -158,276 +198,354 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                     <div className="table-container">
                         <table className="addWorkoutTable">
                             <tbody>
+
                                 <tr>
                                     <th className="spanrow2" colSpan={12}>
                                         <input
                                             type="date"
                                             value={newWorkout.date || ""}
-                                            onChange={(e) => setNewWorkout(prev => ({ ...prev, date: e.target.value }))}
+                                            onChange={(e) =>
+                                                setNewWorkout(prev => ({
+                                                    ...prev,
+                                                    date: e.target.value
+                                                }))
+                                            }
                                         />
                                     </th>
                                 </tr>
+
+
                                 <tr>
 
-                                    <th>{newWorkout.workoutName}  </th>
-                                    {newWorkout?.exercises[0]?.sets.map((set, setIndex) => (
-                                        <th key={setIndex}>Set {setIndex + 1}</th>
+                                    <th>
+                                        {newWorkout.workoutName}
+                                    </th>
+
+                                    {newWorkout.exercises[0].sets.map((_, index) => (
+                                        <th key={index}>
+                                            Set {index + 1}
+                                        </th>
                                     ))}
 
-                                    <th>Notes</th>
+                                    <th>
+                                        Notes
+                                    </th>
 
                                 </tr>
-                            
-                                {newWorkout?.exercises?.map((exercise, i) => (
-                                    <tr key={i}>
-                                        
-
-                                        <td className="exercise-name-cell">
-                                            <div className="exercise-name-wrapper">
-                                                <div className="exercise-name-content">{exercise.name}</div>
-
-                                            </div>
-                                        </td>
-                                        {exercise.sets.map((set, j) => {
-
-                                            const prevExercise = latestWorkout?.exercises?.find(
-                                                ex => ex.name === exercise.name
-                                            );
-
-                                            const prevSet = prevExercise?.sets?.[j];
-
-                                            return (
-                                                <td className='Sets' key={j}>
-                                                    <div className="Sets-content">
-
-                                                        {
-                                                            exercise.type === "weight_reps" ? (
-                                                                <div className="set-inputs">
-                                                                    <div className='inputWithUnit '>
-                                                                        <input
-                                                                            type="number"
-                                                                            min="0"
-                                                                            max="999"
-                                                                            value={set.weight}
-                                                                            placeholder={prevSet?.weight}
-                                                                            onChange={(e) =>
-                                                                                setNewWorkout(prev => ({
-                                                                                    ...prev,
-                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
-                                                                                        exIndex === i
-                                                                                            ? {
-                                                                                                ...ex,
-                                                                                                sets: ex.sets.map((s, sIndex) =>
-                                                                                                    sIndex === j
-                                                                                                        ? {
-                                                                                                            ...s,
-                                                                                                            weight: e.target.value === ""
-                                                                                                                ? ""
-                                                                                                                : Math.min(999,
-                                                                                                                    Math.max(0, Number(e.target.value))
-                                                                                                                )
-                                                                                                        }
-                                                                                                        : s
-                                                                                                )
-                                                                                            }
-                                                                                            : ex
-                                                                                    )
-                                                                                }))
-                                                                            }
-                                                                        />
-                                                                        <span className='unit'>lbs</span>
-                                                                    </div>
-                                                                    <div className='inputWithUnit '>
-                                                                        <input
-                                                                            type="number"
-                                                                            min="0"
-                                                                            max="99"
-                                                                            value={set.reps}
-                                                                            placeholder={prevSet?.reps}
-                                                                            onChange={(e) =>
-                                                                                setNewWorkout(prev => ({
-                                                                                    ...prev,
-                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
-                                                                                        exIndex === i
-                                                                                            ? {
-                                                                                                ...ex,
-                                                                                                sets: ex.sets.map((s, sIndex) =>
-                                                                                                    sIndex === j
-                                                                                                        ? {
-                                                                                                            ...s,
-                                                                                                            reps: e.target.value === ""
-                                                                                                                ? ""
-                                                                                                                : Math.min(99,
-                                                                                                                    Math.max(0, Number(e.target.value))
-                                                                                                                )
-                                                                                                        }
 
 
-                                                                                                        : s
-                                                                                                )
-                                                                                            }
-                                                                                            : ex
-                                                                                    )
-                                                                                }))
-                                                                            }
-                                                                        />
-                                                                        <span className='unit'>reps</span>
+                                {displayExercises.map((exercise, i) => {
 
-                                                                    </div>
-                                                                </div>
-                                                            ) : exercise.type === "reps" ? (
-                                                                <div className="set-input">
+                                    const exerciseIndex = exercise.originalIndex;
 
-                                                                    <div className='inputWithUnit ' colSpan={2}>
-                                                                        <input
-                                                                            type="number"
-                                                                            min="0"
-                                                                            max="99"
-                                                                            value={set.reps}
-                                                                            placeholder={prevSet?.reps}
-                                                                            onChange={(e) =>
-                                                                                setNewWorkout(prev => ({
-                                                                                    ...prev,
-                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
-                                                                                        exIndex === i
-                                                                                            ? {
-                                                                                                ...ex,
-                                                                                                sets: ex.sets.map((s, sIndex) =>
-                                                                                                    sIndex === j
-                                                                                                        ? {
-                                                                                                            ...s,
-                                                                                                            reps: e.target.value === ""
-                                                                                                                ? ""
-                                                                                                                : Math.min(99,
-                                                                                                                    Math.max(0, Number(e.target.value))
-                                                                                                                )
-                                                                                                        }
+                                    const showUnits =
+                                        i === 0 ||
+                                        displayExercises[i - 1].type !== exercise.type;
 
 
-                                                                                                        : s
-                                                                                                )
-                                                                                            }
-                                                                                            : ex
-                                                                                    )
-                                                                                }))
-                                                                            }
-                                                                        />
-                                                                        <span className='unit'>reps</span>
-
-                                                                    </div>
-                                                                </div>
-
-                                                            ) : exercise.type === "time" ? (
-                                                                <div className="set-inputs">
-                                                                    <div className='inputWithUnit '>
-                                                                        <input
-                                                                            type="number"
-                                                                            min="0"
-                                                                            max="99"
-                                                                            value={set.minutes}
-                                                                            placeholder={prevSet?.minutes}
-                                                                            onChange={(e) =>
-                                                                                setNewWorkout(prev => ({
-                                                                                    ...prev,
-                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
-                                                                                        exIndex === i
-                                                                                            ? {
-                                                                                                ...ex,
-                                                                                                sets: ex.sets.map((s, sIndex) =>
-                                                                                                    sIndex === j
-                                                                                                        ? {
-                                                                                                            ...s,
-                                                                                                            minutes: e.target.value === ""
-                                                                                                                ? ""
-                                                                                                                : Math.min(99,
-                                                                                                                    Math.max(0, Number(e.target.value))
-                                                                                                                )
-                                                                                                        }
+                                    const prevExercise =
+                                        latestWorkout?.exercises?.find(
+                                            ex => ex.name === exercise.name
+                                        );
 
 
-                                                                                                        : s
-                                                                                                )
-                                                                                            }
-                                                                                            : ex
-                                                                                    )
-                                                                                }))
-                                                                            }
-                                                                        />
-                                                                        <span className='unit'>mins</span>
+                                    return (
 
-                                                                    </div>
-                                                                    <div className='inputWithUnit '>
-                                                                        <input
-                                                                            type="number"
-                                                                            min="0"
-                                                                            max="59"
-                                                                            value={set.seconds}
-                                                                            placeholder={prevSet?.seconds}
-                                                                            onChange={(e) =>
-                                                                                setNewWorkout(prev => ({
-                                                                                    ...prev,
-                                                                                    exercises: prev.exercises.map((ex, exIndex) =>
-                                                                                        exIndex === i
-                                                                                            ? {
-                                                                                                ...ex,
-                                                                                                sets: ex.sets.map((s, sIndex) =>
-                                                                                                    sIndex === j
-                                                                                                        ? {
-                                                                                                            ...s,
-                                                                                                            seconds: e.target.value === ""
-                                                                                                                ? ""
-                                                                                                                : Math.min(59,
-                                                                                                                    Math.max(0, Number(e.target.value))
-                                                                                                                )
-                                                                                                        }
+                                        <Fragment key={exerciseIndex}>
 
 
-                                                                                                        : s
-                                                                                                )
-                                                                                            }
-                                                                                            : ex
-                                                                                    )
-                                                                                }))
-                                                                            }
-                                                                        />
-                                                                        <span className='unit'>sec</span>
+                                            <tr>
 
-                                                                    </div>
 
-                                                                </div>
+                                                <td className="exercise-name-cell">
 
-                                                            ) :
-                                                                null
-                                                        }
+                                                    <div className="exercise-name-wrapper">
 
+                                                        <div className="exercise-name-content">
+                                                            {exercise.name}
+                                                        </div>
 
                                                     </div>
-                                                </td>
-                                            )
-                                        })}
-                                        {i === 0 && (
-                                            <td className="notes" rowSpan={newWorkout.exercises.length}>
-                                                <textarea className="textarea" placeholder={latestWorkout?.notes ?? "Workout notes..."} value={newWorkout.notes} onChange={e => setNewWorkout({ ...newWorkout, notes: e.target.value })} />
-                                            </td>
-                                        )}
 
-                                    </tr>
-                                ))}
+                                                </td>
+
+
+                                                {exercise.sets.map((set, j) => {
+
+
+                                                    const prevSet = prevExercise?.sets?.[j];
+
+
+                                                    return (
+
+                                                        <td className="Sets" key={j}>
+
+
+                                                            <div className="Sets-content">
+
+
+                                                                {exercise.type === "weight_reps" && (
+
+                                                                    <div className="set-inputs">
+
+
+                                                                        <div className="inputWithUnit">
+
+
+
+                                                                            <input
+                                                                                type="number"
+                                                                                value={set.weight}
+                                                                                placeholder={prevSet?.weight}
+                                                                                onChange={(e) =>
+                                                                                    updateSet(
+                                                                                        exerciseIndex,
+                                                                                        j,
+                                                                                        "weight",
+                                                                                        Math.min(
+                                                                                            999,
+                                                                                            Math.max(
+                                                                                                0,
+                                                                                                e.target.value
+                                                                                            )
+                                                                                        )
+                                                                                    )}
+                                                                            />
+                                                                            {showUnits &&
+                                                                                <span className="unit">
+                                                                                    lbs
+                                                                                </span>
+                                                                            }
+
+
+
+                                                                        </div>
+
+
+
+                                                                        <div className="inputWithUnit">
+
+
+
+
+                                                                            <input
+                                                                                type="number"
+                                                                                value={set.reps}
+                                                                                placeholder={prevSet?.reps}
+                                                                                onChange={(e) =>
+                                                                                    updateSet(
+                                                                                        exerciseIndex,
+                                                                                        j,
+                                                                                        "reps",
+                                                                                        Math.min(
+                                                                                            99,
+                                                                                            Math.max(
+                                                                                                0,
+                                                                                                e.target.value
+                                                                                            )
+                                                                                        )
+                                                                                    )}
+                                                                            />
+                                                                            {showUnits &&
+                                                                                <span className="unit">
+                                                                                    reps
+                                                                                </span>
+                                                                            }
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+                                                                )}
+
+
+
+
+                                                                {exercise.type === "reps" && (
+                                                                    <div className="set-inputs">
+                                                                    <div className="inputWithUnit">
+
+
+
+                                                                        
+                                                                        <input
+                                                                            type="number"
+                                                                            value={set.reps}
+                                                                            placeholder={prevSet?.reps}
+                                                                            onChange={(e) =>
+                                                                                updateSet(
+                                                                                    exerciseIndex,
+                                                                                    j,
+                                                                                    "reps",
+                                                                                    Math.min(
+                                                                                        99,
+                                                                                        Math.max(
+                                                                                            0,
+                                                                                            e.target.value
+                                                                                        )
+                                                                                    )
+                                                                                )}
+                                                                        />
+                                                                        {showUnits &&
+                                                                            <span className="unit">
+                                                                                reps
+                                                                            </span>
+                                                                        }
+                                                                        </div>
+
+
+                                                                    </div>
+
+                                                                )}
+                                                                {exercise.type === "time" && (
+                                                                    <div className="set-inputs">
+
+                                                                        <div className="duration-input">
+                                                                            {showUnits &&
+                                                                                <div className="duration-labels">
+
+                                                                                    <span className="unit">mins</span>
+                                                                                    <span className="unit">sec</span>
+
+                                                                                </div>}
+
+                                                                            <div className="duration-values">
+                                                                                <input
+                                                                                    type="number"
+                                                                                    value={set.minutes}
+                                                                                    placeholder={prevSet?.minutes}
+                                                                                    onChange={(e) =>
+                                                                                        updateSet(
+                                                                                            exerciseIndex,
+                                                                                            j,
+                                                                                            "minutes",
+                                                                                            Math.min(120, Math.max(0, e.target.value))
+                                                                                        )
+                                                                                    }
+                                                                                />
+
+                                                                                <span className="time-divider">:</span>
+
+                                                                                <input
+                                                                                    type="number"
+                                                                                    value={set.seconds}
+                                                                                    placeholder={prevSet?.seconds}
+                                                                                    onChange={(e) =>
+                                                                                        updateSet(
+                                                                                            exerciseIndex,
+                                                                                            j,
+                                                                                            "seconds",
+                                                                                            Math.min(59, Math.max(0, e.target.value))
+                                                                                        )
+                                                                                    }
+                                                                                />
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                )}
+
+
+
+
+
+                                                            </div>
+
+
+                                                        </td>
+
+                                                    )
+
+                                                })}
+
+
+
+                                                {i === 0 && (
+
+                                                    <td
+                                                        className="notes"
+                                                        rowSpan={displayExercises.length}
+                                                    >
+
+                                                        <textarea
+                                                            className="textarea"
+                                                            placeholder={
+                                                                latestWorkout?.notes ??
+                                                                "Workout notes..."
+                                                            }
+                                                            value={newWorkout.notes}
+                                                            onChange={(e) =>
+                                                                setNewWorkout({
+                                                                    ...newWorkout,
+                                                                    notes: e.target.value
+                                                                })
+                                                            }
+                                                        />
+
+                                                    </td>
+
+                                                )}
+
+
+
+                                            </tr>
+
+
+                                        </Fragment>
+
+                                    )
+
+                                })}
+
+
+
                                 <tr>
+
                                     <td colSpan={newWorkout.exercises[0].sets.length + 2}>
 
-                                        <div className='SetControls'>
-                                            <button className="addButton" onClick={addSets}>Add Set</button>
-                                            <button className="minusButton" onClick={delSets}>Delete Set</button>
+                                        <div className="SetControls">
+
+                                            <button
+                                                className="addButton"
+                                                onClick={addSets}
+                                            >
+                                                Add Set
+                                            </button>
+
+
+                                            <button
+                                                className="minusButton"
+                                                onClick={delSets}
+                                            >
+                                                Delete Set
+                                            </button>
+
+
                                         </div>
+
+
                                     </td>
 
 
                                 </tr>
+
+
                                 <tr>
-                                    <td className='submitbtn' colSpan={12}>
-                                        <button onClick={submitTable}>Submit</button></td>
+
+                                    <td className="submitbtn" colSpan={12}>
+
+                                        <button onClick={submitTable}>
+                                            Submit
+                                        </button>
+
+                                    </td>
+
                                 </tr>
+
+
                             </tbody>
                         </table>
 
