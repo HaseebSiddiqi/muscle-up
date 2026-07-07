@@ -275,11 +275,11 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                             {exercise.type === "weight_reps" && (
                                                                                 <>
                                                                                     <div className="inputWithUnit">
-                                                                                        {set.weight}
+                                                                                        <div className="inputValue">{set.weight}</div>
                                                                                         {set.weight !== "" && <span className="unit">lbs</span>}
                                                                                     </div>
                                                                                     <div className="inputWithUnit">
-                                                                                        {set.reps}
+                                                                                        <div className="inputValue">{set.reps}</div>
                                                                                         {set.reps !== "" && <span className="unit">reps</span>}
                                                                                     </div>
                                                                                 </>
@@ -289,7 +289,7 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                             {exercise.type === "reps" && (
                                                                                 <div className="set-input">
                                                                                     <div className="inputWithUnit">
-                                                                                        {set.reps}
+                                                                                        <div className="inputValue">{set.reps}</div>
                                                                                         {set.reps !== "" && <span className="unit">reps</span>}
                                                                                     </div>
                                                                                 </div>
@@ -298,11 +298,11 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                             {exercise.type === "time" && (
                                                                                 <>
                                                                                     <div className="inputWithUnit">
-                                                                                        {set.minutes}
+                                                                                        <div className="inputValue">{set.minutes}</div>
                                                                                         {set.minutes !== "" && <span className="unit">min</span>}
                                                                                     </div>
                                                                                     <div className="inputWithUnit">
-                                                                                        {set.seconds}
+                                                                                        <div className="inputValue">{set.seconds}</div>
                                                                                         {set.seconds !== "" && <span className="unit">sec</span>}
 
                                                                                     </div>

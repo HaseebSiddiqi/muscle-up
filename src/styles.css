@@ -876,20 +876,19 @@ td.exercise-name-cell {
 .set-inputs {
     display: flex;
     justify-content: center;
-    /* IMPORTANT */
-    align-items: center;
+    align-items: stretch;
     gap: 6px;
     width: 100%;
+    height: 100%;
 }
 
 .set-input {
     display: flex;
     justify-content: center;
-    /* IMPORTANT */
-
     width: 100%;
     flex: 1;
     min-height: 40px;
+    height: 100%;
 }
 
 
@@ -928,40 +927,64 @@ td.exercise-name-cell {
 }
 
 .inputWithUnit {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 4px;
+    min-height: 54px;
     width: 100%;
-    gap: 20px;
+    flex: 1;
     font-size: normal;
     font-weight: bold;
 }
 
-
+.inputWithUnit input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
 
 .unit {
-    position: absolute;
-    right: 0px;
-    min-width: 25px;
-    font-size: 9px;
-    opacity: 0.7;
-    font-weight: normal;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 24px;
+    width: fit-content;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: rgba(14, 165, 233, 0.12);
+    color: var(--secondary);
+    font-size: 8px;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 700;
     pointer-events: none;
+    white-space: nowrap;
+    margin-left: 2px;
+}
+
+.inputValue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .set-input .inputWithUnit .unit {
-    position: absolute;
-    right: 40px;
-    font-size: 9px;
-
-    opacity: 0.7;
-    font-weight: normal;
+    font-size: 8px;
+    opacity: 1;
+    font-weight: 700;
     pointer-events: none;
 }
-
-
 
 .set-inputs input:hover {
     background-color: rgba(0, 0, 0, 0.08);
