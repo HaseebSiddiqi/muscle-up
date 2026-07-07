@@ -8,7 +8,7 @@ export default function Create_workouts({ onSuccess }) {
 
     const [workoutNameInput, setWorkoutNameInput] = useState("");
 
-    const [exercises, setExercises] = useState(["", "", ""]);
+    const [exercises, setExercises] = useState([{ name: "", type: "weight_reps" }, { name: "", type: "" }, { name: "", type: "" }]);
 
     const [feedback, setFeedback] = useState("");
 
@@ -40,7 +40,7 @@ export default function Create_workouts({ onSuccess }) {
             return;
         }
 
-        const validExercises = exercises.map(e => e.trim()).filter(e => e !== "");
+        const validExercises = exercises.map(e => e.name.trim()).filter(e => e !== "");
         if (validExercises.length !== exercises.length) {
             alert("Please fill all exercises");
             return;
@@ -49,7 +49,7 @@ export default function Create_workouts({ onSuccess }) {
         const workout = {
 
             workoutName: workoutNameInput.trim(),
-            exercises: validExercises
+            exercises: exercises
         };
 
         setWorkouts([...workouts, workout]);
@@ -61,7 +61,7 @@ export default function Create_workouts({ onSuccess }) {
         });
 
         setWorkoutNameInput("");
-        setExercises(["", "", ""]);
+        setExercises([{ name: "", type: "weight_reps" }, { name: "", type: "weight_reps" }, { name: "", type: "weight_reps" }]);
 
         setFeedback("New Workout Type Created!")
         setTimeout(() => {
@@ -98,46 +98,52 @@ export default function Create_workouts({ onSuccess }) {
                             </td>
                         </tr>
                         <tr>
-                            <th className="NewWorkoutType" colSpan={4}>Exercises</th>
-                        </tr>
-                        <tr>
-                            <td className="inputCell" colSpan={4}>
-                                <input
-                                    value={exercises[0]}
-                                    maxLength={20}
-                                    onChange={e => {
-                                        const newExercises = [...exercises];
-                                        newExercises[0] = e.target.value;
-                                        setExercises(newExercises);
-                                    }}
-                                    className="inputText"
-                                    placeholder="Exercise 1…"
-                                />
+                            <th className="NewWorkoutType" colSpan={2}>Exercises</th>
+                            <th className="NewWorkoutType" colSpan={2}>Exercise Type</th>
 
-                            </td>
                         </tr>
-                        {exercises.slice(1).map((exercise, i) => (
-                            <tr key={i + 1}>
-                                <td className="inputCell" colSpan={4}>
+
+                        {exercises.map((exercise, i) => (
+                            <tr key={i}>
+                                <td className="inputCell" colSpan={2}>
                                     <input
-                                        value={exercise}
+                                        value={exercise.name}
                                         maxLength={20}
                                         onChange={e => {
                                             const newExercises = [...exercises];
-                                            newExercises[i + 1] = e.target.value;
+                                            newExercises[i].name = e.target.value;
                                             setExercises(newExercises);
                                         }}
                                         className="inputText"
-                                        placeholder={`Exercise ${i + 2}…`}
+                                        placeholder={`Exercise ${i + 1}…`}
                                     />
                                 </td>
+                                <td className="inputCell" colSpan={2}>
+                                    <select
+                                        value={exercise.type}
+                                        maxLength={20}
+                                        onChange={e => {
+                                            const newExercises = [...exercises];
+                                            newExercises[i].type = e.target.value;
+                                            setExercises(newExercises);
+                                        }}
+                                        className="inputText">
+
+                                        <option value="weight_reps">Weight + Reps </option>
+                                        <option value="time">Duration (mm:ss)</option>
+                                        <option value="reps">Reps</option>
+                                    </select>
+
+                                </td>
+
+
                             </tr>
                         ))}
                         <tr>
                             <td colSpan={4} className="controlsCell">
                                 <div className="SetControls">
                                     <button className="addButton"
-                                        onClick={() => setExercises(prev => prev.length < 10 ? [...prev, ""] : prev)}>
+                                        onClick={() => setExercises(prev => prev.length < 10 ? [...prev, { name: "", type: "weight_reps" }] : prev)}>
                                         Add Exercise
                                     </button>
                                     <button className="minusButton"

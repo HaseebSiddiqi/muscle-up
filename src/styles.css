@@ -871,30 +871,53 @@ td.exercise-name-cell {
     margin: 0;
 }
 
-
+.set-inputs .inputWithUnit+.inputWithUnit {
+    border-left: 1px solid #e9e8e8;
+}
 
 .set-inputs {
     display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.set-input {
+    display: flex;
+    justify-content: center;
     width: 100%;
     flex: 1;
     min-height: 40px;
+    height: 100%;
 }
 
-.set-inputs .Weight,
-.set-inputs .Reps {
-    flex: 1;
+
+
+.set-input input {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.set-inputs .Weight {
-    border-right: 1px solid #cbd5e1;
+    gap: 6px;
+    min-height: 40px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: large;
+    font-weight: bold;
+    color: var(--text-main);
+    box-sizing: border-box;
 }
 
 .set-inputs input {
     width: 100%;
     height: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     min-height: 40px;
     text-align: center;
     border: none;
@@ -903,6 +926,144 @@ td.exercise-name-cell {
     font-weight: bold;
     color: var(--text-main);
     box-sizing: border-box;
+}
+
+.inputWithUnit {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    font-weight: bold;
+}
+
+.inputWithUnit input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    min-height: 40px;
+    height: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.unit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 10px;
+
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    color: var(--secondary);
+    background: rgba(14, 165, 233, 0.08);
+
+    border-bottom: 1px solid rgba(14, 165, 233, 0.18);
+
+    margin: 0;
+    padding: 0;
+
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.inputValue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.inputWithUnit .inputValue {
+    min-height: 40px;
+}
+
+.duration-input {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.duration-labels {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+}
+
+.duration-values {
+    display: flex;
+    align-items: center;
+
+    text-align: center;
+
+
+}
+
+.duration-value {
+    width: 45px;
+    flex: 1;
+    text-align: center;
+
+
+}
+
+
+
+.duration-values input {
+    width: 45px;
+    text-align: center;
+}
+
+.duration-values input:first-child {
+    text-align: right;
+    padding-right: 6px;
+}
+
+.duration-values input:last-child {
+    text-align: left;
+    padding-left: 6px;
+}
+
+.duration-value:first-child {
+    text-align: right;
+    padding-right: 6px;
+}
+
+.duration-value:last-child {
+    text-align: left;
+    padding-left: 6px;
+}
+
+
+
+.time-divider {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    padding: 0 0px;
+    font-weight: bold;
+    transform: translateY(-2px);
+    font-size: 14px;
+}
+
+.set-input .inputWithUnit .unit {
+    font-size: 7px;
+    opacity: 1;
+    font-weight: 700;
+    pointer-events: none;
 }
 
 .set-inputs input:hover {
@@ -950,6 +1111,7 @@ td.exercise-name-cell {
     box-shadow: none !important;
     padding: 0 !important;
 }
+
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
