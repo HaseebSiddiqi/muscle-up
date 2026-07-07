@@ -275,9 +275,9 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
                                                     const prevSet = prevExercise?.sets?.[j];
 
-
+                                                    console.log(selectedWorkout.exercises);
                                                     return (
-
+                                                        
                                                         <td className="Sets" key={j}>
 
 

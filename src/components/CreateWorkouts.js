@@ -8,7 +8,7 @@ export default function Create_workouts({ onSuccess }) {
 
     const [workoutNameInput, setWorkoutNameInput] = useState("");
 
-    const [exercises, setExercises] = useState([{ name: "", type: "weight_reps" }, { name: "", type: "" }, { name: "", type: "" }]);
+    const [exercises, setExercises] = useState([{ name: "", type: "weight_reps" }, { name: "", type: "weight_reps" }, { name: "", type: "weight_reps" }]);
 
     const [feedback, setFeedback] = useState("");
 
