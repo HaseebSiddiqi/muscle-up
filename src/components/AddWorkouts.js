@@ -31,7 +31,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
             exercises: selectedWorkout?.exercises.map(ex => {
 
                 // OLD FORMAT support (string)
-                console.log(selectedWorkout.exercises);
+            
                 const exName = typeof ex === "string" ? ex : ex.name;
                 const exType = typeof ex === "string" ? "weight_reps" : ex.type;
 
@@ -275,7 +275,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
                                                     const prevSet = prevExercise?.sets?.[j];
 
-                                                    console.log(selectedWorkout.exercises);
+                                                    
                                                     return (
                                                         
                                                         <td className="Sets" key={j}>
