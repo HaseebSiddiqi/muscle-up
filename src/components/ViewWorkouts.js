@@ -115,7 +115,16 @@ export default function ViewWorkouts({ refreshKey }) {
         );
 
     }
+    const updateEditValue = (exerciseIndex, setIndex, field, value, max) => {
+        const copy = structuredClone(editWorkouts);
 
+        copy.exercises[exerciseIndex].sets[setIndex][field] =
+            value === ""
+                ? null
+                : Math.min(max, Math.max(0, Number(value)));
+
+        setEditWorkouts(copy);
+    };
 
 
 
@@ -352,27 +361,14 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                                     }
 
 
-                                                                                                    onChange={(e) => {
-
-                                                                                                        const copy =
-                                                                                                            structuredClone(editWorkouts);
-
-
-                                                                                                        copy
-                                                                                                            .exercises[exerciseIndex]
-                                                                                                            .sets[setIndex]
-                                                                                                            .weight = Math.min(
-                                                                                            999,
-                                                                                            Math.max(
-                                                                                                0,
-                                                                                                e.target.value
-                                                                                            )
-                                                                                        );
-
-
-                                                                                                        setEditWorkouts(copy);
-
-                                                                                                    }}
+                                                                                                    onChange={(e) =>
+                                                                                                        updateEditValue(
+                                                                                                            exerciseIndex,
+                                                                                                            setIndex,
+                                                                                                            "weight",
+                                                                                                            e.target.value,
+                                                                                                            999
+                                                                                                        )}
                                                                                                 />
 
                                                                                                 {showUnits && (
@@ -404,27 +400,14 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                                     }
 
 
-                                                                                                    onChange={(e) => {
-
-                                                                                                        const copy =
-                                                                                                            structuredClone(editWorkouts);
-
-
-                                                                                                        copy
-                                                                                                            .exercises[exerciseIndex]
-                                                                                                            .sets[setIndex]
-                                                                                                            .reps =  Math.min(
-                                                                                            99,
-                                                                                            Math.max(
-                                                                                                0,
-                                                                                                e.target.value
-                                                                                            )
-                                                                                        );
-
-
-                                                                                                        setEditWorkouts(copy);
-
-                                                                                                    }}
+                                                                                                    onChange={(e) =>
+                                                                                                        updateEditValue(
+                                                                                                            exerciseIndex,
+                                                                                                            setIndex,
+                                                                                                            "reps",
+                                                                                                            e.target.value,
+                                                                                                            99
+                                                                                                        )}
 
                                                                                                 />
 
@@ -468,27 +451,14 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                                 }
 
 
-                                                                                                onChange={(e) => {
-
-                                                                                                    const copy =
-                                                                                                        structuredClone(editWorkouts);
-
-
-                                                                                                    copy
-                                                                                                        .exercises[exerciseIndex]
-                                                                                                        .sets[setIndex]
-                                                                                                        .reps =  Math.min(
-                                                                                            99,
-                                                                                            Math.max(
-                                                                                                0,
-                                                                                                e.target.value
-                                                                                            )
-                                                                                        );
-
-
-                                                                                                    setEditWorkouts(copy);
-
-                                                                                                }}
+                                                                                                onChange={(e) =>
+                                                                                                    updateEditValue(
+                                                                                                        exerciseIndex,
+                                                                                                        setIndex,
+                                                                                                        "reps",
+                                                                                                        e.target.value,
+                                                                                                        99
+                                                                                                    )}
 
                                                                                             />
 
@@ -530,41 +500,36 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                                             .sets[setIndex]
                                                                                                             .minutes ?? ""
                                                                                                     }
-                                                                                                    onChange={(e) => {
-                                                                                                        const copy = structuredClone(editWorkouts);
-
-                                                                                                        copy
-                                                                                                            .exercises[exerciseIndex]
-                                                                                                            .sets[setIndex]
-                                                                                                            .minutes = Math.min(
-                                                                                                                120,
-                                                                                                                Math.max(0, e.target.value)
-                                                                                                            );
-
-                                                                                                        setEditWorkouts(copy);
-                                                                                                    }}
+                                                                                                    onChange={(e) =>
+                                                                                                        updateEditValue(
+                                                                                                            exerciseIndex,
+                                                                                                            setIndex,
+                                                                                                            "minutes",
+                                                                                                            e.target.value,
+                                                                                                            120
+                                                                                                        )
+                                                                                                    }
                                                                                                 />
 
                                                                                                 <span className="time-divider">:</span>
 
                                                                                                 <input
-                                                                                                    type="number"
+                                                                                                    type="text"
                                                                                                     value={
-                                                                                                        editWorkouts
-                                                                                                            .exercises[exerciseIndex]
-                                                                                                            .sets[setIndex]
-                                                                                                            .seconds ?? ""
+                                                                                                        editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds === "" ||
+                                                                                                            editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds == null
+                                                                                                            ? ""
+                                                                                                            : String(
+                                                                                                                editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds
+                                                                                                            ).padStart(2, "0")
                                                                                                     }
                                                                                                     onChange={(e) => {
                                                                                                         const copy = structuredClone(editWorkouts);
 
-                                                                                                        copy
-                                                                                                            .exercises[exerciseIndex]
-                                                                                                            .sets[setIndex]
-                                                                                                            .seconds = Math.min(
-                                                                                                                59,
-                                                                                                                Math.max(0, e.target.value)
-                                                                                                            );
+                                                                                                        copy.exercises[exerciseIndex].sets[setIndex].seconds =
+                                                                                                            e.target.value === ""
+                                                                                                                ? null
+                                                                                                                : Math.min(59, Math.max(0, Number(e.target.value)));
 
                                                                                                         setEditWorkouts(copy);
                                                                                                     }}
@@ -673,10 +638,10 @@ export default function ViewWorkouts({ refreshKey }) {
 
                                                                                                 <span className="time-divider">:</span>
 
-                                                                                                <div className="duration-value">
-                                                                                                    {set.seconds}
-                                                                                                </div>
 
+                                                                                                <div className="duration-value">
+                                                                                                    {set.seconds == null ? "" : String(set.seconds).padStart(2, "0")}
+                                                                                                </div>
                                                                                             </div>
 
                                                                                         </div>

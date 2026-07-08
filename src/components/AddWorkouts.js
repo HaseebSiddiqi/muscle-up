@@ -31,7 +31,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
             exercises: selectedWorkout?.exercises.map(ex => {
 
                 // OLD FORMAT support (string)
-            
+
                 const exName = typeof ex === "string" ? ex : ex.name;
                 const exType = typeof ex === "string" ? "weight_reps" : ex.type;
 
@@ -45,9 +45,9 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                     name: exName,
                     type: exType,
                     sets: Array.from({ length: setCount }).map(() => {
-                        if (exType === "time") return { minutes: "", seconds: "" };
-                        if (exType === "reps") return { reps: "" };
-                        return { weight: "", reps: "" };
+                        if (exType === "time") return { minutes: null, seconds: null };
+                        if (exType === "reps") return { reps: null };
+                        return { weight: null, reps: null };
                     })
                 };
             })
@@ -73,14 +73,20 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
             if (prevWorkout.exercises[0].sets.length >= 3) return prevWorkout;
             return {
                 ...prevWorkout,
-
                 exercises: prevWorkout.exercises.map(ex => ({
                     ...ex,
-                    sets: [...ex.sets, { weight: "", reps: "" }]
+                    sets: [
+                        ...ex.sets,
+                        ex.type === "time"
+                            ? { minutes: null, seconds: null }
+                            : ex.type === "reps"
+                                ? { reps: null }
+                                : { weight: null, reps: null }
+                    ]
                 }))
-            }
-        })
-    }
+            };
+        });
+    };
 
     const delSets = () => {
         setNewWorkout(prevWorkout => {
@@ -120,32 +126,38 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
             onSuccess();
         }, 2000);
     }
+const isSetFilled = (set) => {
+    return Object.values(set).some(
+        value => value !== null && value !== ""
+    );
+};
 
-    const isSetFilled = (set) => {
-        return set.reps != null && set.reps !== "";
-    }
-    const isExerciseEmpty = (exercise) => {
-        return exercise.sets.every(set => !isSetFilled(set));
-    };
-    const validSets = (sets) => {
-        for (let i = 0; i < sets.length; i++) {
-            if (!isSetFilled(sets[i])) {
-                for (let j = i + 1; j < sets.length; j++) {
-                    if (isSetFilled(sets[j])) return false;
-                }
-                break;
-            }
+const isExerciseEmpty = (exercise) => {
+    return exercise.sets.every(set => !isSetFilled(set));
+};
+
+const validSets = (sets) => {
+    let foundEmpty = false;
+
+    for (const set of sets) {
+        if (!isSetFilled(set)) {
+            foundEmpty = true;
+        } 
+        else if (foundEmpty) {
+            return false;
         }
-        return true;
-    };
+    }
 
-    const validateWorkout = (exercises) => {
-        return exercises.every(exercise => {
-            if (isExerciseEmpty(exercise)) return true;
+    return true;
+};
 
-            return validSets(exercise.sets);
-        });
-    };
+const validateWorkout = (exercises) => {
+    return exercises.every(exercise => {
+        if (isExerciseEmpty(exercise)) return true;
+
+        return validSets(exercise.sets);
+    });
+};
 
     const displayExercises = newWorkout?.exercises
         ?.map((exercise, index) => ({
@@ -164,7 +176,6 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
 
     const updateSet = (exerciseIndex, setIndex, field, value) => {
-
         setNewWorkout(prev => ({
             ...prev,
             exercises: prev.exercises.map((ex, exIndex) =>
@@ -175,9 +186,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                             sIndex === setIndex
                                 ? {
                                     ...s,
-                                    [field]: value === ""
-                                        ? ""
-                                        : Number(value)
+                                    [field]: value === "" ? null : Number(value)
                                 }
                                 : s
                         )
@@ -185,8 +194,14 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                     : ex
             )
         }));
-
     };
+
+
+    const handleNumberInput = (value, max) => {
+        if (value === "") return "";
+        return Math.min(max, Math.max(0, Number(value)));
+    };
+
     return (
 
         <>
@@ -275,9 +290,9 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
                                                     const prevSet = prevExercise?.sets?.[j];
 
-                                                    
+
                                                     return (
-                                                        
+
                                                         <td className="Sets" key={j}>
 
 
@@ -302,13 +317,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                         exerciseIndex,
                                                                                         j,
                                                                                         "weight",
-                                                                                        Math.min(
-                                                                                            999,
-                                                                                            Math.max(
-                                                                                                0,
-                                                                                                e.target.value
-                                                                                            )
-                                                                                        )
+                                                                                        handleNumberInput(e.target.value, 999)
                                                                                     )}
                                                                             />
                                                                             {showUnits &&
@@ -337,13 +346,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                         exerciseIndex,
                                                                                         j,
                                                                                         "reps",
-                                                                                        Math.min(
-                                                                                            99,
-                                                                                            Math.max(
-                                                                                                0,
-                                                                                                e.target.value
-                                                                                            )
-                                                                                        )
+                                                                                        handleNumberInput(e.target.value, 99)
                                                                                     )}
                                                                             />
                                                                             {showUnits &&
@@ -365,34 +368,28 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
                                                                 {exercise.type === "reps" && (
                                                                     <div className="set-inputs">
-                                                                    <div className="inputWithUnit">
+                                                                        <div className="inputWithUnit">
 
 
 
-                                                                        
-                                                                        <input
-                                                                            type="number"
-                                                                            value={set.reps}
-                                                                            placeholder={prevSet?.reps}
-                                                                            onChange={(e) =>
-                                                                                updateSet(
-                                                                                    exerciseIndex,
-                                                                                    j,
-                                                                                    "reps",
-                                                                                    Math.min(
-                                                                                        99,
-                                                                                        Math.max(
-                                                                                            0,
-                                                                                            e.target.value
-                                                                                        )
-                                                                                    )
-                                                                                )}
-                                                                        />
-                                                                        {showUnits &&
-                                                                            <span className="unit">
-                                                                                reps
-                                                                            </span>
-                                                                        }
+
+                                                                            <input
+                                                                                type="number"
+                                                                                value={set.reps}
+                                                                                placeholder={prevSet?.reps}
+                                                                                onChange={(e) =>
+                                                                                    updateSet(
+                                                                                        exerciseIndex,
+                                                                                        j,
+                                                                                        "reps",
+                                                                                        handleNumberInput(e.target.value, 99)
+                                                                                    )}
+                                                                            />
+                                                                            {showUnits &&
+                                                                                <span className="unit">
+                                                                                    reps
+                                                                                </span>
+                                                                            }
                                                                         </div>
 
 
@@ -421,23 +418,30 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                             exerciseIndex,
                                                                                             j,
                                                                                             "minutes",
-                                                                                            Math.min(120, Math.max(0, e.target.value))
+                                                                                            handleNumberInput(e.target.value, 120)
                                                                                         )
                                                                                     }
                                                                                 />
-
                                                                                 <span className="time-divider">:</span>
-
                                                                                 <input
-                                                                                    type="number"
-                                                                                    value={set.seconds}
-                                                                                    placeholder={prevSet?.seconds}
+                                                                                    type="text"
+                                                                                    value={
+                                                                                        set.seconds === "" || set.seconds == null
+                                                                                            ? ""
+                                                                                            : String(set.seconds).padStart(2, "0")
+                                                                                    }
+                                                                                    placeholder={
+                                                                                        prevSet?.seconds != null
+                                                                                            ? String(prevSet.seconds).padStart(2, "0")
+                                                                                            : ""
+                                                                                    }
                                                                                     onChange={(e) =>
                                                                                         updateSet(
                                                                                             exerciseIndex,
                                                                                             j,
                                                                                             "seconds",
-                                                                                            Math.min(59, Math.max(0, e.target.value))
+                                                                                            handleNumberInput(e.target.value, 59)
+
                                                                                         )
                                                                                     }
                                                                                 />
