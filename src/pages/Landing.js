@@ -99,7 +99,7 @@ export default function Landing() {
                 <ul>
                   <li>
                     <span className="check-icon">✓</span>
-                    <span>Track sets, reps, weight, and notes</span>
+                    <span>Track sets, reps, weight, duration, and notes</span>
                   </li>
                   <li>
                     <span className="check-icon">✓</span>
