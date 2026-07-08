@@ -55,7 +55,7 @@ export default function Landing() {
               ) : (
                 <div className="hero-buttons">
                   <button className="hero-btn primary-btn" onClick={() => navigate("/signup")}>
-                    Get Started Free
+                    Get Started For Free
                   </button>
 
                   <button className="hero-btn secondary-btn" onClick={() => navigate("/login")}>
