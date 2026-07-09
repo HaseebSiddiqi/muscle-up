@@ -928,6 +928,7 @@ td.exercise-name-cell {
     box-sizing: border-box;
 }
 
+
 .inputWithUnit {
     display: flex;
     flex-direction: column-reverse;
@@ -950,6 +951,21 @@ td.exercise-name-cell {
     box-sizing: border-box;
 }
 
+.cardio-cell {
+    min-width: 200px;
+    width: 100%;
+}
+
+.cardio-inputs {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cardio-inputs input {
+    width: 60px;
+}
 .unit {
     display: flex;
     align-items: center;

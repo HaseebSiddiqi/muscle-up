@@ -130,8 +130,9 @@ export default function Create_workouts({ onSuccess }) {
                                         className="inputText">
 
                                         <option value="weight_reps">Weight + Reps </option>
-                                        <option value="time">Duration (mm:ss)</option>
                                         <option value="reps">Reps</option>
+                                        <option value="time">Duration (mm:ss)</option>
+                                        <option value="cardio">Cardio</option>
                                     </select>
 
                                 </td>
