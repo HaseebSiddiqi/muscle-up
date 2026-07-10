@@ -7,6 +7,7 @@ import { getCurrentUser } from 'aws-amplify/auth';
 import VerifyAccount from '../components/VerifyAccount';
 import { useAuth } from "../components/AuthContext";
 import Navbar from '../components/Navbar';
+
 export default function Login() {
     const navigate = useNavigate();
     const { setUser } = useAuth();
