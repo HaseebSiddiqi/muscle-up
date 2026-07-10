@@ -80,6 +80,7 @@ export default function ViewWorkouts({ refreshKey }) {
             w => w.date === dateString
         );
     }
+
     const updateEditValue = (exerciseIndex, setIndex, field, value, max) => {
         const copy = structuredClone(editWorkouts);
         copy.exercises[exerciseIndex].sets[setIndex][field] =
@@ -88,6 +89,7 @@ export default function ViewWorkouts({ refreshKey }) {
                 : Math.min(max, Math.max(0, Number(value)));
         setEditWorkouts(copy);
     };
+
     return (
         <>
             {viewCalender ? (
@@ -132,233 +134,187 @@ export default function ViewWorkouts({ refreshKey }) {
             ) : (
                 <div>
                     <div className="table-container">
-                        <table className="addWorkoutTable">
-                            <tbody>
-                                <tr>
-                                    <th
-                                        className="spanrow"
-                                        colSpan={99}
-                                    >
-                                        {currentDate?.toISOString().split("T")[0]}
-                                    </th>
-                                </tr>
-                                {viewWorkouts
-                                    .filter(
-                                        w =>
-                                            w.date === currentDate?.toISOString().split("T")[0]
-                                    )
-                                    .map((w, index, arr) => {
-                                        const displayExercises =
-                                            w.exercises
-                                                .map((exercise, index) => ({
+                        <div className="spanrow-date">
+                            {currentDate?.toISOString().split("T")[0]}
+                        </div>
 
-                                                    ...exercise,
+                        {viewWorkouts
+                            .filter(
+                                w =>
+                                    w.date === currentDate?.toISOString().split("T")[0]
+                            )
+                            .map((w) => {
+                                const displayExercises =
+                                    w.exercises
+                                        .map((exercise, index) => ({
+                                            ...exercise,
+                                            originalIndex: index
+                                        }))
+                                        .sort((a, b) => {
+                                            const order = {
+                                                weight_reps: 0,
+                                                reps: 1,
+                                                time: 2,
+                                                cardio: 3
+                                            };
+                                            return order[a.type] - order[b.type];
+                                        });
 
-                                                    originalIndex: index
+                                const setColumns =
+                                    w.exercises.find(ex => ex.type !== "cardio")?.sets.length || 3;
 
-                                                }))
-                                                .sort((a, b) => {
-                                                    const order = {
+                                return (
+                                    <table className="addWorkoutTable" key={w.workoutId}>
+                                        <tbody>
+                                            <tr>
+                                                <th>
+                                                    {w.workoutName}
+                                                </th>
+                                                {w.exercises.some(ex => ex.type !== "cardio") ? (
+                                                    Array.from({
+                                                        length: setColumns
+                                                    }).map((_, i) => (
+                                                        <th key={i}>
+                                                            Set {i + 1}
+                                                        </th>
+                                                    ))
+                                                ) : (
+                                                    <th colSpan={3}>Stats</th>
+                                                )}
+                                                <th>
+                                                    Notes
+                                                </th>
+                                            </tr>
 
-                                                        weight_reps: 0,
-                                                        reps: 1,
-                                                        time: 2,
-                                                        cardio: 3
+                                            {displayExercises.map((exercise, i) => {
+                                                const exerciseIndex = exercise.originalIndex;
+                                                const editing = editingWorkoutId === w.workoutId;
+                                                const showUnits =
+                                                    i === 0 ||
+                                                    displayExercises[i - 1].type !== exercise.type;
 
-                                                    };
-                                                    return order[a.type] - order[b.type];
-                                                });
+                                                return (
+                                                    <tr key={exerciseIndex}>
+                                                        <td className="exercise-name-cell">
+                                                            <div className="exercise-name-content">
+                                                                {exercise.name}
+                                                            </div>
+                                                        </td>
 
-                                        const setColumns =
-                                            w.exercises.find(ex => ex.type !== "cardio")?.sets.length || 3;
-                                        return (
+                                                        {exercise.type === "cardio" ? (
+                                                            <td className="cardio-cell" colSpan={setColumns}>
+                                                                <div className="cardio-inputs">
+                                                                    <div className="inputWithUnit">
+                                                                        {editing ? (
+                                                                            <input
+                                                                                type="number"
+                                                                                value={
+                                                                                    editWorkouts.exercises[exerciseIndex].duration ?? ""
+                                                                                }
+                                                                                onChange={(e) => {
+                                                                                    const copy = structuredClone(editWorkouts);
+                                                                                    copy.exercises[exerciseIndex].duration =
+                                                                                        e.target.value === ""
+                                                                                            ? null
+                                                                                            : Math.min(999, Math.max(0, Number(e.target.value)));
+                                                                                    setEditWorkouts(copy);
+                                                                                }}
+                                                                            />
+                                                                        ) : (
+                                                                            <div className="inputValue">
+                                                                                {exercise.duration}
+                                                                            </div>
+                                                                        )}
+                                                                        <span className="unit">mins</span>
+                                                                    </div>
 
-                                            <React.Fragment key={w.workoutId}>
-                                                <tr>
-                                                    <th>
-                                                        {w.workoutName}
-                                                    </th>
-                                                    {w.exercises.some(ex => ex.type !== "cardio") ? (
-                                                        Array.from({
-                                                            length: setColumns
-                                                        }).map((_, i) => (
-                                                            <th key={i}>
-                                                                Set {i + 1}
-                                                            </th>
-                                                        ))
-                                                    ) : (
-                                                        <th colSpan={3}>Stats</th>
-                                                    )}
-                                                    <th>
-                                                        Notes
-                                                    </th>
-                                                </tr>
-                                                {displayExercises.map((exercise, i) => {
-                                                    const exerciseIndex = exercise.originalIndex;
+                                                                    <div className="inputWithUnit">
+                                                                        {editing ? (
+                                                                            <input
+                                                                                type="number"
+                                                                                value={
+                                                                                    editWorkouts.exercises[exerciseIndex].distance ?? ""
+                                                                                }
+                                                                                onChange={(e) => {
+                                                                                    const copy = structuredClone(editWorkouts);
+                                                                                    copy.exercises[exerciseIndex].distance =
+                                                                                        e.target.value === ""
+                                                                                            ? null
+                                                                                            : Math.min(99, Math.max(0, Number(e.target.value)));
+                                                                                    setEditWorkouts(copy);
+                                                                                }}
+                                                                            />
+                                                                        ) : (
+                                                                            <div className="inputValue">
+                                                                                {exercise.distance}
+                                                                            </div>
+                                                                        )}
+                                                                        <span className="unit">km</span>
+                                                                    </div>
 
-                                                    const editing =
-                                                        editingWorkoutId === w.workoutId;
-                                                    const showUnits =
-                                                        i === 0 ||
-                                                        displayExercises[i - 1].type !== exercise.type;
-
-                                                    return (
-                                                        <tr key={exerciseIndex}>
-                                                            <td className="exercise-name-cell">
-                                                                <div className="exercise-name-content">
-                                                                    {exercise.name}
+                                                                    <div className="inputWithUnit">
+                                                                        {editing ? (
+                                                                            <input
+                                                                                type="number"
+                                                                                value={
+                                                                                    editWorkouts.exercises[exerciseIndex].calories ?? ""
+                                                                                }
+                                                                                onChange={(e) => {
+                                                                                    const copy = structuredClone(editWorkouts);
+                                                                                    copy.exercises[exerciseIndex].calories =
+                                                                                        e.target.value === ""
+                                                                                            ? null
+                                                                                            : Math.min(999, Math.max(0, Number(e.target.value)));
+                                                                                    setEditWorkouts(copy);
+                                                                                }}
+                                                                            />
+                                                                        ) : (
+                                                                            <div className="inputValue">
+                                                                                {exercise.calories}
+                                                                            </div>
+                                                                        )}
+                                                                        <span className="unit">cals</span>
+                                                                    </div>
                                                                 </div>
                                                             </td>
 
-                                                            {exercise.type === "cardio" ? (
-                                                                <td className="cardio-cell" colSpan={setColumns}>
-                                                                    <div className="cardio-inputs">
-                                                                        <div className="inputWithUnit">
+                                                        ) : (
+
+                                                            exercise.sets.map((set, setIndex) => (
+                                                                <td
+                                                                    className="Sets"
+                                                                    key={setIndex}
+                                                                >
+                                                                    <div className="Sets-content">
+                                                                        <div className="set-inputs">
                                                                             {editing ? (
-                                                                                <input
-                                                                                    type="number"
-                                                                                    value={
-                                                                                        editWorkouts.exercises[exerciseIndex].duration ?? ""
-                                                                                    }
-                                                                                    onChange={(e) => {
-                                                                                        const copy = structuredClone(editWorkouts);
-
-                                                                                        copy.exercises[exerciseIndex].duration =
-                                                                                            e.target.value === ""
-                                                                                                ? null
-                                                                                            : Math.min(999, Math.max(0, Number(e.target.value)));
-
-
-                                                                                        setEditWorkouts(copy);
-                                                                                    }}
-                                                                                />
-                                                                            ) : (
-                                                                                <div className="inputValue">
-                                                                                    {exercise.duration}
-                                                                                </div>
-                                                                            )}
-                                                                            <span className="unit">mins</span>
-                                                                        </div>
-
-                                                                        <div className="inputWithUnit">
-                                                                            {editing ? (
-                                                                                <input
-                                                                                    type="number"
-                                                                                    value={
-                                                                                        editWorkouts.exercises[exerciseIndex].distance ?? ""
-                                                                                    }
-                                                                                    onChange={(e) => {
-                                                                                        const copy = structuredClone(editWorkouts);
-                                                                                        copy.exercises[exerciseIndex].distance =
-                                                                                            e.target.value === ""
-                                                                                                ? null
-                                                                                                : Math.min(99, Math.max(0, Number(e.target.value)));
-
-
-                                                                                        setEditWorkouts(copy);
-                                                                                    }}
-                                                                                />
-                                                                            ) : (
-                                                                                <div className="inputValue">
-                                                                                    {exercise.distance}
-                                                                                </div>
-                                                                            )}
-                                                                            <span className="unit">km</span>
-                                                                        </div>
-
-                                                                        <div className="inputWithUnit">
-                                                                            {editing ? (
-                                                                                <input
-                                                                                    type="number"
-                                                                                    value={
-                                                                                        editWorkouts.exercises[exerciseIndex].calories ?? ""
-                                                                                    }
-                                                                                    onChange={(e) => {
-                                                                                        const copy = structuredClone(editWorkouts);
-                                                                                        copy.exercises[exerciseIndex].calories =
-                                                                                            e.target.value === ""
-                                                                                                ? null
-                                                                                            : Math.min(999, Math.max(0, Number(e.target.value)));
-
-                                                                                        setEditWorkouts(copy);
-                                                                                    }}
-                                                                                />
-                                                                            ) : (
-                                                                                <div className="inputValue">
-                                                                                    {exercise.calories}
-                                                                                </div>
-                                                                            )}
-                                                                            <span className="unit">cals</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-
-                                                            ) : (
-
-                                                                exercise.sets.map((set, setIndex) => (
-                                                                    <td
-                                                                        className="Sets"
-                                                                        key={setIndex}
-                                                                    >
-                                                                        <div className="Sets-content">
-                                                                            <div className="set-inputs">
-                                                                                {editing ? (
-                                                                                    <>
-                                                                                        {exercise.type === "weight_reps" && (
-                                                                                            <>
-                                                                                                <div className="inputWithUnit">
-                                                                                                    <input
-                                                                                                        type="number"
-
-                                                                                                        value={
-                                                                                                            editWorkouts
-                                                                                                                .exercises[exerciseIndex]
-                                                                                                                .sets[setIndex]
-                                                                                                                .weight ?? ""
-                                                                                                        }
-
-                                                                                                        onChange={(e) =>
-                                                                                                            updateEditValue(
-                                                                                                                exerciseIndex,
-                                                                                                                setIndex,
-                                                                                                                "weight",
-                                                                                                                e.target.value,
-                                                                                                                999
-                                                                                                            )}
-                                                                                                    />
-                                                                                                    {showUnits && (
-                                                                                                        <span className="unit">
-                                                                                                            lbs
-                                                                                                        </span>
-                                                                                                    )}
-                                                                                                </div>
-                                                                                                <div className="inputWithUnit">
-                                                                                                    <input
-                                                                                                        type="number"
-                                                                                                        value={
-                                                                                                            editWorkouts
-                                                                                                                .exercises[exerciseIndex]
-                                                                                                                .sets[setIndex]
-                                                                                                                .reps ?? ""
-                                                                                                        }
-                                                                                                        onChange={(e) =>
-                                                                                                            updateEditValue(
-                                                                                                                exerciseIndex,
-                                                                                                                setIndex,
-                                                                                                                "reps",
-                                                                                                                e.target.value,
-                                                                                                                99
-                                                                                                            )}
-                                                                                                    />
-                                                                                                    {showUnits && (
-                                                                                                        <span className="unit">
-                                                                                                            reps
-                                                                                                        </span>
-                                                                                                    )}
-                                                                                                </div>
-                                                                                            </>
-                                                                                        )}
-                                                                                        {exercise.type === "reps" && (
+                                                                                <>
+                                                                                    {exercise.type === "weight_reps" && (
+                                                                                        <>
+                                                                                            <div className="inputWithUnit">
+                                                                                                <input
+                                                                                                    type="number"
+                                                                                                    value={
+                                                                                                        editWorkouts
+                                                                                                            .exercises[exerciseIndex]
+                                                                                                            .sets[setIndex]
+                                                                                                            .weight ?? ""
+                                                                                                    }
+                                                                                                    onChange={(e) =>
+                                                                                                        updateEditValue(
+                                                                                                            exerciseIndex,
+                                                                                                            setIndex,
+                                                                                                            "weight",
+                                                                                                            e.target.value,
+                                                                                                            999
+                                                                                                        )}
+                                                                                                />
+                                                                                                {showUnits && (
+                                                                                                    <span className="unit">
+                                                                                                        lbs
+                                                                                                    </span>
+                                                                                                )}
+                                                                                            </div>
                                                                                             <div className="inputWithUnit">
                                                                                                 <input
                                                                                                     type="number"
@@ -383,88 +339,99 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                                     </span>
                                                                                                 )}
                                                                                             </div>
-                                                                                        )}
-                                                                                        {exercise.type === "time" && (
-                                                                                            <div className="duration-input">
-                                                                                                {showUnits && (
-                                                                                                    <div className="duration-labels">
-                                                                                                        <span className="unit">mins</span>
-                                                                                                        <span className="unit">sec</span>
-                                                                                                    </div>
-                                                                                                )}
-                                                                                                <div className="duration-values">
-                                                                                                    <input
-                                                                                                        type="number"
-                                                                                                        value={
-                                                                                                            editWorkouts
-                                                                                                                .exercises[exerciseIndex]
-                                                                                                                .sets[setIndex]
-                                                                                                                .minutes ?? ""
-                                                                                                        }
-                                                                                                        onChange={(e) =>
-                                                                                                            updateEditValue(
-                                                                                                                exerciseIndex,
-                                                                                                                setIndex,
-                                                                                                                "minutes",
-                                                                                                                e.target.value,
-                                                                                                                120
-                                                                                                            )
-                                                                                                        }
-                                                                                                    />
-                                                                                                    <span className="time-divider">:</span>
-                                                                                                    <input
-                                                                                                        type="text"
-                                                                                                        value={
-                                                                                                            editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds === "" ||
-                                                                                                                editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds == null
-                                                                                                                ? ""
-                                                                                                                : String(
-                                                                                                                    editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds
-                                                                                                                ).padStart(2, "0")
-                                                                                                        }
-                                                                                                        onChange={(e) => {
-                                                                                                            const copy = structuredClone(editWorkouts);
-
-                                                                                                            copy.exercises[exerciseIndex].sets[setIndex].seconds =
-                                                                                                                e.target.value === ""
-                                                                                                                    ? null
-                                                                                                                    : Math.min(59, Math.max(0, Number(e.target.value)));
-
-                                                                                                            setEditWorkouts(copy);
-                                                                                                        }}
-                                                                                                    />
+                                                                                        </>
+                                                                                    )}
+                                                                                    {exercise.type === "reps" && (
+                                                                                        <div className="inputWithUnit">
+                                                                                            <input
+                                                                                                type="number"
+                                                                                                value={
+                                                                                                    editWorkouts
+                                                                                                        .exercises[exerciseIndex]
+                                                                                                        .sets[setIndex]
+                                                                                                        .reps ?? ""
+                                                                                                }
+                                                                                                onChange={(e) =>
+                                                                                                    updateEditValue(
+                                                                                                        exerciseIndex,
+                                                                                                        setIndex,
+                                                                                                        "reps",
+                                                                                                        e.target.value,
+                                                                                                        99
+                                                                                                    )}
+                                                                                            />
+                                                                                            {showUnits && (
+                                                                                                <span className="unit">
+                                                                                                    reps
+                                                                                                </span>
+                                                                                            )}
+                                                                                        </div>
+                                                                                    )}
+                                                                                    {exercise.type === "time" && (
+                                                                                        <div className="duration-input">
+                                                                                            {showUnits && (
+                                                                                                <div className="duration-labels">
+                                                                                                    <span className="unit">mins</span>
+                                                                                                    <span className="unit">sec</span>
                                                                                                 </div>
+                                                                                            )}
+                                                                                            <div className="duration-values">
+                                                                                                <input
+                                                                                                    type="number"
+                                                                                                    value={
+                                                                                                        editWorkouts
+                                                                                                            .exercises[exerciseIndex]
+                                                                                                            .sets[setIndex]
+                                                                                                            .minutes ?? ""
+                                                                                                    }
+                                                                                                    onChange={(e) =>
+                                                                                                        updateEditValue(
+                                                                                                            exerciseIndex,
+                                                                                                            setIndex,
+                                                                                                            "minutes",
+                                                                                                            e.target.value,
+                                                                                                            120
+                                                                                                        )
+                                                                                                    }
+                                                                                                />
+                                                                                                <span className="time-divider">:</span>
+                                                                                                <input
+                                                                                                    type="text"
+                                                                                                    value={
+                                                                                                        editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds === "" ||
+                                                                                                            editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds == null
+                                                                                                            ? ""
+                                                                                                            : String(
+                                                                                                                editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds
+                                                                                                            ).padStart(2, "0")
+                                                                                                    }
+                                                                                                    onChange={(e) => {
+                                                                                                        const copy = structuredClone(editWorkouts);
+                                                                                                        copy.exercises[exerciseIndex].sets[setIndex].seconds =
+                                                                                                            e.target.value === ""
+                                                                                                                ? null
+                                                                                                                : Math.min(59, Math.max(0, Number(e.target.value)));
+                                                                                                        setEditWorkouts(copy);
+                                                                                                    }}
+                                                                                                />
                                                                                             </div>
-                                                                                        )}
-                                                                                    </>
-                                                                                ) : (
-                                                                                    <>
-                                                                                        {exercise.type === "weight_reps" && (
-                                                                                            <>
-                                                                                                <div className="inputWithUnit">
-                                                                                                    <div className="inputValue">
-                                                                                                        {set.weight}
-                                                                                                    </div>
-                                                                                                    {showUnits && (
-                                                                                                        <span className="unit">
-                                                                                                            lbs
-                                                                                                        </span>
-                                                                                                    )}
+                                                                                        </div>
+                                                                                    )}
+                                                                                </>
+                                                                            ) : (
+                                                                                <>
+                                                                                    {exercise.type === "weight_reps" && (
+                                                                                        <>
+                                                                                            <div className="inputWithUnit">
+                                                                                                <div className="inputValue">
+                                                                                                    {set.weight}
                                                                                                 </div>
-                                                                                                <div className="inputWithUnit">
-                                                                                                    <div className="inputValue">
-                                                                                                        {set.reps}
-                                                                                                    </div>
-                                                                                                    {showUnits && (
-                                                                                                        <span className="unit">
-                                                                                                            reps
-                                                                                                        </span>
-                                                                                                    )}
-                                                                                                </div>
-                                                                                            </>
-                                                                                        )}
-                                                                                        {exercise.type === "reps" && (
-
+                                                                                                {showUnits && (
+                                                                                                    <span className="unit">
+                                                                                                        lbs
+                                                                                                    </span>
+                                                                                                )}
+                                                                                            </div>
                                                                                             <div className="inputWithUnit">
                                                                                                 <div className="inputValue">
                                                                                                     {set.reps}
@@ -475,115 +442,122 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                                     </span>
                                                                                                 )}
                                                                                             </div>
-                                                                                        )}
-                                                                                        {exercise.type === "time" && (
-                                                                                            <div className="duration-input">
-                                                                                                {showUnits && (
-                                                                                                    <div className="duration-labels">
-                                                                                                        <span className="unit">mins</span>
-                                                                                                        <span className="unit">sec</span>
-                                                                                                    </div>
-                                                                                                )}
-                                                                                                <div className="duration-values">
-                                                                                                    <div className="duration-value">
-                                                                                                        {set.minutes}
-                                                                                                    </div>
-                                                                                                    <span className="time-divider">:</span>
-                                                                                                    <div className="duration-value">
-                                                                                                        {set.seconds == null ? "" : String(set.seconds).padStart(2, "0")}
-                                                                                                    </div>
-                                                                                                </div>
+                                                                                        </>
+                                                                                    )}
+                                                                                    {exercise.type === "reps" && (
 
+                                                                                        <div className="inputWithUnit">
+                                                                                            <div className="inputValue">
+                                                                                                {set.reps}
                                                                                             </div>
-                                                                                        )}
-                                                                                    </>
-                                                                                )}
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                ))
-                                                            )}
-                                                            {i === 0 && (
-                                                                <td
-                                                                    className="notes"
-                                                                    rowSpan={displayExercises.length}
-                                                                >
-                                                                    {editing ? (
-                                                                        <textarea
-                                                                            className="textarea"
-                                                                            value={
-                                                                                editWorkouts.notes ?? ""
-                                                                            }
-                                                                            onChange={(e) => {
-                                                                                const copy =
-                                                                                    structuredClone(editWorkouts);
-                                                                                copy.notes = e.target.value;
-                                                                                setEditWorkouts(copy);
-                                                                            }}
-                                                                        />
-                                                                    ) : (
-                                                                        w.notes
-                                                                    )}
-                                                                </td>
-                                                            )}
-                                                        </tr>
-                                                    )
-                                                })}
-                                                <tr>
-                                                    <td colSpan={99}>
-                                                        <div className="SetControls">
-                                                            <button
-                                                                className="addButton"
-                                                                onClick={() => {
-                                                                    if (editingWorkoutId !== w.workoutId) {
-                                                                        setEditWorkouts(
-                                                                            structuredClone(w)
-                                                                        );
-                                                                        setEditingWorkoutId(
-                                                                            w.workoutId
-                                                                        );
-                                                                    }
-                                                                    else {
-                                                                        updateWorkout(
-                                                                            w.workoutId
-                                                                        );
-                                                                    }
-                                                                }}
-                                                            >
-                                                                {
-                                                                    editingWorkoutId === w.workoutId
-                                                                        ? "Save"
-                                                                        : "Edit"
-                                                                }
-                                                            </button>
-                                                            <button
-                                                                className="minusButton"
-                                                                onClick={() => {
-                                                                    if (window.confirm(
-                                                                        "Delete this workout?"
-                                                                    )) {
-                                                                        handleDelete(
-                                                                            w.workoutId
-                                                                        );
-                                                                    }
-                                                                }}
-                                                            >
-                                                                Delete
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                                                            {showUnits && (
+                                                                                                <span className="unit">
+                                                                                                    reps
+                                                                                                </span>
+                                                                                            )}
+                                                                                        </div>
+                                                                                    )}
+                                                                                    {exercise.type === "time" && (
+                                                                                        <div className="duration-input">
+                                                                                            {showUnits && (
+                                                                                                <div className="duration-labels">
+                                                                                                    <span className="unit">mins</span>
+                                                                                                    <span className="unit">sec</span>
+                                                                                                </div>
+                                                                                            )}
+                                                                                            <div className="duration-values">
+                                                                                                <div className="duration-value">
+                                                                                                    {set.minutes}
+                                                                                                </div>
+                                                                                                <span className="time-divider">:</span>
+                                                                                                <div className="duration-value">
+                                                                                                    {set.seconds == null ? "" : String(set.seconds).padStart(2, "0")}
+                                                                                                </div>
+                                                                                            </div>
 
-                                                {index < arr.length - 1 && (
-                                                    <tr className="workout-spacer-row">
-                                                        <td colSpan={12}></td>
+                                                                                        </div>
+                                                                                    )}
+                                                                                </>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            ))
+                                                        )}
+                                                        {i === 0 && (
+                                                            <td
+                                                                className="notes"
+                                                                rowSpan={displayExercises.length}
+                                                            >
+                                                                {editing ? (
+                                                                    <textarea
+                                                                        className="textarea"
+                                                                        value={
+                                                                            editWorkouts.notes ?? ""
+                                                                        }
+                                                                        onChange={(e) => {
+                                                                            const copy =
+                                                                                structuredClone(editWorkouts);
+                                                                            copy.notes = e.target.value;
+                                                                            setEditWorkouts(copy);
+                                                                        }}
+                                                                    />
+                                                                ) : (
+                                                                    w.notes
+                                                                )}
+                                                            </td>
+                                                        )}
                                                     </tr>
-                                                )}
-                                            </React.Fragment>
-                                        )
-                                    })}
-                            </tbody>
-                        </table>
+                                                )
+                                            })}
+                                            <tr>
+                                                <td colSpan={99}>
+                                                    <div className="SetControls">
+                                                        <button
+                                                            className="addButton"
+                                                            onClick={() => {
+                                                                if (editingWorkoutId !== w.workoutId) {
+                                                                    setEditWorkouts(
+                                                                        structuredClone(w)
+                                                                    );
+                                                                    setEditingWorkoutId(
+                                                                        w.workoutId
+                                                                    );
+                                                                }
+                                                                else {
+                                                                    updateWorkout(
+                                                                        w.workoutId
+                                                                    );
+                                                                }
+                                                            }}
+                                                        >
+                                                            {
+                                                                editingWorkoutId === w.workoutId
+                                                                    ? "Save"
+                                                                    : "Edit"
+                                                            }
+                                                        </button>
+                                                        <button
+                                                            className="minusButton"
+                                                            onClick={() => {
+                                                                if (window.confirm(
+                                                                    "Delete this workout?"
+                                                                )) {
+                                                                    handleDelete(
+                                                                        w.workoutId
+                                                                    );
+                                                                }
+                                                            }}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                )
+                            })}
                     </div>
 
                     <button
