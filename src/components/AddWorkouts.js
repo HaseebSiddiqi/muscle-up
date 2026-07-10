@@ -558,7 +558,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                 })}
 
                                 <tr>
-
+                                    {newWorkout.exercises.some(ex => ex.type !== "cardio")? (
                                     <td colSpan={5}>
 
                                         <div className="SetControls">
@@ -576,7 +576,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                 Delete Set
                                             </button>
                                         </div>
-                                    </td>
+                                    </td> ) : (null)  }
                                 </tr>
 
 
