@@ -208,6 +208,11 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                         {editing ? (
                                                                             <input
                                                                                 type="number"
+                                                                                onKeyDown={(e) => {
+                                                                                    if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                        e.preventDefault();
+                                                                                    }
+                                                                                }}
                                                                                 value={
                                                                                     editWorkouts.exercises[exerciseIndex].duration ?? ""
                                                                                 }
@@ -232,10 +237,19 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                         {editing ? (
                                                                             <input
                                                                                 type="number"
+                                                                                onKeyDown={(e) => {
+                                                                                    if (["e", "E", "+", "-"].includes(e.key)) {
+                                                                                        e.preventDefault();
+                                                                                    }
+                                                                                }}
                                                                                 value={
                                                                                     editWorkouts.exercises[exerciseIndex].distance ?? ""
                                                                                 }
                                                                                 onChange={(e) => {
+                                                                                    if (!/^\d*\.?\d{0,2}$/.test(e.target.value)) {
+                                                                                        return;
+                                                                                    }
+
                                                                                     const copy = structuredClone(editWorkouts);
                                                                                     copy.exercises[exerciseIndex].distance =
                                                                                         e.target.value === ""
@@ -256,6 +270,11 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                         {editing ? (
                                                                             <input
                                                                                 type="number"
+                                                                                onKeyDown={(e) => {
+                                                                                    if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                        e.preventDefault();
+                                                                                    }
+                                                                                }}
                                                                                 value={
                                                                                     editWorkouts.exercises[exerciseIndex].calories ?? ""
                                                                                 }
@@ -294,6 +313,11 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                             <div className="inputWithUnit">
                                                                                                 <input
                                                                                                     type="number"
+                                                                                                    onKeyDown={(e) => {
+                                                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                                            e.preventDefault();
+                                                                                                        }
+                                                                                                    }}
                                                                                                     value={
                                                                                                         editWorkouts
                                                                                                             .exercises[exerciseIndex]
@@ -318,6 +342,11 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                             <div className="inputWithUnit">
                                                                                                 <input
                                                                                                     type="number"
+                                                                                                    onKeyDown={(e) => {
+                                                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                                            e.preventDefault();
+                                                                                                        }
+                                                                                                    }}
                                                                                                     value={
                                                                                                         editWorkouts
                                                                                                             .exercises[exerciseIndex]
@@ -345,6 +374,11 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                         <div className="inputWithUnit">
                                                                                             <input
                                                                                                 type="number"
+                                                                                                onKeyDown={(e) => {
+                                                                                                    if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                                        e.preventDefault();
+                                                                                                    }
+                                                                                                }}
                                                                                                 value={
                                                                                                     editWorkouts
                                                                                                         .exercises[exerciseIndex]
@@ -378,6 +412,11 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                             <div className="duration-values">
                                                                                                 <input
                                                                                                     type="number"
+                                                                                                    onKeyDown={(e) => {
+                                                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                                            e.preventDefault();
+                                                                                                        }
+                                                                                                    }}
                                                                                                     value={
                                                                                                         editWorkouts
                                                                                                             .exercises[exerciseIndex]
@@ -397,6 +436,15 @@ export default function ViewWorkouts({ refreshKey }) {
                                                                                                 <span className="time-divider">:</span>
                                                                                                 <input
                                                                                                     type="text"
+
+                                                                                                    onKeyDown={(e) => {
+                                                                                                        if (
+                                                                                                            !/^\d$/.test(e.key) &&
+                                                                                                            !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(e.key)
+                                                                                                        ) {
+                                                                                                            e.preventDefault();
+                                                                                                        }
+                                                                                                    }}
                                                                                                     value={
                                                                                                         editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds === "" ||
                                                                                                             editWorkouts.exercises[exerciseIndex].sets[setIndex].seconds == null

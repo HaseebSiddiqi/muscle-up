@@ -234,6 +234,11 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
     const handleNumberInput = (value, max) => {
         if (value === "") return "";
+
+        if (!/^\d+$/.test(value)) {
+            return "";
+        }
+
         return Math.min(max, Math.max(0, Number(value)));
     };
 
@@ -336,6 +341,11 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                     type="number"
                                                                     value={exercise.duration ?? ""}
                                                                     placeholder={prevExercise?.duration ?? ""}
+                                                                    onKeyDown={(e) => {
+                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                            e.preventDefault();
+                                                                        }
+                                                                    }}
                                                                     onChange={e => {
                                                                         setNewWorkout(prev => ({
                                                                             ...prev,
@@ -356,17 +366,30 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                             <div className="inputWithUnit">
                                                                 <input
                                                                     type="number"
+                                                                    step="0.1"
                                                                     value={exercise.distance ?? ""}
                                                                     placeholder={prevExercise?.distance ?? ""}
+                                                                    onKeyDown={(e) => {
+                                                                        if (["e", "E", "+", "-"].includes(e.key)) {
+                                                                            e.preventDefault();
+                                                                        }
+                                                                    }}
                                                                     onChange={e => {
+                                                                        const value = e.target.value;
+
+                                                                        if (!/^\d*\.?\d{0,2}$/.test(value)) {
+                                                                            return;
+                                                                        }
+
                                                                         setNewWorkout(prev => ({
                                                                             ...prev,
                                                                             exercises: prev.exercises.map((ex, index) =>
                                                                                 index === exerciseIndex
                                                                                     ? {
                                                                                         ...ex,
-                                                                                        distance: e.target.value === "" ? null : Math.min(99, Math.max(0, Number(e.target.value)))
-
+                                                                                        distance: value === ""
+                                                                                            ? null
+                                                                                            : Math.min(99, Math.max(0, Number(value)))
                                                                                     }
                                                                                     : ex
                                                                             )
@@ -381,6 +404,11 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                     type="number"
                                                                     value={exercise.calories ?? ""}
                                                                     placeholder={prevExercise?.calories ?? ""}
+                                                                    onKeyDown={(e) => {
+                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                            e.preventDefault();
+                                                                        }
+                                                                    }}
                                                                     onChange={e => {
                                                                         setNewWorkout(prev => ({
                                                                             ...prev,
@@ -413,6 +441,11 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                     type="number"
                                                                                     value={set.weight}
                                                                                     placeholder={prevSet?.weight}
+                                                                                    onKeyDown={(e) => {
+                                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                            e.preventDefault();
+                                                                                        }
+                                                                                    }}
                                                                                     onChange={(e) =>
                                                                                         updateSet(
                                                                                             exerciseIndex,
@@ -432,6 +465,11 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                     type="number"
                                                                                     value={set.reps}
                                                                                     placeholder={prevSet?.reps}
+                                                                                    onKeyDown={(e) => {
+                                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                            e.preventDefault();
+                                                                                        }
+                                                                                    }}
                                                                                     onChange={(e) =>
                                                                                         updateSet(
                                                                                             exerciseIndex,
@@ -455,6 +493,11 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                     type="number"
                                                                                     value={set.reps}
                                                                                     placeholder={prevSet?.reps}
+                                                                                    onKeyDown={(e) => {
+                                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                            e.preventDefault();
+                                                                                        }
+                                                                                    }}
                                                                                     onChange={(e) =>
                                                                                         updateSet(
                                                                                             exerciseIndex,
@@ -488,6 +531,11 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                         type="number"
                                                                                         value={set.minutes}
                                                                                         placeholder={prevSet?.minutes}
+                                                                                        onKeyDown={(e) => {
+                                                                                            if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                                e.preventDefault();
+                                                                                            }
+                                                                                        }}
                                                                                         onChange={(e) =>
                                                                                             updateSet(
                                                                                                 exerciseIndex,
@@ -558,25 +606,25 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                 })}
 
                                 <tr>
-                                    {newWorkout.exercises.some(ex => ex.type !== "cardio")? (
-                                    <td colSpan={5}>
+                                    {newWorkout.exercises.some(ex => ex.type !== "cardio") ? (
+                                        <td colSpan={5}>
 
-                                        <div className="SetControls">
-                                            <button
-                                                className="addButton"
-                                                onClick={addSets}
-                                            >
-                                                Add Set
-                                            </button>
+                                            <div className="SetControls">
+                                                <button
+                                                    className="addButton"
+                                                    onClick={addSets}
+                                                >
+                                                    Add Set
+                                                </button>
 
-                                            <button
-                                                className="minusButton"
-                                                onClick={delSets}
-                                            >
-                                                Delete Set
-                                            </button>
-                                        </div>
-                                    </td> ) : (null)  }
+                                                <button
+                                                    className="minusButton"
+                                                    onClick={delSets}
+                                                >
+                                                    Delete Set
+                                                </button>
+                                            </div>
+                                        </td>) : (null)}
                                 </tr>
 
 
