@@ -272,7 +272,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                         <table className="addWorkoutTable">
                             <tbody>
                                 <tr>
-                                    <th className="spanrow2" colSpan={12}>
+                                    <td className="spanrow2" colSpan={12}>
                                         <input
                                             type="date"
                                             value={newWorkout.date || ""}
@@ -283,7 +283,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                 }))
                                             }
                                         />
-                                    </th>
+                                    </td>
                                 </tr>
 
 

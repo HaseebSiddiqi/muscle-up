@@ -66,9 +66,15 @@ export default function Home() {
             <Navbar />
 
             <div className="pageH">
-                <div className="viewWorkouts">
-                    <ViewWorkouts viewWorkouts={viewWorkouts} updateWorkouts={updateWorkouts} refreshKey={refreshKey} />
+
+                <div className="left-column">
+
+
+                    <div className="viewWorkouts">
+                        <ViewWorkouts viewWorkouts={viewWorkouts} updateWorkouts={updateWorkouts} refreshKey={refreshKey} />
+                    </div>
                 </div>
+
 
                 <div className="workoutForms">
 
@@ -94,9 +100,13 @@ export default function Home() {
                         refreshKey={refreshKey}
                     />
                 </div>
-                <div className="dashboard">
-                    <MetricsDashboard viewWorkouts={viewWorkouts} />
+                <div className="left-column">
+                    <div className="dashboard">
+                        <MetricsDashboard viewWorkouts={viewWorkouts} />
+                    </div>
                 </div>
+
+
             </div>
 
         </>
