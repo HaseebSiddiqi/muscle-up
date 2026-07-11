@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Calendar from "react-calendar";
-import React from "react";
+
 import { apiFetch } from "./apiClient.js";
 
 export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey }) {
@@ -541,7 +541,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                             {editingWorkoutId === w.workoutId ? (
                                                 <tr className="duration-row">
                                                     <td colSpan={99}>
-                                                        Workout Duration: 
+                                                        Workout Duration:
                                                         <input
                                                             value={editWorkouts.duration ?? ""}
                                                             onKeyDown={(e) => {
