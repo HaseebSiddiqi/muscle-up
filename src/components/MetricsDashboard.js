@@ -1,4 +1,5 @@
-import { PieChart, Pie, Cell, Tooltip, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend, AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
+
 
 export default function MetricsDashboard({ viewWorkouts }) {
 
@@ -7,7 +8,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
     // -----------------------------
 
     const totalWorkouts = viewWorkouts.length;
-
+    const empty = totalWorkouts === 0;
     const cutOff = new Date();
     cutOff.setDate(cutOff.getDate() - 28);
 
@@ -18,6 +19,14 @@ export default function MetricsDashboard({ viewWorkouts }) {
 
     const avgPerWeek = lastMonth.length / 4;
 
+    //
+    //
+    //
+    const totalMins = viewWorkouts.reduce((acc, workout) => {
+        return acc + (workout.duration || 0);
+    }, 0);
+    const totalHours = Math.floor(totalMins / 60);
+    const totalMinsRemaining = totalMins % 60;
 
     // -----------------------------
     // Workout Type Distribution
@@ -125,65 +134,99 @@ export default function MetricsDashboard({ viewWorkouts }) {
         "#814938ff",
     ];
 
-
     return (
         <div>
-            <h2>MetricsDashboard</h2>
+            <h2>Metrics Dashboard</h2>
+            {empty ? (
+                <p>No workouts logged yet. Start working out to see your metrics!</p>
+            ) : (
+                <>
+                    {/* Stat Card Grid */}
+                    <div className="metrics-stat-grid">
+                        <div className="metric-stat-card">
+                            <span className="card-label">Total Workouts</span>
+                            <div className="card-value">🏋️‍♂️ {totalWorkouts}</div>
+                        </div>
 
-            <h2>Total workouts: {totalWorkouts}</h2>
+                        <div className="metric-stat-card">
+                            <span className="card-label">Time Active</span>
+                            <div className="card-value">⏱️ {totalHours}<span>h</span> {totalMinsRemaining}<span>m</span></div>
+                        </div>
 
-            <h3>
-                Average Workouts per Week (Last 4 Weeks): {avgPerWeek.toFixed(1)}
-            </h3>
+                        <div className="metric-stat-card">
+                            <span className="card-label">Weekly Average</span>
+                            <div className="card-value">📈 {avgPerWeek.toFixed(1)}</div>
+                            <p className="metrics-subtitle">(Last 4 weeks)</p>
+                        </div>
 
+                        <div className="metric-stat-card">
+                            <span className="card-label">Consistency Streak</span>
+                            <div className="card-value">🔥 {streak} <span>weeks</span></div>
+                            <p className="metrics-subtitle">3+ workouts per week</p>
+                        </div>
+                    </div>
 
+                    {/* Workout Type Distribution (Donut Chart) */}
+                    <div className="metrics-chart-container">
+                        <h4>Workout Type Distribution</h4>
+                        <div style={{ width: '100%', height: 320 }}>
+                            <ResponsiveContainer>
+                                <PieChart>
+                                    <Pie
+                                        data={data}
+                                        dataKey="value"
+                                        nameKey="name"
+                                        cx="50%"
+                                        cy="50%"
+                                        innerRadius={70}
+                                        outerRadius={100}
+                                        paddingAngle={4}
+                                    >
+                                        {data.map((entry, index) => (
+                                            <Cell
+                                                key={`cell-${index}`}
+                                                fill={COLORS[index % COLORS.length]}
+                                            />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
 
-            <h3>Consistency Streak: 🔥 {streak} weeks</h3>
-            <p>3+ workouts per week</p>
-
-            <h3>Workout Type Distribution</h3>
-            <PieChart width={400} height={400}>
-                <Pie
-                    data={data}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={170}
-                    activeIndex={-1}
-                >
-                    {data.map((entry, index) => (
-                        <Cell
-                            key={`cell-${index}`}
-                            stroke="#ebe2e2ff"
-                            strokeWidth={3}
-                            fill={COLORS[index % COLORS.length]}
-                        />
-                    ))}
-                </Pie>
-
-                <Tooltip />
-                <Legend />
-            </PieChart>
-
-
-            <h3>Monthly Workout Frequency</h3>
-
-            <LineChart width={700} height={400} data={LineData}>
-                <CartesianGrid />
-                <XAxis dataKey="month" />
-                <YAxis label={{ value: "# of workouts", angle: -90, position: "insideLeft" }} />
-                <Tooltip />
-                <Legend />
-
-                <Line
-                    type="monotone"
-                    dataKey="workouts"
-                    stroke="#000000ff"
-                    strokeWidth={3}
-                />
-            </LineChart>
-
+                    {/* Monthly Workout Frequency (AreaChart) */}
+                    <div className="metrics-chart-container">
+                        <h4>Monthly Workout Frequency</h4>
+                        <div style={{ width: '100%', height: 320 }}>
+                            <ResponsiveContainer>
+                                <AreaChart data={LineData}>
+                                    <defs>
+                                        <linearGradient id="colorWorkouts" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="var(--secondary)" stopOpacity={0.4}/>
+                                            <stop offset="95%" stopColor="var(--secondary)" stopOpacity={0}/>
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                    <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+                                    <YAxis tickLine={false} axisLine={false} width={30} tick={{ fill: '#64748b', fontSize: 12 }} />
+                                    <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} />
+                                    <Legend />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="workouts"
+                                        stroke="var(--secondary)"
+                                        fillOpacity={1}
+                                        fill="url(#colorWorkouts)"
+                                        strokeWidth={3}
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
-    )
+    );
 }

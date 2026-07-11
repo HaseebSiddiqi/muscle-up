@@ -19,7 +19,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
             .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
 
         setLatestWorkout(prev || null);
-
+        setShowDurationPopup(false);
         setNewWorkout({
 
             workoutId: Date.now().toString(),
@@ -658,35 +658,45 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                     </div>
                 )}
                 {showDurationPopup && (
-                    <div className="popup">
-                        <h3>Workout Duration (mins)</h3>
+                    <div className="duration-section">
+                        <div className="popup">
+                            <h3>Workout Duration (mins)</h3>
 
-                        <input
-                            type="number"
-                            min={0}
-                            max={999}
-                            value={duration}
-                            onKeyDown={(e) => {
-                                if (["e", "E", "+", "-", "."].includes(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                            onChange={(e) => setDuration(Math.min(999, Number(e.target.value)))}
-                        />
+                            <input
+                                type="number"
+                                min={0}
+                                max={999}
+                                value={duration ?? ""}
+                                onKeyDown={(e) => {
+                                    if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                        e.preventDefault();
+                                    }
+                                }}
+                                onChange={(e) => setDuration(Math.min(999, Number(e.target.value)))}
+                            />
 
-                        <button onClick={() => {
-                            saveWorkout(duration);
-                            setShowDurationPopup(false);
-                        }}>
-                            Save
-                        </button>
+                            <div className="popup-buttons">
+                                <button
+                                    className="save-btn"
+                                    onClick={() => {
+                                        saveWorkout(duration);
+                                        setShowDurationPopup(false);
+                                    }}
+                                >
+                                    Save
+                                </button>
 
-                        <button onClick={() => {
-                            saveWorkout(null);
-                            setShowDurationPopup(false);
-                        }}>
-                            Skip
-                        </button>
+                                <button
+                                    className="skip-btn"
+                                    onClick={() => {
+                                        saveWorkout(null);
+                                        setShowDurationPopup(false);
+                                    }}
+                                >
+                                    Skip
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 )}
 
