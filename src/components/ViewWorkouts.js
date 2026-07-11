@@ -3,37 +3,13 @@ import Calendar from "react-calendar";
 import React from "react";
 import { apiFetch } from "./apiClient.js";
 
-export default function ViewWorkouts({ refreshKey }) {
+export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey }) {
 
-    const [viewWorkouts, updateWorkouts] = useState([]);
     const [viewCalender, updateCalender] = useState(true);
     const [currentDate, setDate] = useState(null);
     const [feedback, setFeedback] = useState("");
     const [editingWorkoutId, setEditingWorkoutId] = useState(null);
     const [editWorkouts, setEditWorkouts] = useState(null);
-
-    useEffect(() => {
-        const fetchWorkouts = async () => {
-            try {
-                const res = await apiFetch(
-                    `https://workouttracker-production-4d3e.up.railway.app/workoutLogs`
-                );
-                const data = await res.json();
-                const normalized = (data.Items || []).map(w => ({
-                    ...w,
-                    exercises: w.exercises.map(ex => ({
-                        ...ex,
-                        type: ex.type || "weight_reps"
-                    }))
-                }));
-                updateWorkouts(normalized);
-            }
-            catch (err) {
-                console.error(err);
-            }
-        }
-        fetchWorkouts();
-    }, [refreshKey])
 
     const updateWorkout = async (workoutId) => {
         await apiFetch(
@@ -558,6 +534,7 @@ export default function ViewWorkouts({ refreshKey }) {
                                                     </tr>
                                                 )
                                             })}
+                                            <tr> {w.duration}</tr>
                                             <tr>
                                                 <td colSpan={99}>
                                                     <div className="SetControls">

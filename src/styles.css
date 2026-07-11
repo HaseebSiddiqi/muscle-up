@@ -979,6 +979,7 @@ td.exercise-name-cell {
 .cardio-inputs input {
     width: 60px;
 }
+
 .unit {
     display: flex;
     align-items: center;
@@ -1357,6 +1358,18 @@ td.exercise-name-cell {
     height: fit-content;
     align-self: start;
 
+}
+
+.dashboard {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--drop-shadow);
+    padding: 5px;
+    border: 2px solid #e2e8f0;
+    margin: 15px;
+    justify-self: center;
+    height: fit-content;
+    align-self: start;
 }
 
 @media (min-width: 769px) {
@@ -1946,4 +1959,8 @@ td.exercise-name-cell {
     .feature-description li {
         font-size: 0.95rem;
     }
+}
+
+.recharts-sector:focus {
+    outline: none;
 }

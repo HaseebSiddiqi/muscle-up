@@ -142,7 +142,7 @@ app.delete("/workouts/:workoutName", authMiddleware, async (req, res) => {
 // CRUD CALLS FOR WORKOUT LOGS 
 app.post("/workoutLogs", authMiddleware, async (req, res) => {
     try {
-        const { workoutId, workoutName, date, notes, exercises } = req.body;
+        const { workoutId, workoutName, date, duration, notes, exercises } = req.body;
         const username = req.user.username;
 
         const item = {
@@ -150,6 +150,7 @@ app.post("/workoutLogs", authMiddleware, async (req, res) => {
             workoutId,
             workoutName,
             date,
+            duration,
             notes,
             exercises
         };

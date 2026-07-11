@@ -2,18 +2,17 @@ import { useState, useEffect, Fragment } from "react";
 import { apiFetch } from "./apiClient.js";
 export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
-
-
     const [newWorkout, setNewWorkout] = useState(null);
-
     const [feedback, setFeedback] = useState("");
-
     const [viewWorkouts, setViewWorkouts] = useState([]);
     const [latestWorkout, setLatestWorkout] = useState(null);
+    const [startTime, setStartTime] = useState(null);
+    const [showDurationPopup, setShowDurationPopup] = useState(false);
+    const [duration, setDuration] = useState(null);
 
     useEffect(() => {
         if (!selectedWorkout) return;
-
+        setStartTime(new Date());
 
         const prev = viewWorkouts
             .filter(w => w.workoutName === selectedWorkout.workoutName)
@@ -27,6 +26,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
             workoutName: selectedWorkout?.workoutName,
             date: new Date().toLocaleDateString("en-CA"),
             notes: "",
+
 
             exercises: selectedWorkout?.exercises.map(ex => {
 
@@ -143,20 +143,36 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
             return;
         }
+        const endTime = new Date();
+        const workoutDuration = Math.floor((endTime - startTime) / 60000);
+        setDuration(workoutDuration);
+        setShowDurationPopup(true);
+
+
+    }
+
+    const saveWorkout = async (duration) => {
+
+        const workoutToSave = {
+            ...newWorkout,
+            duration
+        };
         await apiFetch("https://workouttracker-production-4d3e.up.railway.app/workoutLogs", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newWorkout)
+            body: JSON.stringify(workoutToSave)
         });
-        setViewWorkouts(prev => [...prev, newWorkout]);
+        setViewWorkouts(prev => [...prev, workoutToSave]);
         setFeedback("Workout Added!");
-
+        console.log(workoutToSave);
         setTimeout(() => {
             setFeedback("");
             setNewWorkout(null);
             onSuccess();
         }, 2000);
     }
+
+
     const isSetFilled = (set) => {
         return Object.values(set).some(
             value => value !== null && value !== ""
@@ -251,10 +267,10 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
                 {feedback && <h2>{feedback}</h2>}
                 {newWorkout && (
-                    <div className="table-container">
+
+                    < div className="table-container">
                         <table className="addWorkoutTable">
                             <tbody>
-
                                 <tr>
                                     <th className="spanrow2" colSpan={12}>
                                         <input
@@ -641,8 +657,40 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
                     </div>
                 )}
+                {showDurationPopup && (
+                    <div className="popup">
+                        <h3>Workout Duration (mins)</h3>
 
-            </div>
+                        <input
+                            type="number"
+                            min={0}
+                            max={999}
+                            value={duration}
+                            onKeyDown={(e) => {
+                                if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            onChange={(e) => setDuration(Math.min(999, Number(e.target.value)))}
+                        />
+
+                        <button onClick={() => {
+                            saveWorkout(duration);
+                            setShowDurationPopup(false);
+                        }}>
+                            Save
+                        </button>
+
+                        <button onClick={() => {
+                            saveWorkout(null);
+                            setShowDurationPopup(false);
+                        }}>
+                            Skip
+                        </button>
+                    </div>
+                )}
+
+            </div >
         </>
     )
 

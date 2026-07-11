@@ -5,10 +5,12 @@ import CreateWorkouts from "../components/CreateWorkouts";
 import AddWorkouts from "../components/AddWorkouts";
 import ViewWorkouts from "../components/ViewWorkouts";
 import WorkoutTypes from "../components/WorkoutTypes";
+import MetricsDashboard from "../components/MetricsDashboard";
+import { apiFetch } from "../components/apiClient.js";
 
 
 export default function Home() {
-  
+    const [viewWorkouts, updateWorkouts] = useState([]);
     const [selectedWorkout, setSelectedWorkout] = useState(null);
 
     const [activeComponent, setActiveComponent] = useState("home");
@@ -17,11 +19,34 @@ export default function Home() {
 
     const bottomRef = useRef(null);
 
-  
+
+
     const refreshWorkouts = () => {
         setRefreshKey(prev => prev + 1);
     };
 
+    useEffect(() => {
+        const fetchWorkouts = async () => {
+            try {
+                const res = await apiFetch(
+                    `https://workouttracker-production-4d3e.up.railway.app/workoutLogs`
+                );
+                const data = await res.json();
+                const normalized = (data.Items || []).map(w => ({
+                    ...w,
+                    exercises: w.exercises.map(ex => ({
+                        ...ex,
+                        type: ex.type || "weight_reps"
+                    }))
+                }));
+                updateWorkouts(normalized);
+            }
+            catch (err) {
+                console.error(err);
+            }
+        }
+        fetchWorkouts();
+    }, [refreshKey])
 
     useEffect(() => {
         if (activeComponent === "add" || activeComponent === "create") {
@@ -38,11 +63,11 @@ export default function Home() {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
 
             <div className="pageH">
                 <div className="viewWorkouts">
-                    <ViewWorkouts refreshKey={refreshKey} />
+                    <ViewWorkouts viewWorkouts={viewWorkouts} updateWorkouts={updateWorkouts} refreshKey={refreshKey} />
                 </div>
 
                 <div className="workoutForms">
@@ -69,7 +94,9 @@ export default function Home() {
                         refreshKey={refreshKey}
                     />
                 </div>
-
+                <div className="dashboard">
+                    <MetricsDashboard viewWorkouts={viewWorkouts} />
+                </div>
             </div>
 
         </>
