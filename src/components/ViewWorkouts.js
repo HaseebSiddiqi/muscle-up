@@ -545,7 +545,8 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                         <input
                                                             value={editWorkouts.duration ?? ""}
                                                             onKeyDown={(e) => {
-                                                                if (!/[0-9]/.test(e.key)) {
+                                                                if ((!/[0-9]/.test(e.key) &&
+                                                                    (!["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(e.key)))) {
                                                                     e.preventDefault();
                                                                 }
                                                             }}

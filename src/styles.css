@@ -526,13 +526,14 @@ input[type="date"]:focus {
     }
 
     .addWorkout {
-        padding: 10px;
-        margin: 10px 5px;
+        padding: 10px !important;
+        margin: 10px 0 !important;
     }
+
 
     .table-container .workout-table,
     .table-container .addWorkoutTable {
-        zoom: 0.63;
+        zoom: 0.7;
         margin: 1rem auto;
     }
 }
@@ -789,6 +790,7 @@ input[type="date"]:focus {
 
 .submitbtn {
     background-color: #e2e8f0 !important;
+
 }
 
 .submitbtn button {
@@ -796,6 +798,7 @@ input[type="date"]:focus {
     font-weight: bold !important;
     height: 50px !important;
     margin: 0 !important;
+    width: 100%;
 }
 
 .addWorkoutTable td.Sets,
@@ -1481,6 +1484,8 @@ td.exercise-name-cell {
     box-shadow: var(--drop-shadow) !important;
     border: 1px solid #e2e8f0 !important;
     text-align: left !important;
+    margin: 15px;
+
 }
 
 
