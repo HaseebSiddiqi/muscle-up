@@ -1,7 +1,9 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
-
+import { useState } from 'react';
 
 export default function MetricsDashboard({ viewWorkouts }) {
+    const [useMiles, setUseMiles] = useState(false);
+
 
     // -----------------------------
     // Basic Metrics
@@ -17,11 +19,36 @@ export default function MetricsDashboard({ viewWorkouts }) {
         return workoutDate >= cutOff;
     });
 
-    const avgPerWeek = lastMonth.length / 4;
+    const cardioDuration = viewWorkouts.reduce((acc, workout) => {
+        return acc + (workout.exercises?.reduce((sum, ex) => {
+            return ex.type === 'cardio' ? sum + (ex.duration || 0) : sum;
+        }, 0) || 0);
+    }, 0);
 
-    //
-    //
-    //
+
+    const cardioDistance = viewWorkouts.reduce((acc, workout) => {
+        return acc + (workout.exercises?.reduce((sum, ex) => {
+            return ex.type === 'cardio' ? sum + (ex.distance || 0) : sum;
+        }, 0) || 0);
+    }, 0);
+
+
+    const cardioCalories = viewWorkouts.reduce((acc, workout) => {
+        return acc + (workout.exercises?.reduce((sum, ex) => {
+            return ex.type === 'cardio' ? sum + (ex.calories || 0) : sum;
+        }, 0) || 0);
+    }, 0);
+
+    const totalCardioHours = Math.floor(cardioDuration / 60);
+    const totalCardioMinsRemaining = cardioDuration % 60;
+
+    const activeDays = new Set(
+        lastMonth.map(workout => workout.date)
+    ).size;
+
+    const avgPerWeek = activeDays / 4;
+
+
     const totalMins = viewWorkouts.reduce((acc, workout) => {
         return acc + (workout.duration || 0);
     }, 0);
@@ -134,6 +161,10 @@ export default function MetricsDashboard({ viewWorkouts }) {
         "#814938ff",
     ];
 
+    const displayedDistance = useMiles
+        ? cardioDistance.toFixed(2)
+        : (cardioDistance / 1.60934).toFixed(2);
+
     return (
         <div>
             <h2>Metrics Dashboard</h2>
@@ -144,17 +175,27 @@ export default function MetricsDashboard({ viewWorkouts }) {
                     {/* Stat Card Grid */}
                     <div className="metrics-stat-grid">
                         <div className="metric-stat-card">
-                            <span className="card-label">Total Workouts</span>
-                            <div className="card-value">🏋️‍♂️ {totalWorkouts}</div>
+                            <span className="card-label">Workout Summary</span>
+
+                            <div className="card-value">
+                                🏋️‍♂️ {totalWorkouts}
+                                <span> workouts</span>
+                            </div>
+
+                            <div className="card-value">
+                                ⏱️ {totalHours}<span>h</span> {totalMinsRemaining}<span>m</span>
+                            </div>
+                        </div>
+
+                        <div className="metric-stat-card" onClick={() => setUseMiles(!useMiles)} style={{ cursor: "pointer" }}>
+                            <span className="card-label">Cardio Stats <small className="toggle-hint">click to toggle</small></span>
+                            <div className="card-value">⏱️ {totalCardioHours}<span>h</span> {totalCardioMinsRemaining}<span>m</span></div>
+                            <div className="card-value"> 🛣️ {displayedDistance}<span>{useMiles ? "km" : "mi"}</span></div>
+                            <div className="card-value">⚡ {cardioCalories}<span>kcal</span></div>
                         </div>
 
                         <div className="metric-stat-card">
-                            <span className="card-label">Time Active</span>
-                            <div className="card-value">⏱️ {totalHours}<span>h</span> {totalMinsRemaining}<span>m</span></div>
-                        </div>
-
-                        <div className="metric-stat-card">
-                            <span className="card-label">Weekly Average</span>
+                            <span className="card-label">Active Days / Week</span>
                             <div className="card-value">📈 {avgPerWeek.toFixed(1)}</div>
                             <p className="metrics-subtitle">(Last 4 weeks)</p>
                         </div>
@@ -204,8 +245,8 @@ export default function MetricsDashboard({ viewWorkouts }) {
                                 <AreaChart data={LineData}>
                                     <defs>
                                         <linearGradient id="colorWorkouts" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="var(--secondary)" stopOpacity={0.4}/>
-                                            <stop offset="95%" stopColor="var(--secondary)" stopOpacity={0}/>
+                                            <stop offset="5%" stopColor="var(--secondary)" stopOpacity={0.4} />
+                                            <stop offset="95%" stopColor="var(--secondary)" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />

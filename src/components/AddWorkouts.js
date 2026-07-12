@@ -439,7 +439,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                         }));
                                                                     }}
                                                                 />
-                                                                <span className="unit">km</span>
+                                                                <span className="unit">miles</span>
                                                             </div>
 
                                                             <div className="inputWithUnit">

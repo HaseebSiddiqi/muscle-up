@@ -240,7 +240,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                     {exercise.distance}
                                                                                 </div>
                                                                             )}
-                                                                            <span className="unit">km</span>
+                                                                            <span className="unit">miles</span>
                                                                         </div>
 
                                                                         <div className="inputWithUnit">

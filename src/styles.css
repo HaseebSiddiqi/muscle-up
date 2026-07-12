@@ -2298,3 +2298,10 @@ td.exercise-name-cell {
 .recharts-sector:focus {
     outline: none;
 }
+
+.toggle-hint {
+    display: block;
+    font-size: 0.65rem;
+    opacity: 0.6;
+    font-weight: normal;
+}
