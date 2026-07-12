@@ -536,6 +536,32 @@ input[type="date"]:focus {
         zoom: 0.7;
         margin: 1rem auto;
     }
+
+    .pageH {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .left-column,
+    .right-column {
+        display: contents;
+    }
+
+    .viewWorkouts {
+        order: 1;
+    }
+
+    .workoutTypes {
+        order: 3;
+    }
+
+    .workoutForms {
+        order: 2;
+    }
+
+    .dashboard {
+        order: 4;
+    }
 }
 
 .calendar-container {
@@ -1351,37 +1377,44 @@ td.exercise-name-cell {
 
 @media (min-width: 769px) {
     .pageH {
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto auto;
-        align-items: start;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .left-column,
+    .right-column {
+        display: flex;
+        flex-direction: column;
         gap: 1rem;
     }
 
     .viewWorkouts {
-        grid-column: 1;
-        grid-row: 1;
-        padding: 30px;
+        margin: 15px;
+        order: 1;
     }
 
-    .dashboard {
-        grid-column: 1;
-        grid-row: 2;
+    .workoutTypes {
+        margin: 15px;
+        order: 1;
         padding: 20px;
     }
 
     .workoutTypes {
-        grid-column: 2;
-        grid-row: 1;
-        padding: 30px;
+        margin-bottom: 0;
     }
 
     .workoutForms {
-        grid-column: 2;
-        grid-row: 2;
+        margin-top: 0;
+        order: 2;
+    }
 
+    .dashboard {
+        padding: 20px;
+        order: 2;
     }
 }
-
 
 /* Ensure both workout tables have rounded top and bottom corners */
 .workout-table,

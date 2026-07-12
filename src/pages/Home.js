@@ -52,10 +52,22 @@ export default function Home() {
         if (activeComponent === "add" || activeComponent === "create") {
             requestAnimationFrame(() => {
                 setTimeout(() => {
-                    bottomRef.current?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
+                    const element = bottomRef.current;
+
+                    if (!element) return;
+
+                    const rect = element.getBoundingClientRect();
+
+                    // Don't scroll if already visible
+                    if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                        return;
+                    }
+
+                    window.scrollTo({
+                        top: window.scrollY + rect.top - 100,
+                        behavior: "smooth"
                     });
+
                 }, 0);
             });
         }
@@ -73,38 +85,40 @@ export default function Home() {
                     <div className="viewWorkouts">
                         <ViewWorkouts viewWorkouts={viewWorkouts} updateWorkouts={updateWorkouts} refreshKey={refreshKey} />
                     </div>
-                </div>
-
-
-                <div className="workoutForms">
-
-                    <div ref={activeComponent === "add" ? bottomRef : null} className="addWorkout" style={{ display: activeComponent === "add" ? "block" : "none" }}>
-                        <AddWorkouts
-                            selectedWorkout={selectedWorkout}
-                            onSuccess={() => {
-                                refreshWorkouts();
-                                setActiveComponent("home");
-                            }}
-                        />
-                    </div>
-
-                    <div ref={activeComponent === "create" ? bottomRef : null} className="createWorkout" style={{ display: activeComponent === "create" ? "block" : "none" }}>
-                        <CreateWorkouts onSuccess={refreshWorkouts} />
-                    </div>
-                </div>
-
-                <div className="workoutTypes" style={{ display: "block" }}>
-                    <WorkoutTypes
-                        onSelectWorkout={setSelectedWorkout}
-                        setActiveComponent={setActiveComponent}
-                        refreshKey={refreshKey}
-                    />
-                </div>
-                <div className="left-column">
                     <div className="dashboard">
                         <MetricsDashboard viewWorkouts={viewWorkouts} />
                     </div>
+
                 </div>
+
+                <div className="right-column">
+                    <div className="workoutForms">
+
+                        <div ref={activeComponent === "add" ? bottomRef : null} className="addWorkout" style={{ display: activeComponent === "add" ? "block" : "none" }}>
+                            <AddWorkouts
+                                selectedWorkout={selectedWorkout}
+                                onSuccess={() => {
+                                    refreshWorkouts();
+                                    setActiveComponent("home");
+                                }}
+                            />
+                        </div>
+
+                        <div ref={activeComponent === "create" ? bottomRef : null} className="createWorkout" style={{ display: activeComponent === "create" ? "block" : "none" }}>
+                            <CreateWorkouts onSuccess={refreshWorkouts} />
+                        </div>
+                    </div>
+
+                    <div className="workoutTypes" style={{ display: "block" }}>
+                        <WorkoutTypes
+                            onSelectWorkout={setSelectedWorkout}
+                            setActiveComponent={setActiveComponent}
+                            refreshKey={refreshKey}
+                        />
+                    </div>
+
+                </div>
+
 
 
             </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useRef } from "react";
 import { apiFetch } from "./apiClient.js";
 export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
@@ -9,6 +9,33 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
     const [startTime, setStartTime] = useState(null);
     const [showDurationPopup, setShowDurationPopup] = useState(false);
     const [duration, setDuration] = useState(null);
+    const durationRef = useRef(null);
+
+    useEffect(() => {
+        if (showDurationPopup) {
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    const element = durationRef.current;
+
+                    if (!element) return;
+
+                    const rect = element.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight;
+
+                    // Already fully visible, don't move
+                    if (rect.top >= 0 && rect.bottom <= viewportHeight) {
+                        return;
+                    }
+
+                    window.scrollTo({
+                        top: window.scrollY + rect.bottom - viewportHeight + 50,
+                        behavior: "smooth"
+                    });
+
+                }, 100);
+            });
+        }
+    }, [showDurationPopup]);
 
     useEffect(() => {
         if (!selectedWorkout) return;
@@ -658,7 +685,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                     </div>
                 )}
                 {showDurationPopup && (
-                    <div className="duration-section">
+                    <div ref={durationRef} className="duration-section">
                         <div className="popup">
                             <h3>Workout Duration (mins)</h3>
 
@@ -672,7 +699,16 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                         e.preventDefault();
                                     }
                                 }}
-                                onChange={(e) => setDuration(Math.min(999, Number(e.target.value)))}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+
+                                    if (value === "") {
+                                        setDuration(null);
+                                        return;
+                                    }
+
+                                    setDuration(Math.min(999, Number(value)));
+                                }}
                             />
 
                             <div className="popup-buttons">
