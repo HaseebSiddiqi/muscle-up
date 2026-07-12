@@ -163,7 +163,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
 
     const displayedDistance = useMiles
         ? cardioDistance.toFixed(2)
-        : (cardioDistance / 1.60934).toFixed(2);
+        : (cardioDistance * 1.60934).toFixed(2);
 
     return (
         <div>
@@ -190,7 +190,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
                         <div className="metric-stat-card" onClick={() => setUseMiles(!useMiles)} style={{ cursor: "pointer" }}>
                             <span className="card-label">Cardio Stats <small className="toggle-hint">click to toggle</small></span>
                             <div className="card-value">⏱️ {totalCardioHours}<span>h</span> {totalCardioMinsRemaining}<span>m</span></div>
-                            <div className="card-value"> 🛣️ {displayedDistance}<span>{useMiles ? "km" : "mi"}</span></div>
+                            <div className="card-value"> 🛣️ {displayedDistance}<span>{useMiles ? "mi" : "km"}</span></div>
                             <div className="card-value">⚡ {cardioCalories}<span>kcal</span></div>
                         </div>
 
