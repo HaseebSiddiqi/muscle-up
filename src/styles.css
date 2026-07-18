@@ -6,6 +6,7 @@
     --primary-hover: #ea580c;
     --secondary: #0ea5e9;
     --secondary-hover: #0284c7;
+    --boarder-color: #0b1a24;
     --header-text: #ffffff;
     --table-row1: #ffffff;
     --table-row2: #f0f9ff;
@@ -133,9 +134,10 @@ body {
     background-color: rgba(0, 0, 0, 0.08);
 }
 
+
 .workout-table th,
 .addWorkoutTable th {
-    background-color: #0b1a24 !important;
+    background-color: var(--boarder-color) !important;
     color: white;
     font-size: x-large;
     font-weight: 700;
@@ -687,7 +689,7 @@ input[type="date"]:focus {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: linear-gradient(90deg, #0c9bd6 0%, var(--secondary) 60%, #0ea5e9 100%);
+    background: linear-gradient(90deg, #0e0f0f 0%, var(--boarder-color) 60%, #0e0f0f 100%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
     justify-content: space-between;
@@ -978,7 +980,7 @@ td.exercise-name-cell {
 }
 
 .cardio-cell {
-    min-width: 200px;
+    min-width: 300px;
     width: 100%;
 }
 
@@ -1390,9 +1392,14 @@ td.exercise-name-cell {
         gap: 1rem;
     }
 
+    
+
     .viewWorkouts {
         margin: 15px;
         order: 1;
+        padding: 20px;
+        min-width: 500px;
+
     }
 
     .workoutTypes {
@@ -1413,6 +1420,7 @@ td.exercise-name-cell {
     .dashboard {
         padding: 20px;
         order: 2;
+        min-width: 500px;
     }
 }
 

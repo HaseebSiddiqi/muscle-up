@@ -210,7 +210,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
                     {/* Workout Type Distribution (Donut Chart) */}
                     <div className="metrics-chart-container">
                         <h4>Workout Type Distribution</h4>
-                        <div style={{ width: '100%', height: 320 }}>
+                        <div style={{ width: '100%', height: 250 }}>
                             <ResponsiveContainer>
                                 <PieChart>
                                     <Pie
@@ -240,7 +240,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
                     {/* Monthly Workout Frequency (AreaChart) */}
                     <div className="metrics-chart-container">
                         <h4>Monthly Workout Frequency</h4>
-                        <div style={{ width: '100%', height: 320 }}>
+                        <div style={{ width: '100%', height: 250 }}>
                             <ResponsiveContainer>
                                 <AreaChart data={LineData}>
                                     <defs>
