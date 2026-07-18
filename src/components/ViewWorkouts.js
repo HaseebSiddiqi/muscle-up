@@ -109,17 +109,22 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                 </div>
             ) : (
                 <div>
-                    <div className="table-container">
-                        <div className="spanrow-date">
-                            {currentDate?.toISOString().split("T")[0]}
-                        </div>
+                    <div className="view-workouts-date-header">
+                        <span className="spanrow-date__day">
+                            {currentDate?.toLocaleDateString("en-US", { weekday: "long" })}
+                        </span>
+                        <span className="spanrow-date__main">
+                            {currentDate?.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                        </span>
+                    </div>
 
+                    <div className="table-container">
                         {viewWorkouts
                             .filter(
                                 w =>
                                     w.date === currentDate?.toISOString().split("T")[0]
                             )
-                            .map((w) => {
+                            .map((w, workoutIndex) => {
                                 const displayExercises =
                                     w.exercises
                                         .map((exercise, index) => ({
@@ -561,7 +566,11 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                 </tr>
                                             ) : (
                                                 <tr className="duration-row">
-                                                    <td colSpan={99}>Workout Duration: {w.duration ? `${w.duration} mins` : "N/A"}</td>
+                                                    <td colSpan={99}>
+                                                        <span className="duration-row__icon">⏱</span>
+                                                        <span className="duration-row__label">Workout Duration</span>
+                                                        <span className="duration-row__value">{w.duration ? `${w.duration} mins` : "—"}</span>
+                                                    </td>
                                                 </tr>
                                             )}
                                             <tr>
@@ -611,18 +620,19 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                         </tbody>
                                     </table>
                                 )
-                            })}
+                            })
+                        }
                     </div>
 
                     <button
-                        className="my-button"
+                        className="back"
                         onClick={() => {
                             updateCalender(true);
                             setEditingWorkoutId(null);
                             setEditWorkouts(null);
                         }}
                     >
-                        Back to Calendar
+                        ← Back to Calendar
                     </button>
                 </div>
             )}

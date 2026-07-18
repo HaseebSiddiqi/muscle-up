@@ -9,6 +9,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
     const [startTime, setStartTime] = useState(null);
     const [showDurationPopup, setShowDurationPopup] = useState(false);
     const [duration, setDuration] = useState(null);
+
     const durationRef = useRef(null);
 
     useEffect(() => {
@@ -309,6 +310,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                     date: e.target.value
                                                 }))
                                             }
+                                            className="date-input"
                                         />
                                     </td>
                                 </tr>

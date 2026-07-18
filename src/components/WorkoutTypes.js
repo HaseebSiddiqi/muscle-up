@@ -67,57 +67,41 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
         <>
 
 
-            <div className="table-container">
+            <div className="workout-selector-container">
+                <h2>Your Created Workouts</h2>
                 {workouts.length > 0 ? (
-                    <div>
-                        <table className="workout-table created-workouts-table">
-                            <tbody>
-                                <tr>
-                                    <td className="spanrow2" colSpan={12}>
-                                        <h2>Your Created Workouts</h2>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Exercises</th>
-                                    <th>Delete</th>
-                                </tr>
-
-                                {workouts.map((workout, i) => (
-                                    <tr key={i}>
-                                        <td className="workout-name-cell" onClick={() => { onSelectWorkout(workout); setActiveComponent("add"); }}>
-
-                                            {workout.workoutName}
-
-                                        </td>
-                                        <td className="exercises-td">
-
-                                            {workout.exercises.map((ex) => typeof ex === "string" ? ex : ex.name).join(" | ")}
-                                        </td>
-                                        <td className="workout-name-cell" onClick={() => {
-                                            const confirmed = window.confirm("Delete this workout?");
-                                            if (confirmed) { deleteWorkout(i); }
-                                        }}>
-                                            ❌
-                                        </td>
-                                    </tr>
-                                ))}
-                                <tr>
-                                    <td className='submitbtn' colSpan={3}>
-                                        <button onClick={() => { onSelectWorkout(null); setActiveComponent("create"); }}>
-                                            Add Workout Type
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <h3>Select A Workout Type To Log Your Workouts</h3>
+                    <div className="workout-list">
+                        {workouts.map((workout, i) => (
+                            <div key={i} className="workout-item">
+                                <span 
+                                    className="workout-item-name" 
+                                    onClick={() => { onSelectWorkout(workout); setActiveComponent("add"); }}
+                                >
+                                    {workout.workoutName}
+                                </span>
+                                <button 
+                                    className="workout-item-delete"
+                                    onClick={() => {
+                                        const confirmed = window.confirm("Delete this workout?");
+                                        if (confirmed) { deleteWorkout(i); }
+                                    }}
+                                >
+                                    🗑️
+                                </button>
+                            </div>
+                        ))}
                     </div>
                 ) : (
-                    <h3>Add Your First Workout Type To Get Started</h3>
+                    <h3 className="empty-workouts-text">Add your first workout type to get started</h3>
                 )}
-
+                
+                <button 
+                    className="main-action-btn"
+                    onClick={() => { onSelectWorkout(null); setActiveComponent("create"); }}
+                >
+                    + Add Workout Type
+                </button>
+                <p className="selector-hint">Select a workout type to log a session</p>
             </div>
 
             {feedback && <h2>{feedback}</h2>}

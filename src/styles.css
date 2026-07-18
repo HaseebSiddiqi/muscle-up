@@ -6,13 +6,14 @@
     --primary-hover: #ea580c;
     --secondary: #0ea5e9;
     --secondary-hover: #0284c7;
-    --boarder-color: #0b1a24;
+    --boarder-color: #1e1f1f;
     --header-text: #ffffff;
     --table-row1: #ffffff;
     --table-row2: #f0f9ff;
     --drop-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.15), 0 8px 10px -6px rgba(249, 115, 22, 0.1);
     --header-primary: #ea580c;
     --header-secondary: #0284c7;
+    --table-header: #a2a3a4;
 }
 
 /* Global page styles */
@@ -90,7 +91,7 @@ body {
     border: none;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--drop-shadow);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.02) !important;
     color: var(--text-main);
     text-align: center;
 }
@@ -138,12 +139,12 @@ body {
 .workout-table th,
 .addWorkoutTable th {
     background-color: var(--boarder-color) !important;
-    color: white;
+    color: white !important;
     font-size: x-large;
     font-weight: 700;
     padding: 15px 10px;
     border-top: none !important;
-    border-bottom: 4px solid var(--primary) !important;
+    border-bottom: 4px solid var(--secondary) !important;
 }
 
 .workout-table th:nth-child(2n),
@@ -277,15 +278,9 @@ body {
 }
 
 /* Highlight rows */
-th.spanrow,
-table .spanrow2 {
+th.spanrow {
     background-color: #e2e8f0 !important;
     color: var(--text-main) !important;
-}
-
-td.spanrow2 input[type="date"] {
-    font-size: xx-large;
-    font-weight: 700;
 }
 
 th.spanrow {
@@ -356,9 +351,10 @@ input[type="date"]:focus {
     margin: 0 auto;
     font-size: x-large;
     font-weight: bolder;
-    padding: 10px;
+    padding: 14px 10px 10px;
     box-sizing: border-box;
     cursor: default;
+    background: transparent;
 }
 
 /* NAVIGATION BAR (month + arrows centered) */
@@ -418,8 +414,7 @@ input[type="date"]:focus {
     color: white;
     border: 3px var(--bg-main) solid;
     border-radius: 15px;
-
-
+    transition: background-color 0.2s ease;
 }
 
 .react-calendar__tile:hover {
@@ -474,26 +469,33 @@ input[type="date"]:focus {
 
 .workout-day:hover {
     background-color: var(--secondary-hover);
+    cursor: pointer;
 }
 
-/* Back button */
+/* Back button - Styled as premium black & white Pill button */
 .back {
-    border: none;
-    border-radius: 12px;
-    padding: 8px 15px;
-    box-shadow: var(--drop-shadow);
-    color: white;
-    font-size: large;
-    font-weight: bold;
-    background-color: var(--secondary);
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    background-color: var(--boarder-color) !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 99px !important;
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    padding: 12px 28px !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease-in-out !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    margin: 2.5rem auto 1rem;
+    display: block;
+    width: fit-content;
 }
 
 .back:hover {
-    background-color: var(--secondary-hover);
+    background-color: white !important;
+    color: var(--boarder-color) !important;
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2) !important;
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* Containers */
@@ -509,22 +511,80 @@ input[type="date"]:focus {
     box-sizing: border-box;
 }
 
-.spanrow-date {
-    display: inline-block;
-    font-size: 1.8rem;
+/* Date header in view workouts - outside table, sits on the card background */
+.view-workouts-date-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 1.5rem auto 0.5rem;
+    color: var(--text-main);
+}
+
+.view-workouts-date-header .spanrow-date__day {
+    color: var(--secondary);
+    border-right: 2px solid #e2e8f0;
+    padding-right: 12px;
+    font-size: x-large;
     font-weight: bold;
-    padding: 10px 18px;
-    margin-bottom: 10px;
-    background: white;
-    border-radius: 10px;
-    width: 50%;
-    border: 2px solid #ddd;
+    letter-spacing: normal;
+    text-transform: none;
+    margin-right: 0;
+}
+
+.view-workouts-date-header .spanrow-date__main {
+    color: var(--text-main);
+    font-size: x-large;
+    font-weight: bold;
+}
+
+/* Ensure read mode and edit mode values are identical size and weight */
+.inputValue {
+    font-size: large !important;
+    font-weight: bold !important;
+    text-align: center;
+}
+
+td.spanrow2 {
+    padding: 0 !important;
+    background-color: var(--table-header) !important;
+    text-align: center;
+}
+
+.date-input {
+    display: inline-block;
+    width: 40%;
+    height: 4rem;
+
+    border: none;
+    outline: none;
+
+    background-color: white !important;
+    color: rgb(0, 0, 0) !important;
+
+    font-size: 2rem !important;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.date-input::-webkit-date-and-time-value {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    transform: scale(1.2);
+
 }
 
 @media (max-width: 768px) {
     .table-container {
         padding: 0 4px;
-
     }
 
     .addWorkout {
@@ -575,6 +635,14 @@ input[type="date"]:focus {
     overflow-x: hidden;
     box-sizing: border-box;
     padding: 0;
+}
+
+/* Tables inside the view-workout card: no double shadow */
+.table-container .addWorkoutTable {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.02) !important;
+    border-radius: 12px;
+    margin: 0 auto;
+    width: max-content;
 }
 
 /* Modern Card Styles */
@@ -689,7 +757,7 @@ input[type="date"]:focus {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: linear-gradient(90deg, #0e0f0f 0%, var(--boarder-color) 60%, #0e0f0f 100%);
+    background: linear-gradient(90deg, #179bdd 0%, var(--secondary) 60%, #0380bf 100%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
     justify-content: space-between;
@@ -817,22 +885,170 @@ input[type="date"]:focus {
 }
 
 .submitbtn {
-    background-color: #e2e8f0 !important;
-
+    background-color: var(--secondary) !important;
 }
 
 .submitbtn button {
-    font-size: larger !important;
-    font-weight: bold !important;
-    height: 50px !important;
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+    height: 52px !important;
     margin: 0 !important;
     width: 100%;
+    background-color: var(--table-header) !important;
+    color: white !important;
+
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.submitbtn button:hover {
+    background-color: white !important;
+    color: var(--boarder) !important;
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2) !important;
 }
 
 .addWorkoutTable td.Sets,
 .workout-table td.Sets {
     padding: 0 !important;
     height: 1px;
+}
+
+/* Simple Workout Selector List */
+.workout-selector-container {
+
+    width: 770px;
+    margin: 0 auto;
+    padding: 0.5rem;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .workoutTypes {
+        width: calc(100% - 30px) !important;
+        max-width: none !important;
+        box-sizing: border-box;
+        margin: 15px auto;
+    }
+
+    .workout-selector-container {
+        width: 100% !important;
+        max-width: none !important;
+        box-sizing: border-box;
+    }
+
+    .workout-item {
+        width: 225px;
+    }
+}
+
+.workout-selector-container h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    color: var(--text-main);
+    text-align: center;
+}
+
+.workout-list {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    margin-bottom: 1.5rem !important;
+}
+
+
+.workout-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 18px;
+    transition: all 0.2s ease;
+
+}
+
+.workout-item:hover {
+    border-color: var(--secondary);
+    background-color: #f0f9ff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(14, 165, 233, 0.05);
+}
+
+.workout-item-name {
+    flex-grow: 1;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.15s ease;
+}
+
+.workout-item-name:hover {
+    color: var(--secondary);
+}
+
+.workout-item-delete {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease;
+}
+
+.workout-item-delete:hover {
+    transform: scale(1.2);
+}
+
+.main-action-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+    background-color: var(--boarder-color) !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 99px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease-in-out !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.main-action-btn:hover {
+    background-color: white !important;
+    color: var(--boarder-color) !important;
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-2px);
+}
+
+.selector-hint {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    margin-top: 10px;
+    font-weight: 500;
+    color: var(--text-main);
+    text-align: center;
+}
+
+.empty-workouts-text {
+    font-size: 1.05rem;
+    color: #64748b;
+    text-align: center;
+    margin: 1.5rem 0;
 }
 
 .Sets-content {
@@ -1342,11 +1558,10 @@ td.exercise-name-cell {
     padding: 5px;
     border: 2px solid #e2e8f0;
     margin: 15px;
-    width: fit-content;
+    width: max-content !important;
+    max-width: 100% !important;
     justify-self: center;
     height: fit-content;
-
-
 }
 
 
@@ -1358,7 +1573,6 @@ td.exercise-name-cell {
     border: 2px solid #e2e8f0;
     margin: 15px;
     justify-self: center;
-
 }
 
 .createWorkout {
@@ -1372,7 +1586,6 @@ td.exercise-name-cell {
     justify-self: center;
     height: fit-content;
     align-self: start;
-
 }
 
 
@@ -1392,7 +1605,7 @@ td.exercise-name-cell {
         gap: 1rem;
     }
 
-    
+
 
     .viewWorkouts {
         margin: 15px;
@@ -1487,7 +1700,6 @@ td.exercise-name-cell {
     background-color: var(--primary);
     border-radius: 3px;
     vertical-align: middle;
-
     margin-left: 30px;
     margin-right: 5px;
 }
@@ -2312,4 +2524,34 @@ td.exercise-name-cell {
     font-size: 0.65rem;
     opacity: 0.6;
     font-weight: normal;
+}
+
+/* ── View Workout – duration row ───────────────────────────────── */
+.duration-row td {
+    background-color: #f1f5f9 !important;
+    padding: 10px 20px !important;
+    border-top: 1px solid #e2e8f0 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.duration-row__icon {
+    font-size: 0.95rem;
+    opacity: 0.55;
+    margin-right: 6px;
+}
+
+.duration-row__label {
+    color: #94a3b8;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    margin-right: 10px;
+}
+
+.duration-row__value {
+    color: #1e293b;
+    font-size: 0.95rem;
+    font-weight: 700;
 }
