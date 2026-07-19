@@ -144,7 +144,6 @@ body {
     font-weight: 700;
     padding: 15px 10px;
     border-top: none !important;
-    border-bottom: 4px solid var(--secondary) !important;
 }
 
 .workout-table th:nth-child(2n),
@@ -476,7 +475,7 @@ input[type="date"]:focus {
 .back {
     background-color: var(--primary) !important;
     color: white !important;
-    border: 2px solid white !important;
+    border: 0px none;
     border-radius: 99px !important;
     font-size: 0.9rem !important;
     font-weight: 800 !important;
@@ -1058,7 +1057,7 @@ td.spanrow2 {
     font-weight: 800 !important;
     background-color: var(--primary) !important;
     color: white !important;
-    border: 2px solid white !important;
+    border: 0px none;
     border-radius: 99px !important;
     text-transform: uppercase !important;
     letter-spacing: 0.06em !important;
