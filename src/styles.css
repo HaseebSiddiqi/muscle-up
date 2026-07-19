@@ -589,6 +589,7 @@ td.spanrow2 {
 
     .addWorkout {
         padding: 10px !important;
+        margin: 10px !important;
     }
 
 
@@ -600,13 +601,26 @@ td.spanrow2 {
 
     .pageH {
         display: flex;
-        padding: 0 15px;
         flex-direction: column;
+        padding: 0 15px;
+        box-sizing: border-box;
+        width: 100%;
+        overflow-x: hidden;
     }
 
     .left-column,
     .right-column {
         display: contents;
+    }
+
+    .viewWorkouts,
+    .workoutTypes,
+    .workoutForms,
+    .dashboard {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
     }
 
     .viewWorkouts {
