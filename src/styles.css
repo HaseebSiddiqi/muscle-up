@@ -589,18 +589,18 @@ td.spanrow2 {
 
     .addWorkout {
         padding: 10px !important;
-        margin: 10px 0 !important;
     }
 
 
     .table-container .workout-table,
     .table-container .addWorkoutTable {
-        zoom: 0.7;
-        margin: 1rem auto;
+        zoom: 0.8;
+
     }
 
     .pageH {
         display: flex;
+        padding: 0 15px;
         flex-direction: column;
     }
 
@@ -1000,11 +1000,7 @@ td.spanrow2 {
 
 @media (max-width: 768px) {
 
-    .workoutTypes {
-        width: calc(100% - 30px);
-        max-width: none;
-        margin: 15px auto;
-    }
+
 
     .workout-selector-container {
         width: 100%;
