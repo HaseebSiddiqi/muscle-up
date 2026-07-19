@@ -559,7 +559,7 @@ td.spanrow2 {
     border: none;
     outline: none;
 
-    background-color: white !important;
+    background-color: var(--table-header) !important;
     color: rgb(0, 0, 0) !important;
 
     font-size: 2rem !important;
@@ -597,6 +597,28 @@ td.spanrow2 {
     .table-container .addWorkoutTable {
         zoom: 0.7;
 
+    }
+
+    .addWorkoutTable td span {
+        font-size: 0.9rem;
+    }
+
+    .addWorkoutTable .inputValue,
+    .addWorkoutTable .duration-value {
+        font-size: 1.4rem !important;
+    }
+
+    .workout-table td,
+    .addWorkoutTable td {
+        font-size: 1.2rem;
+    }
+
+
+    .workout-table input[type="number"],
+    .workout-table input[type="text"],
+    .addWorkoutTable input[type="number"],
+    .addWorkoutTable input[type="text"] {
+        font-size: 1.4rem;
     }
 
     .pageH {
