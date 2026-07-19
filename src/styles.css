@@ -592,6 +592,7 @@ td.spanrow2 {
     }
 
 
+
     .table-container .workout-table,
     .table-container .addWorkoutTable {
         zoom: 0.7;
@@ -644,12 +645,20 @@ td.spanrow2 {
         box-sizing: border-box;
     }
 
+    .addWorkoutTable {
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+    }
+
     .viewWorkouts {
         order: 1;
+        width: 100% !important;
     }
 
     .workoutTypes {
         order: 3;
+        width: 100% !important;
     }
 
     .workoutForms {
