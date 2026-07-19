@@ -138,7 +138,7 @@ body {
 
 .workout-table th,
 .addWorkoutTable th {
-    background-color: var(--boarder-color) !important;
+    background-color: var(--secondary) !important;
     color: white !important;
     font-size: x-large;
     font-weight: 700;
@@ -474,7 +474,7 @@ input[type="date"]:focus {
 
 /* Back button - Styled as premium black & white Pill button */
 .back {
-    background-color: var(--boarder-color) !important;
+    background-color: var(--primary) !important;
     color: white !important;
     border: 2px solid white !important;
     border-radius: 99px !important;
@@ -493,7 +493,7 @@ input[type="date"]:focus {
 
 .back:hover {
     background-color: white !important;
-    color: var(--boarder-color) !important;
+    color: var(--primary) !important;
     box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2) !important;
     transform: translateY(-2px);
 }
@@ -547,7 +547,7 @@ input[type="date"]:focus {
 
 td.spanrow2 {
     padding: 0 !important;
-    background-color: var(--table-header) !important;
+    background-color: var(--primary) !important;
     text-align: center;
 }
 
@@ -908,7 +908,7 @@ td.spanrow2 {
     height: 52px !important;
     margin: 0 !important;
     width: 100%;
-    background-color: var(--table-header) !important;
+    background-color: var(--primary) !important;
     color: white !important;
 
     text-transform: uppercase !important;
@@ -1034,7 +1034,7 @@ td.spanrow2 {
     padding: 12px 20px;
     font-size: 0.9rem !important;
     font-weight: 800 !important;
-    background-color: var(--boarder-color) !important;
+    background-color: var(--primary) !important;
     color: white !important;
     border: 2px solid white !important;
     border-radius: 99px !important;
@@ -1047,7 +1047,7 @@ td.spanrow2 {
 
 .main-action-btn:hover {
     background-color: white !important;
-    color: var(--boarder-color) !important;
+    color: var(--primary) !important;
     box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2) !important;
     transform: translateY(-2px);
 }
@@ -1460,6 +1460,8 @@ td.exercise-name-cell {
     text-align: center;
     padding: 8px;
     box-sizing: border-box;
+    background-color: var(--table-header);
+
 }
 
 /* Created workouts — dynamic width, fills available space and wraps when needed */
@@ -1576,7 +1578,7 @@ td.exercise-name-cell {
     border: 2px solid #e2e8f0;
 
     width: 100%;
-    max-width: 770px;
+    max-width: 813px;
 
     box-sizing: border-box;
     margin: 15px auto;

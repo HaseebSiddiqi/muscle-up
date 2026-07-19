@@ -78,14 +78,10 @@ export default function Create_workouts({ onSuccess }) {
         <>
             {feedback && <h2>{feedback}</h2>}
             <div className="table-container">
+                <h2>Create Workout Type</h2>
                 <table className="workout-table create-workout-table">
-                    <tbody>
-                        <tr>
-                            <td className='spanrow2' colSpan={4}>
-                                <h2>Create Workout Type</h2>
-                            </td>
-                        </tr>
 
+                    <tbody>
                         <tr>
                             <td className="inputCell create-name-cell" colSpan={4}>
                                 <input
