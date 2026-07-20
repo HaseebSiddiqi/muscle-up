@@ -569,7 +569,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                     <td colSpan={99}>
                                                         <span className="duration-row__icon">⏱</span>
                                                         <span className="duration-row__label">Workout Duration</span>
-                                                        <span className="duration-row__value">{w.duration ? `${w.duration} mins` : "—"}</span>
+                                                        <span className="duration-row__label">{w.duration ? `${w.duration} mins` : "—"}</span>
                                                     </td>
                                                 </tr>
                                             )}

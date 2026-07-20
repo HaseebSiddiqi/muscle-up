@@ -153,8 +153,8 @@ export default function MetricsDashboard({ viewWorkouts }) {
     const COLORS = [
         "#f97316",
         "#0284c7",
-        "#f61b1bff",
-        "#12c524ff",
+        "#ef4444",
+        "#22c55e",
         "#f009e1ff",
         "#fdde11ff",
         "#a211fdff",

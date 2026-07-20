@@ -73,20 +73,20 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                     <div className="workout-list">
                         {workouts.map((workout, i) => (
                             <div key={i} className="workout-item">
-                                <span 
-                                    className="workout-item-name" 
+                                <span
+                                    className="workout-item-name"
                                     onClick={() => { onSelectWorkout(workout); setActiveComponent("add"); }}
                                 >
                                     {workout.workoutName}
                                 </span>
-                                <button 
+                                <button
                                     className="workout-item-delete"
                                     onClick={() => {
                                         const confirmed = window.confirm("Delete this workout?");
                                         if (confirmed) { deleteWorkout(i); }
                                     }}
                                 >
-                                    🗑️
+                                    ❌
                                 </button>
                             </div>
                         ))}
@@ -94,8 +94,8 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                 ) : (
                     <h3 className="empty-workouts-text">Add your first workout type to get started</h3>
                 )}
-                
-                <button 
+
+                <button
                     className="main-action-btn"
                     onClick={() => { onSelectWorkout(null); setActiveComponent("create"); }}
                 >

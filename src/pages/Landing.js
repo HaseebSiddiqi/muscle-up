@@ -35,10 +35,10 @@ export default function Landing() {
   return (
     <div className="landing-container">
       <Navbar />
-      
+
       <div className="landing">
         <div className="hero">
-          <div className="hero-copy-wrapper fade-up"> 
+          <div className="hero-copy-wrapper fade-up">
             <div className="hero-copy">
               <h1>Keep Track of your Workouts with <span className="text-gradient">Muscle Up</span></h1>
               <p>
@@ -139,6 +139,30 @@ export default function Landing() {
                 </ul>
               </div>
             </div>
+
+            <div className="feature-card feature-card-right scroll-animate slide-in-right">
+              <div className="image-container">
+                <img src="/MetricsDashboard.png" alt="Metrics Dashboard" />
+              </div>
+              <div className="feature-description">
+                <h2>Understand Your Progress</h2>
+                <ul>
+                  <li>
+                    <span className="check-icon">✓</span>
+                    <span>Track your total workouts, training time, and cardio progress</span>
+                  </li>
+                  <li>
+                    <span className="check-icon">✓</span>
+                    <span>Monitor your consistency with active days and workout streaks</span>
+                  </li>
+                  <li>
+                    <span className="check-icon">✓</span>
+                    <span>Visualize your workout frequency and training split with detailed charts</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

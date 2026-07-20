@@ -14,6 +14,13 @@
     --header-primary: #ea580c;
     --header-secondary: #0284c7;
     --table-header: #d2d5d8;
+    --success: #22c55e;
+    /* green */
+    --success-hover: #16a34a;
+
+    --danger: #ef4444;
+    /* red */
+    --danger-hover: #dc2626;
 }
 
 /* Global page styles */
@@ -922,20 +929,22 @@ td.spanrow2 {
 /* Add workout controls */
 .SetControls {
     display: flex;
-    justify-content: space-between;
     width: 100%;
     box-sizing: border-box;
-    background-color: #e2e8f0;
-    padding: 0;
+    overflow: hidden;
+    gap: 0;
 }
 
 .SetControls button {
+    flex: 1;
     font-size: large;
     font-weight: bold;
-    width: 50%;
     padding: 12px;
-    box-sizing: border-box;
+    margin: 0;
+    border-radius: 0;
+    border: none;
 }
+
 
 .submitbtn {
     background-color: var(--secondary) !important;
@@ -1407,19 +1416,26 @@ td.exercise-name-cell {
 }
 
 .addButton {
-    background-color: #22c55e !important;
+    background-color: var(--success) !important;
+
+
+
     color: white !important;
+
 }
 
 .minusButton {
-    background-color: #ef4444 !important;
+    background-color: var(--danger) !important;
+
     color: white;
+
 }
 
 .addButton:hover,
 .minusButton:hover {
     filter: brightness(0.9);
 }
+
 
 .workout-spacer-row td {
     height: 35px !important;
@@ -1813,7 +1829,7 @@ td.exercise-name-cell {
     border-bottom: 2px solid #f1f5f9 !important;
     padding-bottom: 12px !important;
 
-    text-align: left !important;
+    text-align: center !important;
 }
 
 
@@ -1942,12 +1958,18 @@ td.exercise-name-cell {
 
 /* Workout Duration Bottom Row */
 .duration-row {
+
     background-color: var(--table-row2) !important;
+}
+
+.duration-row span {
+    font-size: 1.2rem !important;
+
 }
 
 .duration-row td {
     padding: 15px 10px !important;
-    font-size: 1rem !important;
+    font-size: 1.2rem !important;
     font-weight: 700 !important;
     color: var(--text-main) !important;
     text-align: center !important;
@@ -1956,6 +1978,7 @@ td.exercise-name-cell {
 .duration-row input {
     display: inline-block !important;
     vertical-align: middle !important;
+    font-size: 1.2rem !important;
 
     height: auto !important;
     width: 80px !important;
@@ -1963,7 +1986,7 @@ td.exercise-name-cell {
     margin: 0 8px !important;
 
     text-align: center !important;
-    font-size: 1rem !important;
+    font-size: 1.4rem !important;
     font-weight: 700 !important;
 
     padding: 5px !important;
@@ -2089,14 +2112,14 @@ td.exercise-name-cell {
 
 /* Duration Display Values */
 .duration-value {
-    font-size: 15px !important;
+    font-size: 1.4rem !important;
     font-weight: 700 !important;
     color: var(--text-main) !important;
 }
 
 
 .time-divider {
-    font-size: 15px !important;
+    font-size: 1.4rem !important;
     font-weight: 700 !important;
     color: var(--text-main) !important;
 }
