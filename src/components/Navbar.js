@@ -4,8 +4,6 @@ import { useAuth } from "./AuthContext";
 export default function Navbar() {
     const { user, handleSignOut } = useAuth();
 
-    console.log("Navbar user:", user);
-
     return (
         <nav className="nav">
             <Link to="/" className="site-brand">

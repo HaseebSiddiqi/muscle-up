@@ -539,7 +539,7 @@ input[type="date"]:focus {
 
 /* Ensure read mode and edit mode values are identical size and weight */
 .inputValue {
-    font-size: large !important;
+    font-size: 1.4rem !important;
     font-weight: bold !important;
     text-align: center;
 }
@@ -633,6 +633,7 @@ td.spanrow2 {
     .left-column,
     .right-column {
         display: contents;
+
     }
 
     .viewWorkouts,
@@ -663,10 +664,18 @@ td.spanrow2 {
 
     .workoutForms {
         order: 2;
+        display: flex;
+        justify-content: center;
+        width: 100%;
     }
 
     .dashboard {
         order: 4;
+    }
+
+    .createWorkout,
+    .addWorkout {
+        margin: 0 auto;
     }
 }
 
