@@ -285,14 +285,24 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
     };
 
     const handleNumberInput = (value, max, previousValue) => {
-    if (value === "") return "";
+        if (value === "") return "";
 
-    if (!/^\d*\.?\d{0,1}$/.test(value)) {
-        return previousValue;
-    }
+        if (!/^\d*$/.test(value)) {
+            return previousValue;
+        }
 
-    return Math.min(max, Math.max(0, Number(value)));
-};
+        return Math.min(max, Math.max(0, Number(value)));
+    };
+
+    const handleDecimalInput = (value, max, previousValue) => {
+        if (value === "") return "";
+
+        if (!/^\d*\.?\d{0,1}$/.test(value)) {
+            return previousValue;
+        }
+
+        return Math.min(max, Math.max(0, Number(value)));
+    };
 
     return (
 
@@ -407,12 +417,15 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                 index === exerciseIndex
                                                                                     ? {
                                                                                         ...ex,
-                                                                                        duration: e.target.value === "" ? null : Math.min(999, Math.max(0, Number(e.target.value)))
-                                                                                    }
-                                                                                    : ex
-                                                                            )
-                                                                        }));
-                                                                    }}
+                                                                                        duration: handleNumberInput(e.target.value,
+                                                                                                999,
+                                                                                                ex.duration
+                                                                                            )
+                                                                                        }
+                                                                                        : ex
+                                                                                )
+                                                                            }));
+                                                                        }}
                                                                 />
                                                                 <span className="unit">mins</span>
                                                             </div>
@@ -481,12 +494,16 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                 index === exerciseIndex
                                                                                     ? {
                                                                                         ...ex,
-                                                                                        calories: e.target.value === "" ? null : Math.min(999, Math.max(0, Number(e.target.value)))
-                                                                                    }
-                                                                                    : ex
-                                                                            )
-                                                                        }));
-                                                                    }}
+                                                                                        calories: handleNumberInput( 
+                                                                                            e.target.value,
+                                                                                                999,
+                                                                                                ex.calories
+                                                                                            )
+                                                                                        }
+                                                                                        : ex
+                                                                                )
+                                                                            }));
+                                                                        }}
                                                                 />
                                                                 <span className="unit">cals</span>
                                                             </div>
@@ -523,7 +540,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                             exerciseIndex,
                                                                                             j,
                                                                                             "weight",
-                                                                                            handleNumberInput(e.target.value, 999)
+                                                                                            handleDecimalInputInput(e.target.value, 999)
                                                                                         )}
                                                                                 />
                                                                                 {showUnits &&

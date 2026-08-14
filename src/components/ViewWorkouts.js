@@ -71,15 +71,39 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
         );
     }
 
-    const updateEditValue = (exerciseIndex, setIndex, field, value, max) => {
-        const copy = structuredClone(editWorkouts);
-        copy.exercises[exerciseIndex].sets[setIndex][field] =
-            value === ""
-                ? null
-                : Math.min(max, Math.max(0, Number(value)));
-        setEditWorkouts(copy);
+    
+    const handleNumberInput = (value, max, previousValue) => {
+        if (value === "") return "";
+
+        if (!/^\d*$/.test(value)) {
+            return previousValue;
+        }
+
+        return Math.min(max, Math.max(0, Number(value)));
     };
 
+    const handleDecimalInput = (value, max, previousValue) => {
+        if (value === "") return "";
+
+        if (!/^\d*\.?\d{0,1}$/.test(value)) {
+            return previousValue;
+        }
+
+        return Math.min(max, Math.max(0, Number(value)));
+    };
+   
+    const updateEditValue = (exerciseIndex, setIndex, field, value, max, decimal = false) => {
+        const copy = structuredClone(editWorkouts);
+
+        const previousValue =
+            copy.exercises[exerciseIndex].sets[setIndex][field];
+
+        copy.exercises[exerciseIndex].sets[setIndex][field] = decimal
+            ? handleDecimalInput(value, max, previousValue)
+            : handleNumberInput(value, max, previousValue);
+
+        setEditWorkouts(copy);
+    };
     return (
         <>
             {viewCalender ? (
@@ -216,9 +240,11 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                     onChange={(e) => {
                                                                                         const copy = structuredClone(editWorkouts);
                                                                                         copy.exercises[exerciseIndex].duration =
-                                                                                            e.target.value === ""
-                                                                                                ? null
-                                                                                                : Math.min(999, Math.max(0, Number(e.target.value)));
+                                                                                            handleNumberInput(
+                                                                                                e.target.value,
+                                                                                                999,
+                                                                                                copy.exercises[exerciseIndex].duration
+                                                                                            );
                                                                                         setEditWorkouts(copy);
                                                                                     }}
                                                                                 />
@@ -290,10 +316,14 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                     }
                                                                                     onChange={(e) => {
                                                                                         const copy = structuredClone(editWorkouts);
+
                                                                                         copy.exercises[exerciseIndex].calories =
-                                                                                            e.target.value === ""
-                                                                                                ? null
-                                                                                                : Math.min(999, Math.max(0, Number(e.target.value)));
+                                                                                            handleNumberInput(
+                                                                                                e.target.value,
+                                                                                                999,
+                                                                                                copy.exercises[exerciseIndex].calories
+                                                                                            );
+
                                                                                         setEditWorkouts(copy);
                                                                                     }}
                                                                                 />
@@ -340,7 +370,8 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                                                 setIndex,
                                                                                                                 "weight",
                                                                                                                 e.target.value,
-                                                                                                                999
+                                                                                                                999,
+                                                                                                                true
                                                                                                             )}
                                                                                                     />
                                                                                                     {showUnits && (
@@ -465,10 +496,13 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                                         }
                                                                                                         onChange={(e) => {
                                                                                                             const copy = structuredClone(editWorkouts);
+
+                                                                                                            const previousValue =
+                                                                                                                copy.exercises[exerciseIndex].sets[setIndex].seconds;
+
                                                                                                             copy.exercises[exerciseIndex].sets[setIndex].seconds =
-                                                                                                                e.target.value === ""
-                                                                                                                    ? null
-                                                                                                                    : Math.min(59, Math.max(0, Number(e.target.value)));
+                                                                                                                handleNumberInput(e.target.value, 59, previousValue);
+
                                                                                                             setEditWorkouts(copy);
                                                                                                         }}
                                                                                                     />
