@@ -540,7 +540,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                             exerciseIndex,
                                                                                             j,
                                                                                             "weight",
-                                                                                            handleDecimalInputInput(e.target.value, 999)
+                                                                                            handleDecimalInput(e.target.value, 999)
                                                                                         )}
                                                                                 />
                                                                                 {showUnits &&
