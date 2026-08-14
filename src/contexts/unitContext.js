@@ -82,7 +82,7 @@ export function UnitProvider({ children }) {
     useEffect(() => {
         const fetchUnits = async () => {
             try {
-                const res = await apiFetch("http://localhost:5000/users");
+                const res = await apiFetch("https://workouttracker-production-4d3e.up.railway.app/users");
                 const data = await res.json();
 
                 if (data) {
