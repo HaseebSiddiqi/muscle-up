@@ -392,6 +392,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                 <input
                                                                     type="number"
                                                                     className="no-spinner"
+                                                                    step= "1"
                                                                     value={exercise.duration ?? ""}
                                                                     placeholder={prevExercise?.duration ?? ""}
                                                                     onKeyDown={(e) => {
@@ -465,6 +466,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                 <input
                                                                     type="number"
                                                                     className="no-spinner"
+                                                                    step= "1"
                                                                     value={exercise.calories ?? ""}
                                                                     placeholder={prevExercise?.calories ?? ""}
                                                                     onKeyDown={(e) => {

@@ -204,6 +204,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                             {editing ? (
                                                                                 <input
                                                                                     type="number"
+                                                                                    step= "1"
                                                                                     onKeyDown={(e) => {
                                                                                         if (["e", "E", "+", "-", "."].includes(e.key)) {
                                                                                             e.preventDefault();
@@ -278,6 +279,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                             {editing ? (
                                                                                 <input
                                                                                     type="number"
+                                                                                    step= "1"
                                                                                     onKeyDown={(e) => {
                                                                                         if (["e", "E", "+", "-", "."].includes(e.key)) {
                                                                                             e.preventDefault();
