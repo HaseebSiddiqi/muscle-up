@@ -1,9 +1,14 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
-import { useState } from 'react';
+import { useState, useEffect } from "react";
+import { useUnits } from "../contexts/unitContext";
+
 
 export default function MetricsDashboard({ viewWorkouts }) {
-    const [useMiles, setUseMiles] = useState(false);
-
+    const {distanceUnit} = useUnits();
+    const [useMiles, setUseMiles] = useState(distanceUnit === "miles");
+    useEffect(() => {
+        setUseMiles(distanceUnit === "miles");
+    }, [distanceUnit]);
 
     // -----------------------------
     // Basic Metrics
@@ -87,20 +92,23 @@ export default function MetricsDashboard({ viewWorkouts }) {
     }
 
 
-    const weeklyWorkouts = {};
+    const weeklyActiveDays = {};
 
     viewWorkouts.forEach(workout => {
         const date = new Date(workout.date);
         const weekKey = getWeekKey(date);
 
-        weeklyWorkouts[weekKey] = (weeklyWorkouts[weekKey] || 0) + 1;
-    });
+        if (!weeklyActiveDays[weekKey]) {
+            weeklyActiveDays[weekKey] = new Set();
+        }
 
+        weeklyActiveDays[weekKey].add(workout.date);
+    });
 
     let streak = 0;
 
     const currentWeek = getWeekKey(new Date());
-    const weeks = Object.keys(weeklyWorkouts).sort().reverse();
+    const weeks = Object.keys(weeklyActiveDays).sort().reverse();
 
     for (const week of weeks) {
 
@@ -108,13 +116,12 @@ export default function MetricsDashboard({ viewWorkouts }) {
             continue;
         }
 
-        if (weeklyWorkouts[week] >= 3) {
+        if (weeklyActiveDays[week].size >= 3) {
             streak++;
         } else {
             break;
         }
     }
-
 
     // -----------------------------
     // Monthly Workout Frequency
@@ -203,7 +210,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
                         <div className="metric-stat-card">
                             <span className="card-label">Consistency Streak</span>
                             <div className="card-value">🔥 {streak} <span>weeks</span></div>
-                            <p className="metrics-subtitle">3+ workouts per week</p>
+                            <p className="metrics-subtitle">3+ Active Days Per Week</p>
                         </div>
                     </div>
 

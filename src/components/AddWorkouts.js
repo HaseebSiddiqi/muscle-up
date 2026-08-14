@@ -1,6 +1,9 @@
 import { useState, useEffect, Fragment, useRef } from "react";
 import { apiFetch } from "./apiClient.js";
+import { useUnits } from "../contexts/unitContext";
+
 export default function Add_workouts({ selectedWorkout, onSuccess }) {
+    const {weightUnit, distanceUnit, milesToKm,  lbsToKg,  convertWorkoutToSave} = useUnits();
 
     const [newWorkout, setNewWorkout] = useState(null);
     const [feedback, setFeedback] = useState("");
@@ -181,10 +184,16 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
     const saveWorkout = async (duration) => {
 
-        const workoutToSave = {
+        const workout = {
             ...newWorkout,
             duration
         };
+        const workoutToSave = convertWorkoutToSave(
+            workout, 
+            distanceUnit,
+            weightUnit
+        )
+
         await apiFetch("https://workouttracker-production-4d3e.up.railway.app/workoutLogs", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -275,17 +284,15 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
         }));
     };
 
+    const handleNumberInput = (value, max, previousValue) => {
+    if (value === "") return "";
 
-    const handleNumberInput = (value, max) => {
-        if (value === "") return "";
+    if (!/^\d*\.?\d{0,1}$/.test(value)) {
+        return previousValue;
+    }
 
-        if (!/^\d+$/.test(value)) {
-            return "";
-        }
-
-        return Math.min(max, Math.max(0, Number(value)));
-    };
-
+    return Math.min(max, Math.max(0, Number(value)));
+};
 
     return (
 
@@ -384,6 +391,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                             <div className="inputWithUnit">
                                                                 <input
                                                                     type="number"
+                                                                    className="no-spinner"
                                                                     value={exercise.duration ?? ""}
                                                                     placeholder={prevExercise?.duration ?? ""}
                                                                     onKeyDown={(e) => {
@@ -411,9 +419,18 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                             <div className="inputWithUnit">
                                                                 <input
                                                                     type="number"
+                                                                    className="no-spinner"
                                                                     step="0.1"
                                                                     value={exercise.distance ?? ""}
-                                                                    placeholder={prevExercise?.distance ?? ""}
+                                                                    placeholder={
+                                                                        distanceUnit === "km"
+                                                                            ? prevExercise?.distance != null
+                                                                                ? milesToKm(prevExercise.distance).toFixed(2)
+                                                                                : ""
+                                                                            : prevExercise?.distance != null
+                                                                                ? prevExercise.distance.toFixed(2)
+                                                                                : ""
+                                                                    }
                                                                     onKeyDown={(e) => {
                                                                         if (["e", "E", "+", "-"].includes(e.key)) {
                                                                             e.preventDefault();
@@ -441,12 +458,13 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                         }));
                                                                     }}
                                                                 />
-                                                                <span className="unit">miles</span>
+                                                                <span className="unit">{distanceUnit}</span>
                                                             </div>
 
                                                             <div className="inputWithUnit">
                                                                 <input
                                                                     type="number"
+                                                                    className="no-spinner"
                                                                     value={exercise.calories ?? ""}
                                                                     placeholder={prevExercise?.calories ?? ""}
                                                                     onKeyDown={(e) => {
@@ -485,9 +503,16 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                 <input
                                                                                     type="number"
                                                                                     value={set.weight}
-                                                                                    placeholder={prevSet?.weight}
+                                                                                    placeholder={
+                                                                                        weightUnit === "kg"
+                                                                                            ? prevSet?.weight != null && prevSet.weight !== ""
+                                                                                                ? Number(lbsToKg(prevSet.weight).toFixed(1))
+                                                                                                : undefined
+                                                                                            : prevSet?.weight != null && prevSet.weight !== ""
+                                                                                                ? Number(prevSet.weight.toFixed(1))
+                                                                                                : undefined}
                                                                                     onKeyDown={(e) => {
-                                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
+                                                                                        if (["e", "E", "+", "-"].includes(e.key)) {
                                                                                             e.preventDefault();
                                                                                         }
                                                                                     }}
@@ -501,7 +526,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                 />
                                                                                 {showUnits &&
                                                                                     <span className="unit">
-                                                                                        lbs
+                                                                                        {weightUnit}
                                                                                     </span>
                                                                                 }
                                                                             </div>

@@ -10,7 +10,7 @@ import Landing from "./pages/Landing";
 function App() {
   return (
     <>
-      
+
 
       <div>
 
@@ -19,7 +19,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-       
+
           <Route path="*" element={<NoPage />} />
         </Routes>
 

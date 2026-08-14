@@ -1,17 +1,29 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
-
+import { useUnits } from "../contexts/unitContext";
 import { apiFetch } from "./apiClient.js";
 
 export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey }) {
 
+    const {weightUnit, distanceUnit, milesToKm, lbsToKg, convertWorkout, convertWorkoutToSave} = useUnits();
     const [viewCalender, updateCalender] = useState(true);
     const [currentDate, setDate] = useState(null);
     const [feedback, setFeedback] = useState("");
     const [editingWorkoutId, setEditingWorkoutId] = useState(null);
     const [editWorkouts, setEditWorkouts] = useState(null);
 
+
+  
+    const startEditing = (workout) => {
+
+        const copy = convertWorkout(workout, distanceUnit, weightUnit);
+
+        setEditWorkouts(copy);
+    };
+
     const updateWorkout = async (workoutId) => {
+        const workoutToSave = convertWorkoutToSave(editWorkouts, distanceUnit, weightUnit)
+
         await apiFetch(
             `https://workouttracker-production-4d3e.up.railway.app/workoutLogs/${workoutId}`,
             {
@@ -19,19 +31,21 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(editWorkouts)
+                body: JSON.stringify(workoutToSave)
             }
         );
+
         updateWorkouts(prev =>
             prev.map(w =>
                 w.workoutId === workoutId
-                    ? editWorkouts
+                    ? workoutToSave
                     : w
             )
         );
+
         setEditingWorkoutId(null);
         setEditWorkouts(null);
-    }
+    };
 
     const handleDelete = async (workoutId) => {
         await apiFetch(
@@ -233,19 +247,31 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                         }
 
                                                                                         const copy = structuredClone(editWorkouts);
-                                                                                        copy.exercises[exerciseIndex].distance =
-                                                                                            e.target.value === ""
-                                                                                                ? null
-                                                                                                : Math.min(99, Math.max(0, Number(e.target.value)));
+
+                                                                                        if (e.target.value === "") {
+                                                                                            copy.exercises[exerciseIndex].distance = null;
+                                                                                        } else {
+                                                                                            const value = Math.min(
+                                                                                                99,
+                                                                                                Math.max(0, Number(e.target.value))
+                                                                                            );
+
+                                                                                            copy.exercises[exerciseIndex].distance = value;
+                                                                                        }
+
                                                                                         setEditWorkouts(copy);
                                                                                     }}
                                                                                 />
                                                                             ) : (
                                                                                 <div className="inputValue">
-                                                                                    {exercise.distance}
+                                                                                    {exercise.distance != null
+                                                                                        ? distanceUnit === "km"
+                                                                                            ? milesToKm(exercise.distance).toFixed(2)
+                                                                                            : exercise.distance.toFixed(2)
+                                                                                        : ""}
                                                                                 </div>
                                                                             )}
-                                                                            <span className="unit">miles</span>
+                                                                            <span className="unit">{distanceUnit}</span>
                                                                         </div>
 
                                                                         <div className="inputWithUnit">
@@ -317,7 +343,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                                     />
                                                                                                     {showUnits && (
                                                                                                         <span className="unit">
-                                                                                                            lbs
+                                                                                                            {weightUnit}
                                                                                                         </span>
                                                                                                     )}
                                                                                                 </div>
@@ -454,11 +480,16 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                             <>
                                                                                                 <div className="inputWithUnit">
                                                                                                     <div className="inputValue">
-                                                                                                        {set.weight}
+                                                                                                        {set.weight != null 
+                                                                                                        ? weightUnit === "kg"
+                                                                                                            ? Number(lbsToKg(set.weight).toFixed(1))
+                                                                                                            : Number(set.weight.toFixed(1))
+                                                                                                        : ""}
+                                                                                                        
                                                                                                     </div>
                                                                                                     {showUnits && (
                                                                                                         <span className="unit">
-                                                                                                            lbs
+                                                                                                            {weightUnit}
                                                                                                         </span>
                                                                                                     )}
                                                                                                 </div>
@@ -580,25 +611,14 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                             className="addButton"
                                                             onClick={() => {
                                                                 if (editingWorkoutId !== w.workoutId) {
-                                                                    setEditWorkouts(
-                                                                        structuredClone(w)
-                                                                    );
-                                                                    setEditingWorkoutId(
-                                                                        w.workoutId
-                                                                    );
-                                                                }
-                                                                else {
-                                                                    updateWorkout(
-                                                                        w.workoutId
-                                                                    );
+                                                                    setEditingWorkoutId(w.workoutId);
+                                                                    startEditing(w);
+                                                                } else {
+                                                                    updateWorkout(w.workoutId);
                                                                 }
                                                             }}
                                                         >
-                                                            {
-                                                                editingWorkoutId === w.workoutId
-                                                                    ? "Save"
-                                                                    : "Edit"
-                                                            }
+                                                            {editingWorkoutId === w.workoutId ? "Save" : "Edit"}
                                                         </button>
                                                         <button
                                                             className="minusButton"
@@ -634,8 +654,9 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                     >
                         ← Back to Calendar
                     </button>
-                </div>
-            )}
+                </div >
+            )
+            }
 
             {feedback && <h2>{feedback}</h2>}
 

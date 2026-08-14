@@ -3,9 +3,15 @@ require("dotenv").config();
 const authMiddleware = require("./authMiddleware");
 
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand, QueryCommand, DeleteCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, QueryCommand, DeleteCommand, UpdateCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
+const {
+    CognitoIdentityProviderClient,
+    AdminDeleteUserCommand
+} = require("@aws-sdk/client-cognito-identity-provider");
 const rateLimit = require("express-rate-limit");
-
+const cognitoClient = new CognitoIdentityProviderClient({
+    region: process.env.COGNITO_REGION
+});
 const client = new DynamoDBClient({
     region: process.env.AWS_REGION,
     credentials: {
@@ -88,6 +94,57 @@ app.post("/workouts", authMiddleware, async (req, res) => {
     }
 
 });
+
+app.post("/users", authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.sub;
+        const username = req.user.username;
+        const { distance, weight } = req.body;
+
+        const item = {
+            userId,
+            username,
+            distance,
+            weight
+        };
+
+        await db.send(
+            new PutCommand({
+                TableName: "Users",
+                Item: item
+            })
+        );
+
+        res.json({ success: true, item });
+        console.log({ item }, "User preferences updated");
+
+    } catch (error) {
+        console.error("Error updating user preferences:", error);
+        res.status(500).json({ error: "Failed to update user preferences" });
+    }
+});
+
+app.get("/users", authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.sub;
+
+        const result = await db.send(
+            new GetCommand({
+                TableName: "Users",
+                Key: {
+                    userId,
+                },
+            })
+        );
+        res.json(result.Item);
+        console.log({ result }, "Fetching user preferences");
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch user preferences" });
+    }
+})
+
 
 //Get workout types for user
 app.get("/workouts", authMiddleware, async (req, res) => {
@@ -243,4 +300,87 @@ app.patch("/workoutLogs/:workoutId", authMiddleware, async (req, res) => {
         res.status(500).json({ error: "Failed to update workout entry" });
 
     }
+});
+
+app.delete("/deleteAccount", authMiddleware, async (req, res) => {
+    try {
+        const sub = req.user.sub;
+        const username = req.user.username;
+        
+        const resultLog = await db.send(
+            new QueryCommand({
+                TableName: "WorkoutLogs",
+                KeyConditionExpression: "username = :username",
+                ExpressionAttributeValues: {
+                    ":username": username
+                }
+            })
+        );
+        let i = 0;
+        while (i < resultLog.Items.length){
+
+        
+            const item = resultLog.Items[i];
+            await db.send(
+                new DeleteCommand({
+                    TableName: "WorkoutLogs",
+                    Key: {
+                        username: item.username,
+                        workoutId: item.workoutId
+
+                    }
+                })
+            );
+            i++; 
+        }
+
+        const resultType = await db.send(
+            new QueryCommand({
+                TableName: "WorkoutTypes",
+                KeyConditionExpression: "username = :username",
+                ExpressionAttributeValues: {
+                    ":username": username
+                }
+            })
+        );
+        let j = 0;
+        while (j < resultType.Items.length){
+            const item = resultType.Items[j];
+            await db.send(
+                new DeleteCommand({
+                    TableName: "WorkoutTypes",
+                    Key: {
+                        username: item.username,
+                        workoutName: item.workoutName
+                    }
+                })
+            );
+            j++;
+
+        }
+
+        await db.send(
+            new DeleteCommand({
+                TableName: "Users",
+                Key: {
+                    userId: sub
+                }
+            })
+        );
+
+        await cognitoClient.send(
+            new AdminDeleteUserCommand({
+                UserPoolId: process.env.COGNITO_USER_POOL_ID,
+                Username: username
+            })
+        );
+        res.status(200).json({ message: "Account deleted successfully" });
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ err: "Failed to Delete Account" });
+
+    }
+
+
 });
