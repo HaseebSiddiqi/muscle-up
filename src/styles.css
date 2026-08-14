@@ -2132,6 +2132,9 @@ td.exercise-name-cell {
 
     margin-bottom: 25px !important;
 }
+.metrics-chart-container h4{
+    text-align: center;
+}
 
 
 /* Individual Metric Cards */

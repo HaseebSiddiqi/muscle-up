@@ -174,7 +174,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
 
     return (
         <div>
-            <h2>Metrics Dashboard</h2>
+            <h2>Workout Stats</h2>
             {empty ? (
                 <p>No workouts logged yet. Start working out to see your metrics!</p>
             ) : (

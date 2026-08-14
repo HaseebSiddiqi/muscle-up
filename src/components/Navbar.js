@@ -60,10 +60,10 @@ export default function Navbar() {
             fetchUnits();
         }
 
-    }, [user]);
+    }, [user, setWeightUnit, setDistanceUnit]);
     const updateUnits = async (newWeight, newDistance) => {
         try {
-            await apiFetch("http://localhost:5000/users", {
+            await apiFetch("https://workouttracker-production-4d3e.up.railway.app/users", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
