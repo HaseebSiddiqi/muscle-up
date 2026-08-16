@@ -1233,7 +1233,7 @@ td.spanrow2 {
 }
 
 .submitbtn button {
-    font-size: 0.9rem !important;
+    font-size: 1.2rem !important;
     font-weight: 800 !important;
     height: 48px !important;
     margin: 0 !important;
@@ -2036,7 +2036,7 @@ td.exercise-name-cell {
 .form-submit button {
     width: 100%;
     padding: 12px 14px;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.06em;
