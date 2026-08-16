@@ -2043,7 +2043,7 @@ td.exercise-name-cell {
 }
 
 /* Responsive adjustments */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
     .create-workout-form-container {
         margin: 0.5rem;
         border-radius: 8px;
