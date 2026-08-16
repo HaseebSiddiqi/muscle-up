@@ -2066,6 +2066,18 @@ td.exercise-name-cell {
     .exercises-section h3 {
         font-size: 0.85rem;
     }
+
+    .exercise-name-input {
+        font-size: 0.9rem;
+    }
+
+    .exercise-type-select {
+        font-size: 0.9rem;
+    }
+
+    .exercise-selector {
+        width: calc(200% + 12px) !important;
+    }
 }
 
 /* addButton and minusButton base and hover styles moved up to line 1142 */
