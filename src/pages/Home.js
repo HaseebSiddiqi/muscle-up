@@ -105,7 +105,7 @@ export default function Home() {
                         </div>
 
                         <div ref={activeComponent === "create" ? bottomRef : null} className="createWorkout" style={{ display: activeComponent === "create" ? "block" : "none" }}>
-                            <CreateWorkouts onSuccess={refreshWorkouts} />
+                            <CreateWorkouts onSuccess={refreshWorkouts} active = {activeComponent === "create"} />
                         </div>
                     </div>
 

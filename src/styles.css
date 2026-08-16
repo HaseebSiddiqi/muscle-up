@@ -1699,6 +1699,375 @@ td.exercise-name-cell {
     color: var(--text-main);
 }
 
+/* ============================================================================
+   CREATE WORKOUT COMPONENT STYLES
+   (Previously in CreateWorkouts.css - merged into unified stylesheet)
+   ============================================================================ */
+
+.create-workout-form-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 1rem auto;
+    padding: 0;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+
+
+.create-workout-form {
+    padding: 25px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: visible;
+}
+
+/* Workout Name Section */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-section label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.workout-name-input {
+    padding: 10px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #0f172a;
+    background-color: #f8fafc;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.workout-name-input:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.workout-name-input::placeholder {
+    color: #94a3b8;
+}
+
+/* Exercises Section */
+.exercises-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.exercises-section h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0ea5e9;
+}
+
+.exercises-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 14px 8px 14px;
+    margin-bottom: 8px;
+}
+
+.exercises-header span {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: visible;
+}
+
+/* Single Exercise Row */
+.exercise-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    position: relative;
+    overflow: visible;
+}
+
+
+/* Exercise Input Wrapper - contains input and dropdown */
+.exercise-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    overflow: visible;
+    z-index: 20;
+    width: 100%;
+}
+
+.exercise-input-wrapper label {
+    display: none;
+}
+
+.exercise-name-input {
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #0f172a;
+    background-color: white;
+    font-family: inherit;
+    transition: all 0.15s ease;
+    box-sizing: border-box;
+}
+
+.exercise-name-input:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    background-color: #f0f9ff;
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.08);
+}
+
+.exercise-name-input::placeholder {
+    color: #94a3b8;
+}
+
+/* Exercise Type Wrapper */
+.exercise-type-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.exercise-type-wrapper label {
+    display: none;
+}
+
+.exercise-type-select {
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #0f172a;
+    background-color: white;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-sizing: border-box;
+}
+
+.exercise-type-select:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    background-color: #f0f9ff;
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.08);
+}
+
+/* Responsive: Stack exercise type below on smaller screens */
+@media (max-width: 600px) {
+    .exercise-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .exercise-type-wrapper {
+        min-width: unset;
+    }
+}
+
+/* Exercise selector dropdown - keep existing styles */
+.exercise-selector {
+    font-size: 15px;
+    text-align: left;
+    font-weight: 500;
+    max-height: 220px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #cfd6df;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+    margin-top: 5px;
+    padding: 6px 0;
+    position: relative;
+    z-index: 1000;
+    width: calc(200% + 12px);
+}
+
+.exercise-selector h5 {
+    margin: 0;
+    padding: 10px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 1px solid #e1e5ea;
+    background-color: #f5f7fa;
+}
+
+.exercise-selector h5:hover {
+    background-color: #e9edf2;
+}
+
+.exercise-selector h5:active {
+    background-color: #dfe4ea;
+}
+
+.list {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.list:hover {
+    background-color: #f0f3f7;
+}
+
+.list:active {
+    background-color: #e1e6ec;
+}
+
+.exercise-item-name {
+    flex: 1;
+    text-align: left;
+}
+
+.exercise-item-type {
+    font-size: 0.85rem;
+    color: #64748b;
+    text-transform: capitalize;
+    font-weight: 600;
+    padding: 2px 6px;
+    background-color: #f1f5f9;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* Form Controls - Add/Delete buttons */
+.form-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.form-controls .addButton,
+.form-controls .minusButton {
+    padding: 10px 12px !important;
+    font-size: 0.8rem !important;
+    font-weight: 800;
+    border-radius: 6px !important;
+    border: none !important;
+    margin: 0 !important;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.form-controls .addButton {
+    background-color: #22c55e !important;
+    color: white !important;
+}
+
+.form-controls .addButton:hover {
+    background-color: white !important;
+    color: #22c55e !important;
+    filter: none !important;
+}
+
+.form-controls .minusButton {
+    background-color: #ef4444 !important;
+    color: white !important;
+}
+
+.form-controls .minusButton:hover {
+    background-color: white !important;
+    color: #ef4444 !important;
+    filter: none !important;
+}
+
+/* Form Submit Section */
+.form-submit {
+    padding-top: 8px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.form-submit button {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: white;
+    background-color: #f97316;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    box-sizing: border-box;
+}
+
+.form-submit button:hover {
+    background-color: white;
+    color: #f97316;
+}
+
+.form-submit button:active {
+    filter: brightness(0.95);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .create-workout-form-container {
+        margin: 0.5rem;
+        border-radius: 8px;
+    }
+
+    .create-workout-form {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .form-controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .exercise-row {
+        padding: 10px;
+    }
+
+    .form-section label,
+    .exercises-section h3 {
+        font-size: 0.85rem;
+    }
+}
+
 /* addButton and minusButton base and hover styles moved up to line 1142 */
 
 

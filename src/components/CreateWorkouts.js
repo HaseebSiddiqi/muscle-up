@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "./apiClient.js";
 import exerciseList from "../data/exerciseList.js";
+import "../styles.css";
 
-export default function Create_workouts({ onSuccess }) {
+export default function Create_workouts({ onSuccess, active }) {
 
-   
+
     const [workouts, setWorkouts] = useState([]);
     const [dropDown, setDropDown] = useState(null);
     const [muscleGroup, setMuscleGroup] = useState(null);
@@ -15,6 +16,18 @@ export default function Create_workouts({ onSuccess }) {
 
     const [feedback, setFeedback] = useState("");
 
+    useEffect(() => {
+        if (active) {
+            setDropDown(null);
+            setMuscleGroup(null);
+            setWorkoutNameInput("");
+            setExercises([
+                { name: "", type: "weight_reps" },
+                { name: "", type: "weight_reps" },
+                { name: "", type: "weight_reps" }
+            ]);
+        }
+    }, [active]);
 
     useEffect(() => {
 
@@ -80,38 +93,28 @@ export default function Create_workouts({ onSuccess }) {
     return (
         <>
             {feedback && <h2>{feedback}</h2>}
-            <div className="table-container">
-                <h2>Create Workout Type</h2>
-                <table className="workout-table create-workout-table">
+            
+                <form className="create-workout-form">
+                    <div className="form-section">
+                        <h2>Create Workout</h2>
+                        <input
+                            value={workoutNameInput}
+                            maxLength={25}
+                            onChange={e => setWorkoutNameInput(e.target.value)}
+                            className="workout-name-input"
+                            placeholder="Workout Name…"
+                        />
+                    </div>
 
-                    <tbody>
-                        <tr>
-                            <td className="inputCell create-name-cell" colSpan={4}>
-                                    <input
-                                        value={workoutNameInput}
-                                        maxLength={20}
-                                        onChange={e => setWorkoutNameInput(e.target.value)}
-                                        className="inputText"
-                                        placeholder="Workout Name…"
-                                    />
-                                    
-                         
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="NewWorkoutType" colSpan={2}>Exercises</th>
-                            <th className="NewWorkoutType" colSpan={2}>Exercise Type</th>
-
-                        </tr>
-                    
-
-                        {exercises.map((exercise, i) => (
-                            <tr key={i}>
-                                <td className="inputCell" colSpan={2}>
-                                    <div                                         
-                                    onFocus={() => {setDropDown(i); setMuscleGroup(null);}}
-                                   
-                                    > 
+                    <div className="exercises-section">
+                        <h3>Exercises</h3>
+                        <div className="exercises-list">
+                            {exercises.map((exercise, i) => (
+                                <div key={i} className="exercise-row">
+                                    <div className="exercise-input-wrapper"
+                                        onFocus={() => {setDropDown(i); setMuscleGroup(null);}}
+                                    >
+                                        <label>Exercise Name</label>
                                         <input
                                             value={exercise.name}
                                             maxLength={20}
@@ -122,7 +125,7 @@ export default function Create_workouts({ onSuccess }) {
                                                 setDropDown(null);
                                                 setMuscleGroup(null);
                                             }}
-                                            className="inputText"
+                                            className="exercise-name-input"
                                             placeholder={`Exercise ${i + 1}…`}
                                         />
                                         {dropDown === i &&(
@@ -157,53 +160,45 @@ export default function Create_workouts({ onSuccess }) {
                                             )
                                         )}
                                     </div>
-                                   
-                                </td>
-                                
-                                <td className="inputCell" colSpan={2}>
-                                    <select
-                                        value={exercise.type}
-                                        maxLength={20}
-                                        onChange={e => {
-                                            const newExercises = [...exercises];
-                                            newExercises[i].type = e.target.value;
-                                            setExercises(newExercises);
-                                        }}
-                                        className="inputText">
 
-                                        <option value="weight_reps">Weight + Reps </option>
-                                        <option value="reps">Reps</option>
-                                        <option value="time">Duration (mm:ss)</option>
-                                        <option value="cardio">Cardio</option>
-                                    </select>
+                                    <div className="exercise-type-wrapper">
+                                        <label>Exercise Type</label>
+                                        <select
+                                            value={exercise.type}
+                                            onChange={e => {
+                                                const newExercises = [...exercises];
+                                                newExercises[i].type = e.target.value;
+                                                setExercises(newExercises);
+                                            }}
+                                            className="exercise-type-select">
 
-                                </td>
-
-
-                            </tr>
-                        ))}
-                        <tr>
-                            <td colSpan={4} className="controlsCell">
-                                <div className="SetControls">
-                                    <button className="addButton"
-                                        onClick={() => setExercises(prev => prev.length < 10 ? [...prev, { name: "", type: "weight_reps" }] : prev)}>
-                                        Add Exercise
-                                    </button>
-                                    <button className="minusButton"
-                                        onClick={() => setExercises(prev => prev.length > 1 ? prev.slice(0, -1) : prev)}>
-                                        Delete Exercise
-                                    </button>
+                                            <option value="weight_reps">Weight + Reps </option>
+                                            <option value="reps">Reps</option>
+                                            <option value="time">Duration (mm:ss)</option>
+                                            <option value="cardio">Cardio</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className='submitbtn' colSpan={4}>
-                                <button onClick={newWorkout}>Submit</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="form-controls">
+                        <button type="button" className="addButton"
+                            onClick={() => setExercises(prev => prev.length < 10 ? [...prev, { name: "", type: "weight_reps" }] : prev)}>
+                            ADD EXERCISE
+                        </button>
+                        <button type="button" className="minusButton"
+                            onClick={() => setExercises(prev => prev.length > 1 ? prev.slice(0, -1) : prev)}>
+                            DELETE EXERCISE
+                        </button>
+                    </div>
+
+                    <div className="form-submit">
+                        <button type="button" onClick={newWorkout}>Submit</button>
+                    </div>
+                </form>
+            
 
 
 
