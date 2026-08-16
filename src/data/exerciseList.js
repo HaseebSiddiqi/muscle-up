@@ -99,7 +99,7 @@ const exerciseList = {
             { name: "Ab Wheel Rollout", type: "reps" }
         ],
 
-        Cardio: [
+        Cardio : [
             { name: "Treadmill", type: "cardio" },
             { name: "Walking", type: "cardio" },
             { name: "Running", type: "cardio" },

@@ -131,7 +131,7 @@ export default function Create_workouts({ onSuccess, active }) {
                                         {dropDown === i &&(
                                             muscleGroup === null ? (
                                                 <div className="exercise-selector">
-                                                    <h5 onClick={()=> {setDropDown(null);}}>← Select Muscle Group</h5>
+                                                    <h5 onClick={()=> {setDropDown(null);}}>← Select Category </h5>
                                                     {Object.keys(exerciseList).map(group => (
                                                         <div className="list" onClick={()=> setMuscleGroup(group)}>
                                                             {group}

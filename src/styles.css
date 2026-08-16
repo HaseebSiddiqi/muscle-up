@@ -1190,7 +1190,7 @@ td.spanrow2 {
 
 .SetControls button {
     flex: 1;
-    font-size: 0.9rem !important;
+    font-size: 1rem !important;
     font-weight: 800 !important;
     padding: 12px;
     margin: 0;
