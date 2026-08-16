@@ -1888,13 +1888,20 @@ td.exercise-name-cell {
 /* Responsive: Stack exercise type below on smaller screens */
 @media (max-width: 600px) {
     .exercise-row {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 10px;
-        padding: 14px;
     }
 
+    .exercise-input-wrapper,
     .exercise-type-wrapper {
-        min-width: unset;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .exercise-name-input,
+    .exercise-type-select {
+        width: 100%;
+        box-sizing: border-box;
     }
 }
 
