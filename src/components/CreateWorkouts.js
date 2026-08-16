@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "./apiClient.js";
+import exerciseList from "../data/exerciseList.js";
 
 export default function Create_workouts({ onSuccess }) {
 
-
+   
     const [workouts, setWorkouts] = useState([]);
+    const [dropDown, setDropDown] = useState(null);
+    const [muscleGroup, setMuscleGroup] = useState(null);
 
     const [workoutNameInput, setWorkoutNameInput] = useState("");
 
@@ -84,13 +87,15 @@ export default function Create_workouts({ onSuccess }) {
                     <tbody>
                         <tr>
                             <td className="inputCell create-name-cell" colSpan={4}>
-                                <input
-                                    value={workoutNameInput}
-                                    maxLength={20}
-                                    onChange={e => setWorkoutNameInput(e.target.value)}
-                                    className="inputText"
-                                    placeholder="Workout Name…"
-                                />
+                                    <input
+                                        value={workoutNameInput}
+                                        maxLength={20}
+                                        onChange={e => setWorkoutNameInput(e.target.value)}
+                                        className="inputText"
+                                        placeholder="Workout Name…"
+                                    />
+                                    
+                         
                             </td>
                         </tr>
                         <tr>
@@ -98,22 +103,63 @@ export default function Create_workouts({ onSuccess }) {
                             <th className="NewWorkoutType" colSpan={2}>Exercise Type</th>
 
                         </tr>
+                    
 
                         {exercises.map((exercise, i) => (
                             <tr key={i}>
                                 <td className="inputCell" colSpan={2}>
-                                    <input
-                                        value={exercise.name}
-                                        maxLength={20}
-                                        onChange={e => {
-                                            const newExercises = [...exercises];
-                                            newExercises[i].name = e.target.value;
-                                            setExercises(newExercises);
-                                        }}
-                                        className="inputText"
-                                        placeholder={`Exercise ${i + 1}…`}
-                                    />
+                                    <div                                         
+                                    onFocus={() => {setDropDown(i); setMuscleGroup(null);}}
+                                   
+                                    > 
+                                        <input
+                                            value={exercise.name}
+                                            maxLength={20}
+                                            onChange={e => {
+                                                const newExercises = [...exercises];
+                                                newExercises[i].name = e.target.value;
+                                                setExercises(newExercises);
+                                                setDropDown(null);
+                                                setMuscleGroup(null);
+                                            }}
+                                            className="inputText"
+                                            placeholder={`Exercise ${i + 1}…`}
+                                        />
+                                        {dropDown === i &&(
+                                            muscleGroup === null ? (
+                                                <div className="exercise-selector">
+                                                    <h5 onClick={()=> {setDropDown(null);}}>← Select Muscle Group</h5>
+                                                    {Object.keys(exerciseList).map(group => (
+                                                        <div className="list" onClick={()=> setMuscleGroup(group)}>
+                                                            {group}
+                                                        </div>
+                                                    ))}
+                                                    
+                                                </div>
+                                                
+                                            ) : (
+                                            
+                                                <div className="exercise-selector"> 
+                                                    <h5 onClick={()=> {setMuscleGroup(null);}}> ← Select Exercise</h5>
+                                                    {exerciseList[muscleGroup].map(exercise => (
+                                                    <div className="list" onClick={() => {
+                                                        const newExercises = [...exercises];
+                                                        newExercises[i].name = exercise.name;
+                                                        newExercises[i].type = exercise.type;
+                                                        setExercises(newExercises);
+                                                        setDropDown(null);
+                                                        setMuscleGroup(null);
+                                                    }}>
+                                                        {exercise.name}
+                                                    </div>
+                                                    ))}</div>
+
+                                            )
+                                        )}
+                                    </div>
+                                   
                                 </td>
+                                
                                 <td className="inputCell" colSpan={2}>
                                     <select
                                         value={exercise.type}

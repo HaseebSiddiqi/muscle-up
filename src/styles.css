@@ -1825,6 +1825,53 @@ td.exercise-name-cell {
     border-bottom: none;
 }
 
+.exercise-selector {
+    font-size: 15px;
+    text-align: left;
+    font-weight: 500;
+    max-height: 220px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #cfd6df;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+    margin-top: 5px;
+    padding: 6px 0;
+    position: relative;
+    z-index: 10;
+}
+
+.exercise-selector h5 {
+    margin: 0;
+    padding: 10px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 1px solid #e1e5ea;
+    background-color: #f5f7fa;
+}
+
+.exercise-selector h5:hover {
+    background-color: #e9edf2;
+}
+
+.exercise-selector h5:active {
+    background-color: #dfe4ea;
+}
+
+.list {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.list:hover {
+    background-color: #f0f3f7;
+}
+
+.list:active {
+    background-color: #e1e6ec;
+}
 /* Exercises cell — expands freely, wraps when table hits container edge */
 .workout-table td.exercises-td {
     white-space: normal;

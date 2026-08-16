@@ -85,8 +85,11 @@ export function UnitProvider({ children }) {
                 const res = await apiFetch("https://workouttracker-production-4d3e.up.railway.app/users");
                 const data = await res.json();
 
-                if (data) {
+                if (data.weight != null){
                     setWeightUnit(data.weight);
+                }
+
+                if (data.distance != null){
                     setDistanceUnit(data.distance);
                 }
             }
