@@ -73,7 +73,7 @@ export default function VerifyAccount({ username, password, onSuccess, onBack })
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        workoutName: "Home Full Body",
+                        workoutName: "Calisthenics",
                         exercises: [
                             { name: "Push Ups", type: "reps" },
                             { name: "Pull Ups", type: "reps" },
