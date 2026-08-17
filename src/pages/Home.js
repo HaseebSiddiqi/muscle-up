@@ -6,6 +6,7 @@ import AddWorkouts from "../components/AddWorkouts";
 import ViewWorkouts from "../components/ViewWorkouts";
 import WorkoutTypes from "../components/WorkoutTypes";
 import MetricsDashboard from "../components/MetricsDashboard";
+import UserStats from "../components/UserStats.js";
 import { apiFetch } from "../components/apiClient.js";
 
 
@@ -115,6 +116,9 @@ export default function Home() {
                             setActiveComponent={setActiveComponent}
                             refreshKey={refreshKey}
                         />
+                    </div>
+                    <div className="userStats">
+                        <UserStats></UserStats>
                     </div>
 
                 </div>

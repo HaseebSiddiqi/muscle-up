@@ -384,3 +384,53 @@ app.delete("/deleteAccount", authMiddleware, async (req, res) => {
 
 
 });
+
+
+app.post("/weightTable", authMiddleware, async (req, res) => {
+    try {
+        const username = req.user.username;
+        const { date, weight } = req.body;
+
+        const item = {
+            username,
+            date,
+            weight
+        };
+
+        await db.send(
+            new PutCommand({
+                TableName: "WeightTable",
+                Item: item
+            })
+        );
+
+        res.json({ success: true, item });
+        console.log({ item }, "User Weight Logged");
+
+    } catch (error) {
+        console.error("Error Logging Weight:", error);
+        res.status(500).json({ error: "Failed to log weight" });
+    }
+});
+
+app.get("/weightTable", authMiddleware, async (req, res) => {
+    try {
+        const username = req.user.username;
+
+        const result = await db.send(
+            new QueryCommand({
+                TableName: "WeightTable",
+                KeyConditionExpression: "username = :username",
+                ExpressionAttributeValues:{
+                    ":username": username
+                }
+            })
+        );
+        res.json(result.Items);
+        console.log({ result }, "Fetching user weight entries");
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch user weight entries" });
+    }
+})

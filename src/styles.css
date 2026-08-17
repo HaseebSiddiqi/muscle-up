@@ -929,6 +929,9 @@ td.spanrow2 {
         box-sizing: border-box;
 
     }
+    .userStats{
+        order: 5;
+    }
    
 }
 
@@ -2041,7 +2044,7 @@ td.exercise-name-cell {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: white;
-    background-color: #f97316;
+    background-color: var(--primary);
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -2051,7 +2054,7 @@ td.exercise-name-cell {
 
 .form-submit button:hover {
     background-color: white;
-    color: #f97316;
+    color: var(--primary);
 }
 
 .form-submit button:active {
@@ -2377,7 +2380,114 @@ td.exercise-name-cell {
     align-self: start;
 }
 
+.userStats{
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--drop-shadow);
+    padding: 30px;
+    border: 2px solid #e2e8f0;
+    margin: 15px auto;
+    width: 100%;
+    max-width: 813px;
+    box-sizing: border-box;
+    justify-self: center;
+    height: fit-content;
+    align-self: start;
+}
 
+.userStats h2 {
+    font-size: 1.6rem !important;
+    font-weight: 800 !important;
+    color: var(--text-main) !important;
+
+    margin-top: 0 !important;
+    margin-bottom: 25px !important;
+
+    border-bottom: 2px solid #f1f5f9 !important;
+    padding-bottom: 12px !important;
+
+    text-align: center !important;
+}
+
+.WeightDisplay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 20px;
+    gap: 8px;
+}
+
+.weightNumber {
+    width: 160px;
+    border: none;
+    outline: none;
+    background: transparent;
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    color: #0f172a;
+    font-family: inherit;
+    padding: 5px;
+}
+
+/* Remove number input arrows */
+.weightNumber::-webkit-inner-spin-button,
+.weightNumber::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.weightNumber[type="number"] {
+    appearance: textfield;
+}
+
+.weightNumber::placeholder {
+    color: #94a3b8;
+    font-size: 3rem;
+    font-weight: 500;
+}
+.weightInput {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.weightInput span {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+
+.weightNumber:focus {
+    outline: none;
+}
+
+.WeightDisplay label {
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.weightSubmit {
+    margin-top: 10px;
+    padding: 12px 28px;
+    
+    border: none;
+    border-radius: 12px;
+    background-color: var(--primary);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.weightSubmit:hover {
+    background-color: white;
+    color: var(--primary);
+    
+}
 
 @media (min-width: 769px) {
     .pageH {
@@ -2417,6 +2527,9 @@ td.exercise-name-cell {
     .workoutForms {
         margin-top: 0;
         order: 2;
+    }
+    .userStats{
+        order: 3;
     }
 
     .dashboard {
@@ -2676,6 +2789,41 @@ td.exercise-name-cell {
     margin-bottom: 15px !important;
 
     font-weight: 500 !important;
+}
+
+.distributionGrapButtonRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    margin-bottom: 25px;
+    padding: 0 10px;
+    flex-wrap: wrap;
+}
+
+.distributionGraphButton {
+    padding: 7px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    background: #f8fafc;
+    color: #64748b;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.distributionGraphButton:hover {
+    background: #f1f5f9;
+    border-color: var(--secondary);
+    color: var(--secondary);
+}
+
+.distributionGraphButton:active {
+    transform: scale(0.97);
 }
 
 /* =========================

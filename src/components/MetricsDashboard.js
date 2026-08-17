@@ -6,6 +6,8 @@ import { useUnits } from "../contexts/unitContext";
 export default function MetricsDashboard({ viewWorkouts }) {
     const {distanceUnit} = useUnits();
     const [useMiles, setUseMiles] = useState(distanceUnit === "miles");
+    const [selectedPeriod, setSelectedPeriod] = useState("lifetime");
+
     useEffect(() => {
         setUseMiles(distanceUnit === "miles");
     }, [distanceUnit]);
@@ -63,8 +65,39 @@ export default function MetricsDashboard({ viewWorkouts }) {
     // -----------------------------
     // Workout Type Distribution
     // -----------------------------
+    let distribution = viewWorkouts; 
+    if (selectedPeriod === "yearly"){
+        distribution = viewWorkouts.filter(workout => {
+            const workoutDate = new Date(workout.date).getFullYear();
+            const currentYear = new Date().getFullYear();
+            return workoutDate === currentYear;
+        });
 
-    const workoutsByType = viewWorkouts.reduce((acc, workout) => {
+    }
+
+    if (selectedPeriod === "quarter"){
+        distribution = viewWorkouts.filter(workout => {
+            const date = new Date(workout.date);
+            const today = new Date();
+
+            const workoutDate = date.getFullYear() * 12 + date.getMonth();
+            const currentMonth = today.getFullYear() * 12 + today.getMonth();
+            return currentMonth - workoutDate <= 3 ;
+        });
+    }
+
+       if (selectedPeriod === "month"){
+        distribution = viewWorkouts.filter(workout => {
+            const date = new Date(workout.date);
+            
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - 30);
+            return date >= cutoffDate;
+               
+        });
+    }
+
+    const workoutsByType = distribution.reduce((acc, workout) => {
         acc[workout.workoutName] = (acc[workout.workoutName] || 0) + 1;
         return acc;
     }, {});
@@ -241,6 +274,12 @@ export default function MetricsDashboard({ viewWorkouts }) {
                                     <Legend />
                                 </PieChart>
                             </ResponsiveContainer>
+                        </div>
+                         <div className="distributionGrapButtonRow"> 
+                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("lifetime")}>Lifetime</button>
+                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("yearly")}>Last Year</button>
+                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("quarter")}>Last 4 Months</button>
+                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("month")}>Last Month</button>
                         </div>
                     </div>
 
