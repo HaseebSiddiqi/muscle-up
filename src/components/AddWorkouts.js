@@ -97,7 +97,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
             })
 
         });
-    }, [selectedWorkout, viewWorkouts]);
+    }, [selectedWorkout, viewWorkouts, getLocalDate]);
 
     useEffect(() => {
         const fetchWorkouts = async () => {

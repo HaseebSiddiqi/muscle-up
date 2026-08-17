@@ -148,7 +148,7 @@ export default function UserStats() {
             </div>
 
             <div className="metrics-chart-container">
-                <h4>Last 30 days</h4>
+                <h4>Weight Over Time</h4>
                 <div style={{ width: '100%', height: 250 }}>
                     <ResponsiveContainer>
                         <AreaChart data={graphData}>
