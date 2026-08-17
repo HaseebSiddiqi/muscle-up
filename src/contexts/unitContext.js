@@ -6,7 +6,12 @@ const UnitContext = createContext();
 export function UnitProvider({ children }) {
     const [weightUnit, setWeightUnit] = useState("lbs");
     const [distanceUnit, setDistanceUnit] = useState("miles");
-
+    
+    const getLocalDate = () => {
+        const date = new Date();
+        const currentDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+        return currentDate
+    } 
     const milesToKm = (miles) => {
         return miles * 1.60934;
     };
@@ -113,7 +118,8 @@ export function UnitProvider({ children }) {
                 lbsToKg,
                 kgToLbs,
                 convertWorkout,
-                convertWorkoutToSave
+                convertWorkoutToSave,
+                getLocalDate
             }}
         >
             {children}

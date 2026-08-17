@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { apiFetch } from "./apiClient";
 import { useAuth } from "./AuthContext"
 import { useUnits } from "../contexts/unitContext";
@@ -6,16 +6,15 @@ import {  Tooltip, AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveConta
 
 
 export default function UserStats() {
-
-    const { weightUnit, lbsToKg, kgToLbs } = useUnits();
+    const [selectedPeriod, setSelectedPeriod] = useState("lifetime");
+    const { weightUnit, lbsToKg, kgToLbs, getLocalDate } = useUnits();
     const [currentWeight, setCurrentWeight] = useState(null);
     const [feedback, setFeedback] = useState("")
     const [lastDate, setLastDate] = useState("")
     const [weightData, setWeightData] = useState([]);
     const { user } = useAuth();
 
-    useEffect(() => {
-        const fetchWeight = async () => {
+    const fetchWeight = useCallback(async () => {
             const res = await apiFetch(`https://workouttracker-production-4d3e.up.railway.app/weightTable`);
             const data = await res.json();
             if (data.length > 0) {
@@ -30,21 +29,60 @@ export default function UserStats() {
             }
 
 
-        }
+        },[weightUnit, lbsToKg]);
+
+    useEffect(() => {
+        
         fetchWeight();
-    }, [weightUnit, lbsToKg]);
+    }, [fetchWeight]);
 
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - 30);
-
-    const graphData = weightData
-        .filter(entry => new Date(entry.date) >= cutoffDate)
-        .map(entry => ({
+    let graphData; 
+    if (selectedPeriod === "lifetime") {
+        graphData = weightData.map(entry => ({
             date: entry.date,
             weight: weightUnit === "kg"
                 ? Number(lbsToKg(entry.weight).toFixed(2))
                 : Number(entry.weight)
         }));
+    }
+
+    if (selectedPeriod === "quarter"){
+        graphData = weightData.filter(entry => {
+            const date = new Date(entry.date);
+            const today = new Date();
+
+            const entryDate = date.getFullYear() * 12 + date.getMonth();
+            const currentMonth = today.getFullYear() * 12 + today.getMonth();
+            return currentMonth - entryDate <= 3 ;
+        });
+    }
+
+    if (selectedPeriod === "yearly"){
+        graphData = weightData.filter(entry => {
+            const date = new Date(entry.date);
+            const today = new Date();
+
+            const entryDate = date.getFullYear();
+            const currentYear = today.getFullYear();
+            return currentYear === entryDate;
+        });
+    }
+
+    if (selectedPeriod === "month") {
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - 30);
+        graphData = weightData
+            .filter(entry => new Date(entry.date) >= cutoffDate)
+            .map(entry => ({
+                date: entry.date,
+                weight: weightUnit === "kg"
+                    ? Number(lbsToKg(entry.weight).toFixed(2))
+                    : Number(entry.weight)
+            }));
+    }
+
+
+
 
     const submitWeight = async () => {
 
@@ -53,8 +91,9 @@ export default function UserStats() {
             return;
 
         } else {
-            const currentDate = new Date().toISOString().split("T")[0];
+            
             const username = user.username
+            const currentDate = getLocalDate();
             let weightToSave = currentWeight
             if (weightUnit === "kg") {
                 weightToSave = kgToLbs(currentWeight).toFixed(2);
@@ -71,6 +110,7 @@ export default function UserStats() {
             })
            
             setLastDate(currentDate)
+            fetchWeight()
             setFeedback("Weight Logged")
             setTimeout(()=> {
                 setFeedback("");
@@ -181,6 +221,12 @@ export default function UserStats() {
                             />
                         </AreaChart>
                     </ResponsiveContainer>
+                </div>
+                <div className="distributionGrapButtonRow"> 
+                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("lifetime")}>Lifetime</button>
+                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("yearly")}>Last Year</button>
+                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("quarter")}>Last 4 Months</button>
+                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("month")}>Last Month</button>
                 </div>
             </div>
 

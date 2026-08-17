@@ -3,7 +3,7 @@ import { apiFetch } from "./apiClient.js";
 import { useUnits } from "../contexts/unitContext";
 
 export default function Add_workouts({ selectedWorkout, onSuccess }) {
-    const {weightUnit, distanceUnit, milesToKm,  lbsToKg,  convertWorkoutToSave} = useUnits();
+    const {weightUnit, distanceUnit, milesToKm,  lbsToKg,  convertWorkoutToSave, getLocalDate} = useUnits();
 
     const [newWorkout, setNewWorkout] = useState(null);
     const [feedback, setFeedback] = useState("");
@@ -55,7 +55,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
 
             workoutId: Date.now().toString(),
             workoutName: selectedWorkout?.workoutName,
-            date: new Date().toLocaleDateString("en-CA"),
+            date: getLocalDate(),
             notes: "",
 
 
@@ -320,6 +320,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                     <td className="spanrow2" colSpan={12}>
                                         <input
                                             type="date"
+                                            max = {getLocalDate()}
                                             value={newWorkout.date || ""}
                                             onChange={(e) =>
                                                 setNewWorkout(prev => ({
