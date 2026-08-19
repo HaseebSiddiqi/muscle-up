@@ -2795,8 +2795,15 @@ td.exercise-name-cell {
     max-width: 130px;
     overflow-wrap: break-word;
     word-break: normal;
-}
+    text-align: left;
 
+}
+@media (max-width: 600px) {
+    .legend-text {
+        max-width: 70px;
+  
+    }
+}
 
 .legend-item:nth-child(4n + 1) {
     justify-self: start;
