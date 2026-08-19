@@ -1395,6 +1395,9 @@ td.spanrow2 {
     align-items: center;
     justify-content: center;
     transition: transform 0.15s ease;
+    margin-left: 15px;
+
+
 }
 
 .workout-item-delete:hover {
@@ -1405,16 +1408,32 @@ td.spanrow2 {
     position: absolute;
     bottom: calc(100% + 10px);
     left: 0;
+    right: 0;
     z-index: 100;
     background-color: #f8fafc;
     border: 2px solid #e2e8f0;
     border-radius: 12px;
-    padding: 3px 12px;
+    padding: 3px 16px !important;
+
+}
+.Colour-Picker label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.colour-picker .colour-square {
+    flex-shrink: 0;
+
 }
 
 .colour-picker:hover {
     border-color: var(--secondary);
     background-color: #f0f9ff;
+}
+.colour-picker .Colour-Row {
+    gap: 23px;
 }
 @media (max-width: 768px) {
 
@@ -1429,6 +1448,7 @@ td.spanrow2 {
     }
 
     .workout-item {
+
         width: 100%;
     }
 }
@@ -2744,17 +2764,34 @@ td.exercise-name-cell {
 
 .legend {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px 30px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px 10px;
     align-items: center;
 }
 
 .legend-item {
-    margin-left: 30px;
-    margin-top: 0;
+    margin: 0;
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
+    max-width: 100%;
+
+}
+.legend-text {
+    max-width: 130px;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+
+.legend-item:nth-child(4n + 1) {
+    justify-self: start;
+    transform: translateX(30px);
+}
+
+.legend-item:not(:nth-child(4n + 1)) {
+    justify-self: center;
 }
 
 .legend-hint {

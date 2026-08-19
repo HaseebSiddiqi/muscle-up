@@ -115,6 +115,7 @@ export default function Home() {
                             onSelectWorkout={setSelectedWorkout}
                             setActiveComponent={setActiveComponent}
                             refreshKey={refreshKey}
+                            setRefreshKey={setRefreshKey}
                         />
                     </div>
                     <div className="userStats">

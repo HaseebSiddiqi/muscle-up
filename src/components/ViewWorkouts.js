@@ -131,6 +131,24 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
             })
             .map(workout => [workout.workoutName, workout])
     ).values()];
+
+   const grouped = loggedWorkoutTypes.reduce((groups, workout) => {
+
+        const workoutType = workoutTypes.find(
+            type => type.workoutName === workout.workoutName
+        );
+
+        const colour = workoutType?.colour || "blue";
+
+        if (!groups[colour]) {
+            groups[colour] = [];
+        }
+
+        groups[colour].push(workout.workoutName);
+
+        return groups;
+
+    }, {});
     return (
         <>
             {viewCalender ? (
@@ -192,20 +210,17 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                 <span className="colour-square orange-square"></span>
                                 No Session
                             </p>
-                            
-                             {loggedWorkoutTypes.map(workout => {
-                                const workoutType = workoutTypes.find(
-                                    type => type.workoutName === workout.workoutName
+                             
+                             {Object.entries(grouped).map(([colour, workoutNames]) => {
+                                return(
+                                <p className="legend-item" key={colour}>
+                                    <span className={`colour-square ${colour}-square`}></span>
+                                    <span className="legend-text">
+                                        {workoutNames.join(", ")}
+                                    </span>
+                                </p>
                                 );
-
-                                const colour = workoutType?.colour || "blue";
-
-                                return (
-                                    <p className="legend-item" key={workout.workoutName}>
-                                        <span className={`colour-square ${colour}-square`}></span>
-                                        {workout.workoutName}
-                                    </p>
-                                );
+                              
                             })}
                             <p className="legend-hint">
                                 Click Active Days To View Logged Sessions

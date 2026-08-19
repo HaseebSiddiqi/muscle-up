@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { apiFetch } from "./apiClient.js";
 
-export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refreshKey }) {
+export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refreshKey, setRefreshKey }) {
     const [workouts, setWorkouts] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [colourPicker, setColourPicker] = useState(null);
@@ -98,6 +98,7 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                     : w
             )
         );
+        setRefreshKey(prev => prev + 1);
     }
 
     return (

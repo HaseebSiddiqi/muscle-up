@@ -186,7 +186,8 @@ export default function Create_workouts({ onSuccess, active }) {
                         </div>
                     </div>
                     <div className="Colour-Picker">
-                        <h3> Pick a Colour</h3>
+                         <label>Select A Colour</label>
+
                         <p className="Colour-Row"> 
                             <span className={`colour-square blue-square ${selectedColour === "blue" ? "selected" : ""}`}    onClick = {() => setSelectedColour("blue")}></span> 
                             <span className={`colour-square red-square ${selectedColour === "red" ? "selected" : ""}`}    onClick = {() => setSelectedColour("red")}></span> 
