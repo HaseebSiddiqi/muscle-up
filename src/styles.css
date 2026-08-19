@@ -16,11 +16,14 @@
     --table-header: #d2d5d8;
     --success: #22c55e;
     /* green */
-    --success-hover: #16a34a;
+  
 
     --danger: #ef4444;
     /* red */
-    --danger-hover: #dc2626;
+    --purple: #a855f7;
+    --yellow: #eab308;
+    --pink: #ec4899;
+    --teal: #14b8a6;
 }
 
 /* Global page styles */
@@ -661,9 +664,7 @@ input[type="date"]:focus {
     transition: background-color 0.2s ease;
 }
 
-.react-calendar__tile:hover {
-    background-color: var(--primary-hover);
-}
+
 
 /* Days outside the current month */
 .react-calendar__month-view__days__day--neighboringMonth {
@@ -705,15 +706,69 @@ input[type="date"]:focus {
 
 /* Day pills */
 .workout-day {
-    background-color: var(--secondary);
+    background-color: var(--primary-colour);
     color: white;
     font-weight: bold;
     border-radius: 15px;
 }
+.workout-day.two-workouts {
+    background: linear-gradient(
+        to bottom right,
+        var(--primary-colour) 50%,
+        var(--secondary-colour) 50%
+    );
+}
+
+.primary-blue {
+    --primary-colour: var(--secondary);
+}
+
+.primary-red {
+    --primary-colour: var(--danger);
+}
+.primary-green {
+    --primary-colour: var(--success);
+}
+.primary-yellow {
+    --primary-colour: var(--yellow);
+}
+.primary-teal {
+    --primary-colour: var(--teal);
+}
+.primary-pink {
+    --primary-colour: var(--pink);
+}
+.primary-purple {
+    --primary-colour: var(--purple);
+}
+
+.secondary-blue {
+    --secondary-colour: var(--secondary);
+}
+
+.secondary-red {
+    --secondary-colour: var(--danger);
+}
+.secondary-green {
+    --secondary-colour: var(--success);
+}
+.secondary-yellow {
+    --secondary-colour: var(--yellow);
+}
+.secondary-teal {
+    --secondary-colour: var(--teal);
+}
+.secondary-pink {
+    --secondary-colour: var(--pink);
+}
+.secondary-purple {
+    --secondary-colour: var(--purple);
+}
 
 .workout-day:hover {
-    background-color: var(--secondary-hover);
-    cursor: pointer;
+    opacity: 0.75;
+    
+
 }
 
 /* Back button - Styled as premium black & white Pill button */
@@ -1346,6 +1401,21 @@ td.spanrow2 {
     transform: scale(1.2);
 }
 
+.colour-picker {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 0;
+    z-index: 100;
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 3px 12px;
+}
+
+.colour-picker:hover {
+    border-color: var(--secondary);
+    background-color: #f0f9ff;
+}
 @media (max-width: 768px) {
 
 
@@ -2600,44 +2670,97 @@ td.exercise-name-cell {
     width: 120px;
 }
 
-.blue-square {
+.Colour-Row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.colour-square {
     display: inline-block;
-    width: 24px;
-    height: 24px;
-    background-color: var(--secondary);
-    border-radius: 3px;
+    width: 26px;
+    height: 26px;
+    border-radius: 5px;
     vertical-align: middle;
-    margin-left: 30px;
-    margin-right: 5px;
+    cursor: pointer;
+
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.colour-square:hover {
+    transform: translateY(-2px) scale(1.08);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.colour-square.selected {
+    transform: scale(1.2);
+    box-shadow: 0 0 5px var(--square-colour);
+}
+
+.blue-square {
+    --square-colour: var(--secondary);
+    background-color: var(--square-colour);
+
+
 }
 
 .orange-square {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    background-color: var(--primary);
-    border-radius: 3px;
-    vertical-align: middle;
-    margin-left: 30px;
-    margin-right: 5px;
+    --square-colour: var(--primary);
+    background-color: var(--square-colour);
+
+}
+
+.purple-square {
+    --square-colour: var(--purple);
+    background-color: var(--square-colour);
+
+}
+
+.pink-square {
+    --square-colour: var(--pink);
+    background-color: var(--square-colour);
+
+}
+
+.red-square {
+    --square-colour: var(--danger);
+    background-color: var(--square-colour);
+}
+.green-square {
+    --square-colour: var(--success);
+    background-color: var(--square-colour);
+}
+
+.yellow-square {
+    --square-colour: var(--yellow);
+    background-color: var(--square-colour);
+}
+
+.teal-square {
+    --square-colour: var(--teal);
+    background-color: var(--square-colour);
 }
 
 .legend {
-    display: flex;
-    flex-direction: column;
-    /* stack items */
-    align-items: flex-start;
-    /* left align */
-    font-size: 14px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 30px;
+    align-items: center;
+}
 
+.legend-item {
+    margin-left: 30px;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .legend-hint {
-
-    font-size: 12px;
-    color: #888;
-    margin: 0;
-    margin-left: 30px;
+    grid-column: 1 / -1;
+    margin: 5px 0 0;
+    text-align: center;
 }
 
 .create-name-cell .inputText {

@@ -9,6 +9,7 @@ export default function Create_workouts({ onSuccess, active }) {
     const [workouts, setWorkouts] = useState([]);
     const [dropDown, setDropDown] = useState(null);
     const [muscleGroup, setMuscleGroup] = useState(null);
+    const [selectedColour, setSelectedColour] = useState("blue");
 
     const [workoutNameInput, setWorkoutNameInput] = useState("");
 
@@ -26,6 +27,7 @@ export default function Create_workouts({ onSuccess, active }) {
                 { name: "", type: "weight_reps" },
                 { name: "", type: "weight_reps" }
             ]);
+            setSelectedColour("blue");
         }
     }, [active]);
 
@@ -65,7 +67,8 @@ export default function Create_workouts({ onSuccess, active }) {
         const workout = {
 
             workoutName: workoutNameInput.trim(),
-            exercises: exercises
+            exercises: exercises,
+            colour: selectedColour
         };
 
         setWorkouts([...workouts, workout]);
@@ -78,11 +81,11 @@ export default function Create_workouts({ onSuccess, active }) {
 
         setWorkoutNameInput("");
         setExercises([{ name: "", type: "weight_reps" }, { name: "", type: "weight_reps" }, { name: "", type: "weight_reps" }]);
-
-        setFeedback("New Workout Type Created!")
+        setSelectedColour("blue");
+        setFeedback("New Workout Type Created!");
         setTimeout(() => {
             setFeedback("");
-        }, 2000)
+        }, 2000);
 
         onSuccess();
 
@@ -181,6 +184,19 @@ export default function Create_workouts({ onSuccess, active }) {
                                 </div>
                             ))}
                         </div>
+                    </div>
+                    <div className="Colour-Picker">
+                        <h3> Pick a Colour</h3>
+                        <p className="Colour-Row"> 
+                            <span className={`colour-square blue-square ${selectedColour === "blue" ? "selected" : ""}`}    onClick = {() => setSelectedColour("blue")}></span> 
+                            <span className={`colour-square red-square ${selectedColour === "red" ? "selected" : ""}`}    onClick = {() => setSelectedColour("red")}></span> 
+                            <span className={`colour-square green-square ${selectedColour === "green" ? "selected" : ""}`}    onClick = {() => setSelectedColour("green")}></span> 
+                            <span className={`colour-square yellow-square ${selectedColour === "yellow" ? "selected" : ""}`}   onClick = {() => setSelectedColour("yellow")}></span> 
+                            <span className={`colour-square teal-square ${selectedColour === "teal" ? "selected" : ""}`}     onClick = {() => setSelectedColour("teal")}></span> 
+                            <span className={`colour-square pink-square ${selectedColour === "pink" ? "selected" : ""}`}    onClick = {() => setSelectedColour("pink")}></span> 
+                            <span className={`colour-square purple-square ${selectedColour === "purple" ? "selected" : ""}`}   onClick = {() => setSelectedColour("purple")}></span> 
+                        </p>
+
                     </div>
 
                     <div className="form-controls">

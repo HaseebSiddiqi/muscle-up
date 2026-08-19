@@ -1,19 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import { useUnits } from "../contexts/unitContext";
 import { apiFetch } from "./apiClient.js";
 
 export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey }) {
 
-    const {weightUnit, distanceUnit, milesToKm, lbsToKg, convertWorkout, convertWorkoutToSave} = useUnits();
+    const { weightUnit, distanceUnit, milesToKm, lbsToKg, convertWorkout, convertWorkoutToSave } = useUnits();
     const [viewCalender, updateCalender] = useState(true);
     const [currentDate, setDate] = useState(null);
     const [feedback, setFeedback] = useState("");
     const [editingWorkoutId, setEditingWorkoutId] = useState(null);
     const [editWorkouts, setEditWorkouts] = useState(null);
+    const [workoutTypes, setWorkoutTypes] = useState([]);
+    const [calendarMonth, setCalendarMonth] = useState(new Date().getMonth());
 
+    useEffect(() => {
+        const fetchWorkouts = async () => {
+            try {
+                const res = await apiFetch(
+                    "https://workouttracker-production-4d3e.up.railway.app/workouts"
+                );
 
-  
+                const data = await res.json();
+                setWorkoutTypes(data.Items || []);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchWorkouts();
+    }, [refreshKey]);
+
     const startEditing = (workout) => {
 
         const copy = convertWorkout(workout, distanceUnit, weightUnit);
@@ -66,12 +83,12 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
 
     const isWorkout = (date) => {
         const dateString = date.toISOString().split("T")[0];
-        return viewWorkouts.some(
+        return viewWorkouts.filter(
             w => w.date === dateString
         );
     }
 
-    
+
     const handleNumberInput = (value, max, previousValue) => {
         if (value === "") return "";
 
@@ -91,7 +108,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
 
         return Math.min(max, Math.max(0, Number(value)));
     };
-   
+
     const updateEditValue = (exerciseIndex, setIndex, field, value, max, decimal = false) => {
         const copy = structuredClone(editWorkouts);
 
@@ -104,6 +121,16 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
 
         setEditWorkouts(copy);
     };
+
+    const loggedWorkoutTypes = [...new Map(
+        viewWorkouts
+            .filter(workout => {
+                const workoutDate = new Date(workout.date + "T00:00:00");
+
+                return workoutDate.getMonth() === calendarMonth;
+            })
+            .map(workout => [workout.workoutName, workout])
+    ).values()];
     return (
         <>
             {viewCalender ? (
@@ -114,33 +141,74 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                             minDetail="month"
                             maxDetail="month"
                             showFixedNumberOfWeeks={true}
+                            onActiveStartDateChange={({ activeStartDate }) => {
+                                setCalendarMonth(activeStartDate.getMonth());
+                            }}
                             onClickDay={(date) => {
-                                if (isWorkout(date)) {
+                                const workouts = isWorkout(date);
+                                if (workouts.length > 0) {
                                     setDate(date);
                                     updateCalender(false);
                                 }
                             }}
                             tileClassName={({ date, view }) => {
-                                if (view === "month" && isWorkout(date)) {
-                                    return "workout-day";
+                                if (view !== "month") {
+                                    return null
                                 }
-                                return null;
+                                const workouts = isWorkout(date);
+
+                                if (workouts.length === 0) {
+                                    return null;
+                                }
+
+                                const primaryType = workoutTypes.find(
+                                    type => type.workoutName === workouts[0].workoutName
+                                );
+
+                                const primary = primaryType?.colour || "blue";
+
+                                let secondary = null;
+
+                                if (workouts.length > 1) {
+                                    const secondaryType = workoutTypes.find(
+                                        type => type.workoutName === workouts[1].workoutName
+                                    );
+
+                                    secondary = secondaryType?.colour || "blue";
+                                }
+
+                                if (secondary) {
+                                    return `workout-day two-workouts primary-${primary} secondary-${secondary}`;
+                                }
+
+                                return `workout-day primary-${primary}`;
                             }}
                         />
                     </div>
 
                     <div className="Calander bottom">
                         <div className="legend">
-                            <p>
-                                <span className="orange-square"></span>
+                            <p className="legend-item">
+                                <span className="colour-square orange-square"></span>
                                 No Session
                             </p>
-                            <p>
-                                <span className="blue-square"></span>
-                                Workout Logged
-                            </p>
+                            
+                             {loggedWorkoutTypes.map(workout => {
+                                const workoutType = workoutTypes.find(
+                                    type => type.workoutName === workout.workoutName
+                                );
+
+                                const colour = workoutType?.colour || "blue";
+
+                                return (
+                                    <p className="legend-item" key={workout.workoutName}>
+                                        <span className={`colour-square ${colour}-square`}></span>
+                                        {workout.workoutName}
+                                    </p>
+                                );
+                            })}
                             <p className="legend-hint">
-                                Click blue days to view details
+                                Click Active Days To View Logged Sessions
                             </p>
                         </div>
                     </div>
@@ -228,7 +296,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                             {editing ? (
                                                                                 <input
                                                                                     type="number"
-                                                                                    step= "1"
+                                                                                    step="1"
                                                                                     onKeyDown={(e) => {
                                                                                         if (["e", "E", "+", "-", "."].includes(e.key)) {
                                                                                             e.preventDefault();
@@ -305,7 +373,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                             {editing ? (
                                                                                 <input
                                                                                     type="number"
-                                                                                    step= "1"
+                                                                                    step="1"
                                                                                     onKeyDown={(e) => {
                                                                                         if (["e", "E", "+", "-", "."].includes(e.key)) {
                                                                                             e.preventDefault();
@@ -516,12 +584,12 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                             <>
                                                                                                 <div className="inputWithUnit">
                                                                                                     <div className="inputValue">
-                                                                                                        {set.weight != null 
-                                                                                                        ? weightUnit === "kg"
-                                                                                                            ? Number(lbsToKg(set.weight).toFixed(1))
-                                                                                                            : Number(set.weight.toFixed(1))
-                                                                                                        : ""}
-                                                                                                        
+                                                                                                        {set.weight != null
+                                                                                                            ? weightUnit === "kg"
+                                                                                                                ? Number(lbsToKg(set.weight).toFixed(1))
+                                                                                                                : Number(set.weight.toFixed(1))
+                                                                                                            : ""}
+
                                                                                                     </div>
                                                                                                     {showUnits && (
                                                                                                         <span className="unit">

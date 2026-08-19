@@ -56,7 +56,7 @@ app.listen(PORT, () => {
 app.post("/workouts", authMiddleware, async (req, res) => {
     try {
         const username = req.user.username;
-        const { workoutName, exercises } = req.body;
+        const { workoutName, exercises, colour } = req.body;
 
         if (
             typeof workoutName !== "string" ||
@@ -75,7 +75,8 @@ app.post("/workouts", authMiddleware, async (req, res) => {
         const item = {
             username,
             workoutName,
-            exercises
+            exercises,
+            colour
         };
 
         await db.send(
