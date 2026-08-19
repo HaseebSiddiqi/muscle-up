@@ -529,7 +529,7 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                                                                                 ? Number(lbsToKg(prevSet.weight).toFixed(1))
                                                                                                 : undefined
                                                                                             : prevSet?.weight != null && prevSet.weight !== ""
-                                                                                                ? Number(prevSet.weight.toFixed(1))
+                                                                                                ? Number(Number(prevSet.weight).toFixed(1))
                                                                                                 : undefined}
                                                                                     onKeyDown={(e) => {
                                                                                         if (["e", "E", "+", "-"].includes(e.key)) {
