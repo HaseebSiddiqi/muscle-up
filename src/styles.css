@@ -1435,6 +1435,19 @@ td.spanrow2 {
 .colour-picker .Colour-Row {
     gap: 23px;
 }
+@media (max-width: 600px) {
+     .workout-item:nth-child(odd) .colour-picker {
+        
+        left: 0;
+        right: auto;
+        width: max-content;
+    }
+     .workout-item:nth-child(even) .colour-picker {
+        left: auto;
+        right: 0;
+        width: max-content;
+    }
+}
 @media (max-width: 768px) {
 
 

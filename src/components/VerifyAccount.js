@@ -36,7 +36,8 @@ export default function VerifyAccount({ username, password, onSuccess, onBack })
                             { name: "Chest Fly", type: "weight_reps" },
                             { name: "Tricep Overhead", type: "weight_reps" },
                             { name: "Lateral Raises", type: "weight_reps" }
-                        ]
+                        ],
+                        colour: "purple"
                     })
                 });
 
@@ -51,7 +52,8 @@ export default function VerifyAccount({ username, password, onSuccess, onBack })
                             { name: "Seated Cable Row", type: "weight_reps" },
                             { name: "Dumbbell Curl", type: "weight_reps" },
                             { name: "Hammer Curl", type: "weight_reps" }
-                        ]
+                        ],
+                        colour: "green"
                     })
                 });
             await apiFetch("https://workouttracker-production-4d3e.up.railway.app/workouts", {
@@ -66,7 +68,9 @@ export default function VerifyAccount({ username, password, onSuccess, onBack })
                             { name: "Calf Raises", type: "weight_reps" },
                             { name: "Decline Sit Ups", type: "weight_reps" },
                             { name: "Planks", type: "time" }
-                        ]
+                        ],
+                        colour: "red"
+
                     })
                 });
             await apiFetch("https://workouttracker-production-4d3e.up.railway.app/workouts", {
@@ -80,7 +84,8 @@ export default function VerifyAccount({ username, password, onSuccess, onBack })
                             { name: "Squats", type: "reps" },
                             { name: "Lunges", type: "reps" },
                             { name: "Planks", type: "time" }
-                        ]
+                        ],
+                        colour: "blue"
                     })
                 });
 
