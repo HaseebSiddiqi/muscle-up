@@ -132,7 +132,7 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
             .map(workout => [workout.workoutName, workout])
     ).values()];
 
-   const grouped = loggedWorkoutTypes.reduce((groups, workout) => {
+    const grouped = loggedWorkoutTypes.reduce((groups, workout) => {
 
         const workoutType = workoutTypes.find(
             type => type.workoutName === workout.workoutName
@@ -210,17 +210,17 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                 <span className="colour-square orange-square"></span>
                                 No Session
                             </p>
-                             
-                             {Object.entries(grouped).map(([colour, workoutNames]) => {
-                                return(
-                                <p className="legend-item" key={colour}>
-                                    <span className={`colour-square ${colour}-square`}></span>
-                                    <span className="legend-text">
-                                        {workoutNames.join(", ")}
-                                    </span>
-                                </p>
+
+                            {Object.entries(grouped).map(([colour, workoutNames]) => {
+                                return (
+                                    <p className="legend-item" key={colour}>
+                                        <span className={`colour-square ${colour}-square`}></span>
+                                        <span className="legend-text">
+                                            {workoutNames.join(", ")}
+                                        </span>
+                                    </p>
                                 );
-                              
+
                             })}
                             <p className="legend-hint">
                                 Click Active Days To View Logged Sessions
@@ -600,10 +600,10 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                                 <div className="inputWithUnit">
                                                                                                     <div className="inputValue">
                                                                                                         {set.weight != null && set.weight !== ""
-    ? weightUnit === "kg"
-        ? Number(lbsToKg(Number(set.weight)).toFixed(1))
-        : Number(Number(set.weight).toFixed(1))
-    : ""}
+                                                                                                            ? weightUnit === "kg"
+                                                                                                                ? Number(lbsToKg(Number(set.weight)).toFixed(1))
+                                                                                                                : Number(Number(set.weight).toFixed(1))
+                                                                                                            : ""}
 
                                                                                                     </div>
                                                                                                     {showUnits && (
