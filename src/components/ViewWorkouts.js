@@ -599,11 +599,11 @@ export default function ViewWorkouts({ viewWorkouts, updateWorkouts, refreshKey 
                                                                                             <>
                                                                                                 <div className="inputWithUnit">
                                                                                                     <div className="inputValue">
-                                                                                                        {set.weight != null
-                                                                                                            ? weightUnit === "kg"
-                                                                                                                ? Number(lbsToKg(set.weight).toFixed(1))
-                                                                                                                : Number(set.weight.toFixed(1))
-                                                                                                            : ""}
+                                                                                                        {set.weight != null && set.weight !== ""
+    ? weightUnit === "kg"
+        ? Number(lbsToKg(Number(set.weight)).toFixed(1))
+        : Number(Number(set.weight).toFixed(1))
+    : ""}
 
                                                                                                     </div>
                                                                                                     {showUnits && (
