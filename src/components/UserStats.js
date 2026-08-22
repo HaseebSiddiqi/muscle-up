@@ -48,15 +48,21 @@ export default function UserStats() {
     }, [fetchWeight]);
 
     let graphData;
+    const formatGraphEntry = entry => {
+        const [year, month, day] = entry.date.split("-").map(Number);
 
-    if (selectedPeriod === "lifetime") {
-        graphData = weightData.map(entry => ({
+        return {
             date: entry.date,
+            timestamp: new Date(year, month - 1, day).getTime(),
             weight:
                 weightUnit === "kg"
                     ? Number(lbsToKg(entry.weight).toFixed(2))
                     : Number(entry.weight)
-        }));
+        };
+    };
+
+    if (selectedPeriod === "lifetime") {
+        graphData = weightData.map(formatGraphEntry);
     }
 
     if (selectedPeriod === "quarter") {
@@ -72,13 +78,7 @@ export default function UserStats() {
 
                 return currentMonth - entryDate <= 3;
             })
-            .map(entry => ({
-                date: entry.date,
-                weight:
-                    weightUnit === "kg"
-                        ? Number(lbsToKg(entry.weight).toFixed(2))
-                        : Number(entry.weight)
-            }));
+            .map(formatGraphEntry);
     }
 
     if (selectedPeriod === "yearly") {
@@ -89,13 +89,7 @@ export default function UserStats() {
 
                 return currentYear === year;
             })
-            .map(entry => ({
-                date: entry.date,
-                weight:
-                    weightUnit === "kg"
-                        ? Number(lbsToKg(entry.weight).toFixed(2))
-                        : Number(entry.weight)
-            }));
+            .map(formatGraphEntry);
     }
 
     if (selectedPeriod === "month") {
@@ -104,23 +98,14 @@ export default function UserStats() {
 
         graphData = weightData
             .filter(entry => {
-                const [year, month, day] = entry.date
-                    .split("-")
-                    .map(Number);
+                const [year, month, day] = entry.date.split("-").map(Number);
 
                 const entryDate = new Date(year, month - 1, day);
 
                 return entryDate >= cutoffDate;
             })
-            .map(entry => ({
-                date: entry.date,
-                weight:
-                    weightUnit === "kg"
-                        ? Number(lbsToKg(entry.weight).toFixed(2))
-                        : Number(entry.weight)
-            }));
+            .map(formatGraphEntry);
     }
-
     const submitWeight = async () => {
         if (currentWeight == null) {
             setFeedback("Enter a valid weight");
@@ -236,30 +221,23 @@ export default function UserStats() {
                                     />
 
                                     <XAxis
-                                        dataKey="date"
+                                        type="number"
+                                        dataKey="timestamp"
+                                        domain={["dataMin", "dataMax"]}
+                                        scale="time"
                                         tickLine={false}
                                         axisLine={false}
                                         tick={{
                                             fill: "#64748b",
                                             fontSize: 11
                                         }}
-                                        tickFormatter={date => {
-                                            const [year, month, day] =
-                                                date.split("-").map(Number);
+                                        tickFormatter={timestamp => {
+                                            const date = new Date(timestamp);
 
-                                            const formattedDate = new Date(
-                                                year,
-                                                month - 1,
-                                                day
-                                            );
-
-                                            return formattedDate.toLocaleDateString(
-                                                "en-US",
-                                                {
-                                                    month: "short",
-                                                    day: "numeric"
-                                                }
-                                            );
+                                            return date.toLocaleDateString("en-US", {
+                                                month: "short",
+                                                day: "numeric"
+                                            });
                                         }}
                                         angle={-45}
                                         textAnchor="end"
@@ -281,11 +259,19 @@ export default function UserStats() {
                                     />
 
                                     <Tooltip
+                                        labelFormatter={timestamp => {
+                                            const date = new Date(timestamp);
+
+                                            return date.toLocaleDateString("en-US", {
+                                                month: "short",
+                                                day: "numeric",
+                                                year: "numeric"
+                                            });
+                                        }}
                                         contentStyle={{
                                             borderRadius: 8,
                                             border: "1px solid #e2e8f0",
-                                            boxShadow:
-                                                "0 4px 12px rgba(0,0,0,0.05)"
+                                            boxShadow: "0 4px 12px rgba(0,0,0,0.05)"
                                         }}
                                         formatter={value => [
                                             `${value} ${weightUnit}`,
