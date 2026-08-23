@@ -2798,13 +2798,6 @@ td.exercise-name-cell {
     text-align: left;
 
 }
-@media (max-width: 600px) {
-    .legend-text {
-        max-width: 70px;
-  
-    }
-}
-
 .legend-item:nth-child(4n + 1) {
     justify-self: start;
     transform: translateX(30px);
@@ -2812,6 +2805,25 @@ td.exercise-name-cell {
 
 .legend-item:not(:nth-child(4n + 1)) {
     justify-self: center;
+}
+
+@media (max-width: 600px) {
+    .legend-item{
+        gap: 4px;
+    }
+    .legend-text {
+        max-width: 70px;
+  
+    }
+    .legend-item:nth-child(4n + 1) {
+        justify-self: start;
+        transform: translateX(23px);
+    }
+}
+@media (max-width: 380px) {
+    .legend-item:nth-child(4n + 1) {
+        transform: translateX(20px);
+    }
 }
 
 .legend-hint {
