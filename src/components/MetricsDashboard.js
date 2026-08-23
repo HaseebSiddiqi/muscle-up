@@ -112,49 +112,51 @@ export default function MetricsDashboard({ viewWorkouts }) {
     // -----------------------------
     // Consistency Streak
     // -----------------------------
+function getWeekKey(dateString) {
+    const [year, month, day] = dateString.split("-").map(Number);
+    const d = new Date(year, month - 1, day);
 
-    function getWeekKey(date) {
-        const year = date.getFullYear();
+    const dayOfWeek = d.getDay();
 
-        const startOfYear = new Date(year, 0, 1);
-        const days = Math.floor((date - startOfYear) / (24 * 60 * 60 * 1000));
+    // Monday = 0, Tuesday = 1, ..., Sunday = 6
+    const daysSinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 
-        const week = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+    d.setDate(d.getDate() - daysSinceMonday);
 
-        return `${year}-W${week}`;
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+
+const weeklyActiveDays = {};
+
+viewWorkouts.forEach(workout => {
+    const weekKey = getWeekKey(workout.date);
+
+    if (!weeklyActiveDays[weekKey]) {
+        weeklyActiveDays[weekKey] = new Set();
     }
 
+    weeklyActiveDays[weekKey].add(workout.date);
+});
 
-    const weeklyActiveDays = {};
 
-    viewWorkouts.forEach(workout => {
-        const date = new Date(workout.date);
-        const weekKey = getWeekKey(date);
+let streak = 0;
 
-        if (!weeklyActiveDays[weekKey]) {
-            weeklyActiveDays[weekKey] = new Set();
-        }
+const today = new Date();
+const todayString =
+    `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
-        weeklyActiveDays[weekKey].add(workout.date);
-    });
+const currentWeek = getWeekKey(todayString);
 
-    let streak = 0;
+const weeks = Object.keys(weeklyActiveDays).sort().reverse();
 
-    const currentWeek = getWeekKey(new Date());
-    const weeks = Object.keys(weeklyActiveDays).sort().reverse();
+for (const week of weeks) {
 
-    for (const week of weeks) {
-
-        if (week === currentWeek) {
-            continue;
-        }
-
-        if (weeklyActiveDays[week].size >= 3) {
-            streak++;
-        } else {
-            break;
-        }
-    }
+    if (weeklyActiveDays[week].size >= 3) {
+        streak++;
+    } 
+    continue;
+}
 
     // -----------------------------
     // Monthly Workout Frequency
