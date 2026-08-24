@@ -80,7 +80,7 @@ export default function Create_workouts({ onSuccess, active }) {
         setWorkouts([...workouts, workout]);
         console.log(workout);
 
-        await apiFetch("http://localhost:5000/workouts", {
+        await apiFetch("https://workouttracker-production-4d3e.up.railway.app/workouts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(workout)
