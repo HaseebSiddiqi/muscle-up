@@ -8,7 +8,7 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
     const [selectedColour, setSelectedColour] = useState(null);
     const [feedback, setFeedback] = useState("");
     const colourPickerRef = useRef(null);
-    
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
@@ -30,7 +30,7 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
         const fetchWorkouts = async () => {
             try {
                 const res = await apiFetch(
-                    "http://localhost:5000/workouts"
+                    "https://workouttracker-production-4d3e.up.railway.app/workouts"
                 );
 
                 const data = await res.json();
@@ -81,11 +81,11 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
     }, [loaded, workouts, setActiveComponent]);
 
     const updateColour = async (workout, xcolour) => {
-        const updatedWorkout ={
+        const updatedWorkout = {
             ...workout,
             colour: xcolour
         }
-       
+
         await apiFetch("https://workouttracker-production-4d3e.up.railway.app/workouts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -118,35 +118,35 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                                     {workout.workoutName}
                                 </span>
                                 {workout.colour === "red" ? (
-                                    <span className="colour-square red-square"  onClick={()=> {setColourPicker(workout.workoutName); setSelectedColour(workout.colour);}}></span>
-                                ):workout.colour === "green" ?(
-                                    <span className="colour-square green-square"    onClick={()=> {setColourPicker(workout.workoutName); setSelectedColour(workout.colour);}}></span>
-                                ):workout.colour ==="yellow"?(
-                                    <span className="colour-square yellow-square"   onClick={()=>{setColourPicker(workout.workoutName); setSelectedColour(workout.colour);}}></span>
+                                    <span className="colour-square red-square" onClick={() => { setColourPicker(workout.workoutName); setSelectedColour(workout.colour); }}></span>
+                                ) : workout.colour === "green" ? (
+                                    <span className="colour-square green-square" onClick={() => { setColourPicker(workout.workoutName); setSelectedColour(workout.colour); }}></span>
+                                ) : workout.colour === "yellow" ? (
+                                    <span className="colour-square yellow-square" onClick={() => { setColourPicker(workout.workoutName); setSelectedColour(workout.colour); }}></span>
 
-                                ):workout.colour ==="teal"?(
-                                    <span className="colour-square teal-square"  onClick={()=> {setColourPicker(workout.workoutName); setSelectedColour(workout.colour);}}></span>
+                                ) : workout.colour === "teal" ? (
+                                    <span className="colour-square teal-square" onClick={() => { setColourPicker(workout.workoutName); setSelectedColour(workout.colour); }}></span>
 
-                                ):workout.colour ==="pink"?(
-                                    <span className="colour-square pink-square"  onClick={()=> {setColourPicker(workout.workoutName); setSelectedColour(workout.colour);}}></span>
+                                ) : workout.colour === "pink" ? (
+                                    <span className="colour-square pink-square" onClick={() => { setColourPicker(workout.workoutName); setSelectedColour(workout.colour); }}></span>
 
-                                ):workout.colour ==="purple"?(
-                                    <span className="colour-square purple-square" onClick={()=> {setColourPicker(workout.workoutName); setSelectedColour(workout.colour);}}></span>
+                                ) : workout.colour === "purple" ? (
+                                    <span className="colour-square purple-square" onClick={() => { setColourPicker(workout.workoutName); setSelectedColour(workout.colour); }}></span>
 
-                                ):(
-                                    <span className="colour-square blue-square"  onClick={()=> {setColourPicker(workout.workoutName); setSelectedColour("blue");}}></span>
+                                ) : (
+                                    <span className="colour-square blue-square" onClick={() => { setColourPicker(workout.workoutName); setSelectedColour("blue"); }}></span>
 
                                 )}
-                                 {colourPicker === workout.workoutName && (
-                                    <div className ="colour-picker" ref={colourPickerRef}> 
-                                        <p className="Colour-Row"> 
-                                            <span className={`colour-square blue-square ${selectedColour === "blue" ? "selected" : ""}`}    onClick = {() => {setSelectedColour("blue");updateColour(workout, "blue");}}></span> 
-                                            <span className={`colour-square red-square ${selectedColour === "red" ? "selected" : ""}`}    onClick = {() => {setSelectedColour("red"); updateColour(workout, "red");}}></span> 
-                                            <span className={`colour-square green-square ${selectedColour === "green" ? "selected" : ""}`}    onClick = {() => {setSelectedColour("green"); updateColour(workout, "green");}}></span> 
-                                            <span className={`colour-square yellow-square ${selectedColour === "yellow" ? "selected" : ""}`}   onClick = {() => {setSelectedColour("yellow");  updateColour(workout, "yellow");}}></span> 
-                                            <span className={`colour-square teal-square ${selectedColour === "teal" ? "selected" : ""}`}     onClick = {() => {setSelectedColour("teal");  updateColour(workout, "teal");}}></span> 
-                                            <span className={`colour-square pink-square ${selectedColour === "pink" ? "selected" : ""}`}    onClick = {() => {setSelectedColour("pink");  updateColour(workout, "pink");}}></span> 
-                                            <span className={`colour-square purple-square ${selectedColour === "purple" ? "selected" : ""}`}   onClick = {() => {setSelectedColour("purple"); updateColour(workout, "purple");}}></span> 
+                                {colourPicker === workout.workoutName && (
+                                    <div className="colour-picker" ref={colourPickerRef}>
+                                        <p className="Colour-Row">
+                                            <span className={`colour-square blue-square ${selectedColour === "blue" ? "selected" : ""}`} onClick={() => { setSelectedColour("blue"); updateColour(workout, "blue"); }}></span>
+                                            <span className={`colour-square red-square ${selectedColour === "red" ? "selected" : ""}`} onClick={() => { setSelectedColour("red"); updateColour(workout, "red"); }}></span>
+                                            <span className={`colour-square green-square ${selectedColour === "green" ? "selected" : ""}`} onClick={() => { setSelectedColour("green"); updateColour(workout, "green"); }}></span>
+                                            <span className={`colour-square yellow-square ${selectedColour === "yellow" ? "selected" : ""}`} onClick={() => { setSelectedColour("yellow"); updateColour(workout, "yellow"); }}></span>
+                                            <span className={`colour-square teal-square ${selectedColour === "teal" ? "selected" : ""}`} onClick={() => { setSelectedColour("teal"); updateColour(workout, "teal"); }}></span>
+                                            <span className={`colour-square pink-square ${selectedColour === "pink" ? "selected" : ""}`} onClick={() => { setSelectedColour("pink"); updateColour(workout, "pink"); }}></span>
+                                            <span className={`colour-square purple-square ${selectedColour === "purple" ? "selected" : ""}`} onClick={() => { setSelectedColour("purple"); updateColour(workout, "purple"); }}></span>
                                         </p>
                                     </div>
                                 )}
@@ -159,11 +159,11 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                                 >
                                     ❌
                                 </button>
-                                
+
                             </div>
-                            
+
                         ))}
-                        
+
                     </div>
                 ) : (
                     <h3 className="empty-workouts-text">Add your first workout type to get started</h3>
