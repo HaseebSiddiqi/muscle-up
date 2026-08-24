@@ -573,6 +573,12 @@ export default function ViewWorkouts({
                                                                 ]
                                                                 : null;
 
+                                                        const showUnits =
+                                                            index === 0 ||
+                                                            nonCardioExercises[
+                                                                index - 1
+                                                            ].type !== exercise.type;
+
                                                         return (
                                                             <tr
                                                                 key={
@@ -702,9 +708,11 @@ export default function ViewWorkouts({
                                                                                         </div>
                                                                                     )}
 
-                                                                                    <span className="unit">
-                                                                                        reps
-                                                                                    </span>
+                                                                                    {showUnits && (
+                                                                                        <span className="unit">
+                                                                                            reps
+                                                                                        </span>
+                                                                                    )}
                                                                                 </div>
                                                                             </div>
                                                                         )}
@@ -752,16 +760,18 @@ export default function ViewWorkouts({
                                                                                     </div>
                                                                                 )}
 
-                                                                                <span className="unit">
-                                                                                    reps
-                                                                                </span>
+                                                                                {showUnits && (
+                                                                                    <span className="unit">
+                                                                                        reps
+                                                                                    </span>
+                                                                                )}
                                                                             </div>
                                                                         )}
 
                                                                     {exercise.type ===
                                                                         "time" && (
                                                                             <div className="duration-input">
-                                                                                {editing && (
+                                                                                {showUnits && (
                                                                                     <div className="duration-labels">
                                                                                         <span className="unit">
                                                                                             mins
