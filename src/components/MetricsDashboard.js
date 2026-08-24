@@ -4,7 +4,7 @@ import { useUnits } from "../contexts/unitContext";
 
 
 export default function MetricsDashboard({ viewWorkouts }) {
-    const {distanceUnit} = useUnits();
+    const { distanceUnit } = useUnits();
     const [useMiles, setUseMiles] = useState(distanceUnit === "miles");
     const [selectedPeriod, setSelectedPeriod] = useState("lifetime");
 
@@ -65,8 +65,8 @@ export default function MetricsDashboard({ viewWorkouts }) {
     // -----------------------------
     // Workout Type Distribution
     // -----------------------------
-    let distribution = viewWorkouts; 
-    if (selectedPeriod === "yearly"){
+    let distribution = viewWorkouts;
+    if (selectedPeriod === "yearly") {
         distribution = viewWorkouts.filter(workout => {
             const workoutDate = new Date(workout.date).getFullYear();
             const currentYear = new Date().getFullYear();
@@ -75,25 +75,25 @@ export default function MetricsDashboard({ viewWorkouts }) {
 
     }
 
-    if (selectedPeriod === "quarter"){
+    if (selectedPeriod === "quarter") {
         distribution = viewWorkouts.filter(workout => {
             const date = new Date(workout.date);
             const today = new Date();
 
             const workoutDate = date.getFullYear() * 12 + date.getMonth();
             const currentMonth = today.getFullYear() * 12 + today.getMonth();
-            return currentMonth - workoutDate <= 3 ;
+            return currentMonth - workoutDate <= 3;
         });
     }
 
-       if (selectedPeriod === "month"){
+    if (selectedPeriod === "month") {
         distribution = viewWorkouts.filter(workout => {
             const date = new Date(workout.date);
-            
+
             const cutoffDate = new Date();
             cutoffDate.setDate(cutoffDate.getDate() - 30);
             return date >= cutoffDate;
-               
+
         });
     }
 
@@ -107,56 +107,78 @@ export default function MetricsDashboard({ viewWorkouts }) {
         name: type,
         value: workoutsByType[type]
     }));
-
-
     // -----------------------------
     // Consistency Streak
     // -----------------------------
-function getWeekKey(dateString) {
-    const [year, month, day] = dateString.split("-").map(Number);
-    const d = new Date(year, month - 1, day);
 
-    const dayOfWeek = d.getDay();
+    function getWeekKey(dateString) {
+        const [year, month, day] = dateString.substring(0, 10).split("-").map(Number);
 
-    // Monday = 0, Tuesday = 1, ..., Sunday = 6
-    const daysSinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+        const date = new Date(year, month - 1, day);
 
-    d.setDate(d.getDate() - daysSinceMonday);
+        const dayOfWeek = date.getDay();
+        const daysSinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
+        date.setDate(date.getDate() - daysSinceMonday);
 
-
-const weeklyActiveDays = {};
-
-viewWorkouts.forEach(workout => {
-    const weekKey = getWeekKey(workout.date);
-
-    if (!weeklyActiveDays[weekKey]) {
-        weeklyActiveDays[weekKey] = new Set();
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
     }
 
-    weeklyActiveDays[weekKey].add(workout.date);
-});
+    const weeklyActiveDays = {};
 
+    viewWorkouts.forEach(workout => {
+        if (!workout.date) return;
 
-let streak = 0;
+        const dateKey = workout.date.substring(0, 10);
+        const weekKey = getWeekKey(dateKey);
 
-const today = new Date();
-const todayString =
-    `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+        if (!weeklyActiveDays[weekKey]) {
+            weeklyActiveDays[weekKey] = new Set();
+        }
 
-const currentWeek = getWeekKey(todayString);
+        weeklyActiveDays[weekKey].add(dateKey);
+    });
 
-const weeks = Object.keys(weeklyActiveDays).sort().reverse();
+    // Get Monday of the current week
+    const today = new Date();
 
-for (const week of weeks) {
+    const daysSinceMonday =
+        today.getDay() === 0 ? 6 : today.getDay() - 1;
 
-    if (weeklyActiveDays[week].size >= 3) {
+    const currentMonday = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+    );
+
+    currentMonday.setDate(
+        currentMonday.getDate() - daysSinceMonday
+    );
+
+    // Start with LAST week because the current week isn't complete
+    const checkWeek = new Date(currentMonday);
+    checkWeek.setDate(checkWeek.getDate() - 7);
+
+    let streak = 0;
+
+    while (true) {
+
+        const weekKey =
+            `${checkWeek.getFullYear()}-${String(checkWeek.getMonth() + 1).padStart(2, "0")}-${String(checkWeek.getDate()).padStart(2, "0")}`;
+
+        const activeDays =
+            weeklyActiveDays[weekKey]?.size || 0;
+
+        if (activeDays < 3) {
+            break;
+        }
+
         streak++;
-    } 
-    continue;
-}
+
+        checkWeek.setDate(
+            checkWeek.getDate() - 7
+        );
+    }
 
     // -----------------------------
     // Monthly Workout Frequency
@@ -193,7 +215,7 @@ for (const week of weeks) {
     // -----------------------------
 
     const COLORS = [
-        
+
         "#f97316",
         "#0284c7",
         "#ef4444",
@@ -278,11 +300,11 @@ for (const week of weeks) {
                                 </PieChart>
                             </ResponsiveContainer>
                         </div>
-                         <div className="distributionGrapButtonRow"> 
-                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("lifetime")}>Lifetime</button>
-                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("yearly")}>Last Year</button>
-                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("quarter")}>Last 4 Months</button>
-                                <button className="distributionGraphButton" onClick = {() => setSelectedPeriod("month")}>Last Month</button>
+                        <div className="distributionGrapButtonRow">
+                            <button className="distributionGraphButton" onClick={() => setSelectedPeriod("lifetime")}>Lifetime</button>
+                            <button className="distributionGraphButton" onClick={() => setSelectedPeriod("yearly")}>Last Year</button>
+                            <button className="distributionGraphButton" onClick={() => setSelectedPeriod("quarter")}>Last 4 Months</button>
+                            <button className="distributionGraphButton" onClick={() => setSelectedPeriod("month")}>Last Month</button>
                         </div>
                     </div>
 

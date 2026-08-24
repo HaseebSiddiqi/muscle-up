@@ -55,8 +55,9 @@ app.listen(PORT, () => {
 //Create new workout type
 app.post("/workouts", authMiddleware, async (req, res) => {
     try {
+        console.log(req.body);
         const username = req.user.username;
-        const { workoutName, exercises, colour } = req.body;
+        const { workoutName, exercises, description, isRounds, colour } = req.body;
 
         if (
             typeof workoutName !== "string" ||
@@ -76,6 +77,8 @@ app.post("/workouts", authMiddleware, async (req, res) => {
             username,
             workoutName,
             exercises,
+            description,
+            isRounds,
             colour
         };
 
@@ -200,7 +203,7 @@ app.delete("/workouts/:workoutName", authMiddleware, async (req, res) => {
 // CRUD CALLS FOR WORKOUT LOGS 
 app.post("/workoutLogs", authMiddleware, async (req, res) => {
     try {
-        const { workoutId, workoutName, date, duration, notes, exercises } = req.body;
+        const { workoutId, workoutName, date, duration, notes, exercises, rounds } = req.body;
         const username = req.user.username;
 
         const item = {
@@ -210,7 +213,8 @@ app.post("/workoutLogs", authMiddleware, async (req, res) => {
             date,
             duration,
             notes,
-            exercises
+            exercises,
+            rounds
         };
 
         await db.send(
@@ -338,7 +342,7 @@ app.get("/weightTable", authMiddleware, async (req, res) => {
             new QueryCommand({
                 TableName: "WeightTable",
                 KeyConditionExpression: "username = :username",
-                ExpressionAttributeValues:{
+                ExpressionAttributeValues: {
                     ":username": username
                 }
             })
@@ -356,7 +360,7 @@ app.delete("/deleteAccount", authMiddleware, async (req, res) => {
     try {
         const sub = req.user.sub;
         const username = req.user.username;
-        
+
         const resultLog = await db.send(
             new QueryCommand({
                 TableName: "WorkoutLogs",
@@ -367,9 +371,9 @@ app.delete("/deleteAccount", authMiddleware, async (req, res) => {
             })
         );
         let i = 0;
-        while (i < resultLog.Items.length){
+        while (i < resultLog.Items.length) {
 
-        
+
             const item = resultLog.Items[i];
             await db.send(
                 new DeleteCommand({
@@ -381,7 +385,7 @@ app.delete("/deleteAccount", authMiddleware, async (req, res) => {
                     }
                 })
             );
-            i++; 
+            i++;
         }
 
         const resultType = await db.send(
@@ -394,7 +398,7 @@ app.delete("/deleteAccount", authMiddleware, async (req, res) => {
             })
         );
         let j = 0;
-        while (j < resultType.Items.length){
+        while (j < resultType.Items.length) {
             const item = resultType.Items[j];
             await db.send(
                 new DeleteCommand({
@@ -419,7 +423,7 @@ app.delete("/deleteAccount", authMiddleware, async (req, res) => {
             })
         );
         let k = 0;
-        while (k < resultWeight.Items.length){
+        while (k < resultWeight.Items.length) {
             const item = resultWeight.Items[k];
             await db.send(
                 new DeleteCommand({

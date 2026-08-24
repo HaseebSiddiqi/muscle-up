@@ -30,7 +30,7 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
         const fetchWorkouts = async () => {
             try {
                 const res = await apiFetch(
-                    "https://workouttracker-production-4d3e.up.railway.app/workouts"
+                    "http://localhost:5000/workouts"
                 );
 
                 const data = await res.json();

@@ -2,768 +2,1727 @@ import { useState, useEffect, Fragment, useRef } from "react";
 import { apiFetch } from "./apiClient.js";
 import { useUnits } from "../contexts/unitContext";
 
-export default function Add_workouts({ selectedWorkout, onSuccess }) {
-    const {weightUnit, distanceUnit, milesToKm,  lbsToKg,  convertWorkoutToSave, getLocalDate} = useUnits();
+const WORKOUT_API =
+    "https://workouttracker-production-4d3e.up.railway.app/workoutLogs";
 
-    const [newWorkout, setNewWorkout] = useState(null);
-    const [feedback, setFeedback] = useState("");
-    const [viewWorkouts, setViewWorkouts] = useState([]);
-    const [latestWorkout, setLatestWorkout] = useState(null);
-    const [startTime, setStartTime] = useState(null);
-    const [showDurationPopup, setShowDurationPopup] = useState(false);
-    const [duration, setDuration] = useState(null);
+const TYPE_ORDER = {
+    weight_reps: 0,
+    reps: 1,
+    time: 2,
+    cardio: 3
+};
+
+/* ============================================================
+   REUSABLE INPUT COMPONENTS
+   ============================================================ */
+
+function UnitInput({
+    value,
+    placeholder,
+    type = "number",
+    step,
+    unit,
+    showUnit = true,
+    onChange
+}) {
+    return (
+        <div className="inputWithUnit">
+            <input
+                type={type}
+                className="no-spinner"
+                step={step}
+                value={value ?? ""}
+                placeholder={placeholder ?? ""}
+                onChange={onChange}
+            />
+
+            {showUnit && (
+                <span className="unit">
+                    {unit}
+                </span>
+            )}
+        </div>
+    );
+}
+
+function DurationInputs({
+    minutes,
+    seconds,
+    minutesPlaceholder,
+    secondsPlaceholder,
+    showUnits,
+    onMinutesChange,
+    onSecondsChange,
+    className = "duration-input"
+}) {
+    return (
+        <div className={className}>
+            {showUnits && (
+                <div className="duration-labels">
+                    <span className="unit">mins</span>
+                    <span className="unit">sec</span>
+                </div>
+            )}
+
+            <div className="duration-values">
+                <input
+                    type="number"
+                    className="no-spinner"
+                    value={minutes ?? ""}
+                    placeholder={minutesPlaceholder ?? ""}
+                    onChange={onMinutesChange}
+                />
+
+                <span className="time-divider">:</span>
+
+                <input
+                    type="text"
+                    className="no-spinner"
+                    value={
+                        seconds === "" || seconds == null
+                            ? ""
+                            : String(seconds).padStart(2, "0")
+                    }
+                    placeholder={
+                        secondsPlaceholder != null
+                            ? String(secondsPlaceholder).padStart(2, "0")
+                            : ""
+                    }
+                    onChange={onSecondsChange}
+                />
+            </div>
+        </div>
+    );
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+const isSetFilled = set =>
+    Object.values(set).some(
+        value => value !== null && value !== ""
+    );
+
+const isExerciseEmpty = exercise => {
+    if (!exercise.sets) return true;
+
+    return exercise.sets.every(
+        set => !isSetFilled(set)
+    );
+};
+
+const validSets = sets => {
+    if (!sets) return true;
+
+    let foundEmpty = false;
+
+    for (const set of sets) {
+        if (!isSetFilled(set)) {
+            foundEmpty = true;
+        } else if (foundEmpty) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+const getPreviousExercise = (
+    workout,
+    exerciseName
+) =>
+    workout?.exercises?.find(
+        ex => ex.name === exerciseName
+    );
+
+const handleNumberInput = (
+    value,
+    max,
+    previousValue = null
+) => {
+    if (value === "") return "";
+
+    if (!/^\d*$/.test(value)) {
+        return previousValue;
+    }
+
+    return Math.min(
+        max,
+        Math.max(0, Number(value))
+    );
+};
+
+const handleDecimalInput = (
+    value,
+    max,
+    previousValue = null
+) => {
+    if (value === "") return "";
+
+    if (!/^\d*\.?\d{0,1}$/.test(value)) {
+        return previousValue;
+    }
+
+    return Math.min(
+        max,
+        Math.max(0, Number(value))
+    );
+};
+
+const createSet = type => {
+    if (type === "time") {
+        return {
+            minutes: null,
+            seconds: null
+        };
+    }
+
+    if (type === "reps") {
+        return {
+            reps: null
+        };
+    }
+
+    return {
+        weight: null,
+        reps: null
+    };
+};
+
+const createExercise = (
+    exercise,
+    previousExercise,
+    isRounds
+) => {
+    const name =
+        typeof exercise === "string"
+            ? exercise
+            : exercise.name;
+
+    const type =
+        typeof exercise === "string"
+            ? "weight_reps"
+            : exercise.type;
+
+    if (type === "cardio") {
+        return {
+            name,
+            type,
+            duration: null,
+            distance: null,
+            calories: null
+        };
+    }
+
+    if (isRounds) {
+        if (type === "time") {
+            return {
+                name,
+                type,
+                minutes:
+                    previousExercise?.minutes ?? null,
+                seconds:
+                    previousExercise?.seconds ?? null
+            };
+        }
+
+        if (type === "weight_reps") {
+            return {
+                name,
+                type,
+                weight:
+                    previousExercise?.weight ?? null,
+                reps:
+                    previousExercise?.reps ?? null
+            };
+        }
+
+        return {
+            name,
+            type,
+            reps:
+                previousExercise?.reps ?? null
+        };
+    }
+
+    const setCount =
+        previousExercise?.sets?.length || 3;
+
+    return {
+        name,
+        type,
+        sets: Array.from(
+            { length: setCount },
+            () => createSet(type)
+        )
+    };
+};
+
+/* ============================================================
+   COMPONENT
+   ============================================================ */
+
+export default function Add_workouts({
+    selectedWorkout,
+    onSuccess
+}) {
+    const {
+        weightUnit,
+        distanceUnit,
+        milesToKm,
+        lbsToKg,
+        convertWorkoutToSave,
+        getLocalDate
+    } = useUnits();
+
+    const [newWorkout, setNewWorkout] =
+        useState(null);
+    const [feedback, setFeedback] =
+        useState("");
+    const [viewWorkouts, setViewWorkouts] =
+        useState([]);
+    const [latestWorkout, setLatestWorkout] =
+        useState(null);
+    const [startTime, setStartTime] =
+        useState(null);
+    const [showDurationPopup, setShowDurationPopup] =
+        useState(false);
+    const [duration, setDuration] =
+        useState(null);
 
     const durationRef = useRef(null);
 
+    /* ========================================================
+       SHARED STATE HELPERS
+       ======================================================== */
+
+    const showFeedback = message => {
+        setFeedback(message);
+
+        setTimeout(() => {
+            setFeedback("");
+        }, 2000);
+    };
+
+    const updateWorkout = updater => {
+        setNewWorkout(prev =>
+            prev ? updater(prev) : prev
+        );
+    };
+
+    const updateExerciseField = (
+        exerciseIndex,
+        field,
+        value
+    ) => {
+        updateWorkout(prev => ({
+            ...prev,
+            exercises: prev.exercises.map(
+                (exercise, index) =>
+                    index === exerciseIndex
+                        ? {
+                            ...exercise,
+                            [field]:
+                                value === ""
+                                    ? null
+                                    : Number(value)
+                        }
+                        : exercise
+            )
+        }));
+    };
+
+    const updateSet = (
+        exerciseIndex,
+        setIndex,
+        field,
+        value
+    ) => {
+        updateWorkout(prev => ({
+            ...prev,
+            exercises: prev.exercises.map(
+                (exercise, exIndex) =>
+                    exIndex === exerciseIndex
+                        ? {
+                            ...exercise,
+                            sets: exercise.sets.map(
+                                (set, index) =>
+                                    index === setIndex
+                                        ? {
+                                            ...set,
+                                            [field]:
+                                                value ===
+                                                    ""
+                                                    ? null
+                                                    : Number(
+                                                        value
+                                                    )
+                                        }
+                                        : set
+                            )
+                        }
+                        : exercise
+            )
+        }));
+    };
+
+    const updateRounds = (
+        field,
+        value
+    ) => {
+        updateWorkout(prev => ({
+            ...prev,
+            rounds: {
+                ...prev.rounds,
+                [field]:
+                    value === ""
+                        ? null
+                        : Number(value)
+            }
+        }));
+    };
+
+    const updateDate = value => {
+        updateWorkout(prev => ({
+            ...prev,
+            date: value
+        }));
+    };
+
+    const updateNotes = value => {
+        updateWorkout(prev => ({
+            ...prev,
+            notes: value
+        }));
+    };
+
+    /* ========================================================
+       DURATION POPUP SCROLL
+       ======================================================== */
+
     useEffect(() => {
-        if (showDurationPopup) {
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    const element = durationRef.current;
+        if (!showDurationPopup) return;
 
-                    if (!element) return;
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                const element =
+                    durationRef.current;
 
-                    const rect = element.getBoundingClientRect();
-                    const viewportHeight = window.innerHeight;
+                if (!element) return;
 
-                    // Already fully visible, don't move
-                    if (rect.top >= 0 && rect.bottom <= viewportHeight) {
-                        return;
-                    }
+                const rect =
+                    element.getBoundingClientRect();
 
-                    window.scrollTo({
-                        top: window.scrollY + rect.bottom - viewportHeight + 50,
-                        behavior: "smooth"
-                    });
+                const viewportHeight =
+                    window.innerHeight;
 
-                }, 100);
-            });
-        }
+                if (
+                    rect.top >= 0 &&
+                    rect.bottom <= viewportHeight
+                ) {
+                    return;
+                }
+
+                window.scrollTo({
+                    top:
+                        window.scrollY +
+                        rect.bottom -
+                        viewportHeight +
+                        50,
+                    behavior: "smooth"
+                });
+            }, 100);
+        });
     }, [showDurationPopup]);
+
+    /* ========================================================
+       LOAD SELECTED WORKOUT
+       ======================================================== */
 
     useEffect(() => {
         if (!selectedWorkout) return;
+
         setStartTime(new Date());
 
-        const prev = viewWorkouts
-            .filter(w => w.workoutName === selectedWorkout.workoutName)
-            .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+        const previousWorkout =
+            viewWorkouts
+                .filter(
+                    workout =>
+                        workout.workoutName ===
+                        selectedWorkout.workoutName
+                )
+                .sort(
+                    (a, b) =>
+                        new Date(b.date) -
+                        new Date(a.date)
+                )[0];
 
-        setLatestWorkout(prev || null);
+        setLatestWorkout(
+            previousWorkout || null
+        );
+
         setShowDurationPopup(false);
-        setNewWorkout({
 
+        const exercises = (
+            selectedWorkout.exercises || []
+        ).map(exercise =>
+            createExercise(
+                exercise,
+                getPreviousExercise(
+                    previousWorkout,
+                    typeof exercise === "string"
+                        ? exercise
+                        : exercise.name
+                ),
+                selectedWorkout.isRounds
+            )
+        );
+
+        setNewWorkout({
             workoutId: Date.now().toString(),
-            workoutName: selectedWorkout?.workoutName,
+            workoutName:
+                selectedWorkout.workoutName,
             date: getLocalDate(),
             notes: "",
-
-
-            exercises: selectedWorkout?.exercises.map(ex => {
-
-                // OLD FORMAT support (string)
-
-                const exName = typeof ex === "string" ? ex : ex.name;
-                const exType = typeof ex === "string" ? "weight_reps" : ex.type;
-
-                const prevExercise = prev?.exercises?.find(
-                    e => e.name === exName
-                );
-
-
-
-                if (exType === "cardio") {
-                    return {
-                        name: exName,
-                        type: exType,
-                        duration: null,
-                        distance: null,
-                        calories: null
-                    };
-                }
-
-                const setCount = prevExercise?.sets?.length || 3;
-
-                return {
-                    name: exName,
-                    type: exType,
-                    sets: Array.from({ length: setCount }).map(() => {
-                        if (exType === "time") return { minutes: null, seconds: null };
-                        if (exType === "reps") return { reps: null };
-                        return { weight: null, reps: null };
-                    })
-
-                };
-            })
-
+            description:
+                selectedWorkout.description,
+            isRounds:
+                selectedWorkout.isRounds,
+            rounds: selectedWorkout.isRounds
+                ? { count: null }
+                : null,
+            exercises
         });
-    }, [selectedWorkout, viewWorkouts, getLocalDate]);
+    }, [
+        selectedWorkout,
+        viewWorkouts,
+        getLocalDate
+    ]);
+
+    /* ========================================================
+       FETCH WORKOUTS
+       ======================================================== */
 
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const res = await apiFetch(`https://workouttracker-production-4d3e.up.railway.app/workoutLogs`);
-            const data = await res.json();
-            setViewWorkouts(data.Items || []);
+            try {
+                const res = await apiFetch(
+                    WORKOUT_API
+                );
 
+                const data =
+                    await res.json();
+
+                setViewWorkouts(
+                    data.Items || []
+                );
+            } catch (error) {
+                console.error(
+                    "Error fetching workouts:",
+                    error
+                );
+            }
         };
 
         fetchWorkouts();
     }, [selectedWorkout]);
 
+    /* ========================================================
+       DISPLAY EXERCISES
+       ======================================================== */
 
+    const displayExercises =
+        newWorkout?.exercises
+            ?.map((exercise, index) => ({
+                ...exercise,
+                originalIndex: index
+            }))
+            .sort(
+                (a, b) =>
+                    TYPE_ORDER[a.type] -
+                    TYPE_ORDER[b.type]
+            ) || [];
+
+    /* ========================================================
+       SET CONTROLS
+       ======================================================== */
 
     const addSets = () => {
-        setNewWorkout(prevWorkout => {
-            if (prevWorkout.exercises
-                .filter(ex => ex.type !== "cardio")
-                .every(ex => ex.sets.length >= 3)
-            ) return prevWorkout;
+        updateWorkout(prev => {
+            const exercises =
+                prev.exercises.filter(
+                    ex => ex.type !== "cardio"
+                );
+
+            if (
+                exercises.length === 0 ||
+                exercises.every(
+                    ex => ex.sets.length >= 3
+                )
+            ) {
+                return prev;
+            }
 
             return {
-                ...prevWorkout,
-
-                exercises: prevWorkout.exercises.map(ex => {
-                    if (ex.type === "cardio") return ex;
-
-                    return {
-                        ...ex,
-                        sets: [
-                            ...ex.sets,
-                            ex.type === "time"
-                                ? { minutes: null, seconds: null }
-                                : ex.type === "reps"
-                                    ? { reps: null }
-                                    : { weight: null, reps: null }
-                        ]
-                    };
-                })
+                ...prev,
+                exercises:
+                    prev.exercises.map(
+                        exercise =>
+                            exercise.type ===
+                                "cardio"
+                                ? exercise
+                                : {
+                                    ...exercise,
+                                    sets: [
+                                        ...exercise.sets,
+                                        createSet(
+                                            exercise.type
+                                        )
+                                    ]
+                                }
+                    )
             };
         });
     };
 
     const delSets = () => {
-        setNewWorkout(prevWorkout => {
+        updateWorkout(prev => {
+            const exercises =
+                prev.exercises.filter(
+                    ex => ex.type !== "cardio"
+                );
 
-            const nonCardioExercises = prevWorkout.exercises.filter(
-                ex => ex.type !== "cardio"
-            );
-            if (nonCardioExercises.length === 0) return prevWorkout;
+            if (
+                exercises.length === 0 ||
+                exercises[0].sets.length <= 1
+            ) {
+                return prev;
+            }
 
-            if (nonCardioExercises[0].sets.length <= 1) return prevWorkout;
             return {
-                ...prevWorkout,
-                exercises: prevWorkout.exercises.map(ex => {
-                    if (ex.type === "cardio") return ex;
-                    return {
-                        ...ex,
-                        sets: ex.sets.slice(0, -1)
-                    };
-                })
-            }
-
-        })
-    }
-
-    const submitTable = async () => {
-        if (!validateWorkout(newWorkout.exercises)) {
-            setFeedback("Please fill sets in order");
-
-            setTimeout(() => {
-                setFeedback("");
-            }, 2000);
-
-            return;
-        }
-        const endTime = new Date();
-        const workoutDuration = Math.floor((endTime - startTime) / 60000);
-        setDuration(workoutDuration);
-        setShowDurationPopup(true);
-
-
-    }
-
-    const saveWorkout = async (duration) => {
-
-        const workout = {
-            ...newWorkout,
-            duration
-        };
-        const workoutToSave = convertWorkoutToSave(
-            workout, 
-            distanceUnit,
-            weightUnit
-        )
-
-        await apiFetch("https://workouttracker-production-4d3e.up.railway.app/workoutLogs", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(workoutToSave)
+                ...prev,
+                exercises:
+                    prev.exercises.map(
+                        exercise =>
+                            exercise.type ===
+                                "cardio"
+                                ? exercise
+                                : {
+                                    ...exercise,
+                                    sets: exercise.sets.slice(
+                                        0,
+                                        -1
+                                    )
+                                }
+                    )
+            };
         });
-        setViewWorkouts(prev => [...prev, workoutToSave]);
-        setFeedback("Workout Added!");
-        console.log(workoutToSave);
-        setTimeout(() => {
-            setFeedback("");
-            setNewWorkout(null);
-            onSuccess();
-        }, 2000);
-    }
-
-
-    const isSetFilled = (set) => {
-        return Object.values(set).some(
-            value => value !== null && value !== ""
-        );
     };
 
-    const isExerciseEmpty = (exercise) => {
-        return exercise.sets.every(set => !isSetFilled(set));
-    };
+    /* ========================================================
+       VALIDATION
+       ======================================================== */
 
-    const validSets = (sets) => {
-        let foundEmpty = false;
-
-        for (const set of sets) {
-            if (!isSetFilled(set)) {
-                foundEmpty = true;
+    const validateWorkout = exercises =>
+        exercises.every(exercise => {
+            if (newWorkout?.isRounds) {
+                return true;
             }
-            else if (foundEmpty) {
-                return false;
-            }
-        }
 
-        return true;
-    };
-
-    const validateWorkout = (exercises) => {
-        return exercises.every(exercise => {
             if (exercise.type === "cardio") {
                 return true;
             }
-            if (isExerciseEmpty(exercise)) return true;
+
+            if (isExerciseEmpty(exercise)) {
+                return true;
+            }
 
             return validSets(exercise.sets);
         });
+
+    /* ========================================================
+       SUBMIT / SAVE
+       ======================================================== */
+
+    const submitTable = () => {
+        if (!newWorkout) return;
+
+        if (
+            !validateWorkout(
+                newWorkout.exercises
+            )
+        ) {
+            showFeedback(
+                "Please fill sets in order"
+            );
+            return;
+        }
+
+        if (newWorkout.isRounds) {
+            const hasNonCardioExercise =
+                newWorkout.exercises.some(
+                    ex => ex.type !== "cardio"
+                );
+
+            if (
+                hasNonCardioExercise &&
+                newWorkout.rounds?.count == null
+            ) {
+                showFeedback(
+                    "Please enter the number of rounds"
+                );
+                return;
+            }
+        }
+
+        const endTime = new Date();
+
+        const workoutDuration = startTime
+            ? Math.floor(
+                (endTime - startTime) /
+                60000
+            )
+            : 0;
+
+        setDuration(workoutDuration);
+        setShowDurationPopup(true);
     };
 
-    const displayExercises = newWorkout?.exercises
-        ?.map((exercise, index) => ({
-            ...exercise,
-            originalIndex: index
-        }))
-        .sort((a, b) => {
-            const order = {
-                weight_reps: 0,
-                reps: 1,
-                time: 2,
-                cardio: 3
-            };
+    const saveWorkout = async workoutDuration => {
+        if (!newWorkout) return;
 
-            return order[a.type] - order[b.type];
-        });
+        const workout = {
+            ...newWorkout,
+            duration: workoutDuration
+        };
 
+        const workoutToSave = {
+            ...convertWorkoutToSave(
+                workout,
+                distanceUnit,
+                weightUnit
+            ),
+            rounds: workout.rounds
+        };
+        try {
+            await apiFetch(
+                WORKOUT_API,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body: JSON.stringify(
+                        workoutToSave
+                    )
+                }
+            );
 
-    const updateSet = (exerciseIndex, setIndex, field, value) => {
-        setNewWorkout(prev => ({
-            ...prev,
-            exercises: prev.exercises.map((ex, exIndex) =>
-                exIndex === exerciseIndex
-                    ? {
-                        ...ex,
-                        sets: ex.sets.map((s, sIndex) =>
-                            sIndex === setIndex
-                                ? {
-                                    ...s,
-                                    [field]: value === "" ? null : Number(value)
-                                }
-                                : s
+            setViewWorkouts(prev => [
+                ...prev,
+                workoutToSave
+            ]);
+
+            setFeedback("Workout Added!");
+
+            console.log(workoutToSave);
+
+            setTimeout(() => {
+                setFeedback("");
+                setNewWorkout(null);
+                onSuccess();
+            }, 2000);
+        } catch (error) {
+            console.error(
+                "Error saving workout:",
+                error
+            );
+
+            showFeedback(
+                "Error saving workout"
+            );
+        }
+    };
+
+    /* ========================================================
+       CARDIO
+       ======================================================== */
+
+    const renderCardioInputs = (
+        exercise,
+        exerciseIndex,
+        prevExercise,
+        showUnits = true
+    ) => {
+        const updateCardio = (
+            field,
+            value
+        ) =>
+            updateExerciseField(
+                exerciseIndex,
+                field,
+                value
+            );
+
+        const distancePlaceholder =
+            distanceUnit === "km"
+                ? prevExercise?.distance != null
+                    ? milesToKm(
+                        prevExercise.distance
+                    ).toFixed(2)
+                    : ""
+                : prevExercise?.distance != null
+                    ? prevExercise.distance.toFixed(
+                        2
+                    )
+                    : "";
+
+        return (
+            <div className="cardio-inputs">
+
+                <UnitInput
+                    value={exercise.duration}
+                    placeholder={
+                        prevExercise?.duration
+                    }
+                    step="1"
+                    unit="mins"
+                    showUnit={showUnits}
+                    onChange={e =>
+                        updateCardio(
+                            "duration",
+                            handleNumberInput(
+                                e.target.value,
+                                999,
+                                exercise.duration
+                            )
                         )
                     }
-                    : ex
-            )
-        }));
+                />
+
+                <UnitInput
+                    value={exercise.distance}
+                    placeholder={
+                        distancePlaceholder
+                    }
+                    step="0.1"
+                    unit={distanceUnit}
+                    showUnit={showUnits}
+                    onChange={e => {
+                        const value =
+                            e.target.value;
+
+                        if (
+                            !/^\d*\.?\d{0,2}$/.test(
+                                value
+                            )
+                        ) {
+                            return;
+                        }
+
+                        updateCardio(
+                            "distance",
+                            value === ""
+                                ? ""
+                                : Math.min(
+                                    99,
+                                    Math.max(
+                                        0,
+                                        Number(value)
+                                    )
+                                )
+                        );
+                    }}
+                />
+
+                <UnitInput
+                    value={exercise.calories}
+                    placeholder={
+                        prevExercise?.calories
+                    }
+                    step="1"
+                    unit="cals"
+                    showUnit={showUnits}
+                    onChange={e =>
+                        updateCardio(
+                            "calories",
+                            handleNumberInput(
+                                e.target.value,
+                                999,
+                                exercise.calories
+                            )
+                        )
+                    }
+                />
+            </div>
+        );
     };
 
-    const handleNumberInput = (value, max, previousValue) => {
-        if (value === "") return "";
+    /* ========================================================
+       NOTES
+       ======================================================== */
 
-        if (!/^\d*$/.test(value)) {
-            return previousValue;
+    const renderNotes = rowSpan => (
+        <td
+            className="notes"
+            rowSpan={rowSpan}
+        >
+            <textarea
+                className="textarea"
+                placeholder={
+                    latestWorkout?.notes ??
+                    "Workout notes..."
+                }
+                value={newWorkout.notes}
+                onChange={e =>
+                    updateNotes(
+                        e.target.value
+                    )
+                }
+            />
+        </td>
+    );
+
+    /* ========================================================
+       DATE
+       ======================================================== */
+
+    const renderDate = colSpan => (
+        <tr>
+            <td
+                className={
+                    colSpan === 12
+                        ? "spanrow2"
+                        : undefined
+                }
+                colSpan={colSpan}
+            >
+                <input
+                    type="date"
+                    max={getLocalDate()}
+                    value={
+                        newWorkout.date || ""
+                    }
+                    onChange={e =>
+                        updateDate(
+                            e.target.value
+                        )
+                    }
+                    className="date-input"
+                />
+            </td>
+        </tr>
+    );
+
+    /* ========================================================
+       ROUND EXERCISE INPUT
+       ======================================================== */
+
+    const renderRoundExerciseInput = (
+        exercise,
+        exerciseIndex,
+        prevExercise,
+        showUnits = true
+    ) => {
+        if (
+            exercise.type === "weight_reps"
+        ) {
+            return (
+                <div className="round-input">
+                    <div className="set-inputs">
+
+                        <UnitInput
+                            value={
+                                exercise.weight
+                            }
+                            placeholder={
+                                weightUnit === "kg"
+                                    ? prevExercise?.weight !=
+                                        null
+                                        ? Number(
+                                            lbsToKg(
+                                                prevExercise.weight
+                                            ).toFixed(
+                                                1
+                                            )
+                                        )
+                                        : ""
+                                    : prevExercise?.weight
+                            }
+                            unit={weightUnit}
+                            showUnit={showUnits}
+                            onChange={e =>
+                                updateExerciseField(
+                                    exerciseIndex,
+                                    "weight",
+                                    handleDecimalInput(
+                                        e.target.value,
+                                        999
+                                    )
+                                )
+                            }
+                        />
+
+                        <UnitInput
+                            value={
+                                exercise.reps
+                            }
+                            placeholder={
+                                prevExercise?.reps
+                            }
+                            unit="reps"
+                            showUnit={showUnits}
+                            onChange={e =>
+                                updateExerciseField(
+                                    exerciseIndex,
+                                    "reps",
+                                    handleNumberInput(
+                                        e.target.value,
+                                        99
+                                    )
+                                )
+                            }
+                        />
+
+                    </div>
+                </div>
+            );
         }
 
-        return Math.min(max, Math.max(0, Number(value)));
-    };
-
-    const handleDecimalInput = (value, max, previousValue) => {
-        if (value === "") return "";
-
-        if (!/^\d*\.?\d{0,1}$/.test(value)) {
-            return previousValue;
+        if (exercise.type === "reps") {
+            return (
+                <div className="round-input">
+                    <UnitInput
+                        value={
+                            exercise.reps
+                        }
+                        placeholder={
+                            prevExercise?.reps
+                        }
+                        unit="reps"
+                        showUnit={showUnits}
+                        onChange={e =>
+                            updateExerciseField(
+                                exerciseIndex,
+                                "reps",
+                                handleNumberInput(
+                                    e.target.value,
+                                    99
+                                )
+                            )
+                        }
+                    />
+                </div>
+            );
         }
 
-        return Math.min(max, Math.max(0, Number(value)));
+        if (exercise.type === "time") {
+            return (
+                <div className="round-input">
+                    <DurationInputs
+                        minutes={
+                            exercise.minutes
+                        }
+                        seconds={
+                            exercise.seconds
+                        }
+                        minutesPlaceholder={
+                            prevExercise?.minutes
+                        }
+                        secondsPlaceholder={
+                            prevExercise?.seconds
+                        }
+                        showUnits={showUnits}
+                        onMinutesChange={e =>
+                            updateExerciseField(
+                                exerciseIndex,
+                                "minutes",
+                                handleNumberInput(
+                                    e.target.value,
+                                    120
+                                )
+                            )
+                        }
+                        onSecondsChange={e =>
+                            updateExerciseField(
+                                exerciseIndex,
+                                "seconds",
+                                handleNumberInput(
+                                    e.target.value,
+                                    59
+                                )
+                            )
+                        }
+                        className="duration-input"
+                    />
+                </div>
+            );
+        }
+
+        return null;
     };
+
+    /* ========================================================
+       ROUNDS WORKOUT
+       ======================================================== */
+
+    const renderRoundsWorkout = () => {
+        const nonCardioExercises =
+            displayExercises.filter(
+                ex => ex.type !== "cardio"
+            );
+
+        const cardioExercises =
+            displayExercises.filter(
+                ex => ex.type === "cardio"
+            );
+
+        const hasRoundExercises =
+            nonCardioExercises.length > 0;
+
+        return (
+            <table className="addWorkoutTable">
+                <tbody>
+
+                    {renderDate(
+                        hasRoundExercises
+                            ? 4
+                            : 3
+                    )}
+
+                    <tr>
+                        <th>
+                            {newWorkout.workoutName}
+                        </th>
+
+                        {hasRoundExercises ? (
+                            <>
+                                <th>Per Round</th>
+                                <th>Rounds</th>
+                            </>
+                        ) : (
+                            <th>Cardio Stats</th>
+                        )}
+
+                        <th>Notes</th>
+                    </tr>
+
+                    {nonCardioExercises.map(
+                        (exercise, i) => {
+                            const exerciseIndex =
+                                exercise.originalIndex;
+
+                            const prevExercise =
+                                getPreviousExercise(
+                                    latestWorkout,
+                                    exercise.name
+                                );
+
+                            const showUnits =
+                                i === 0 ||
+                                nonCardioExercises[
+                                    i - 1
+                                ].type !==
+                                exercise.type;
+
+                            return (
+                                <tr
+                                    key={
+                                        exerciseIndex
+                                    }
+                                >
+                                    <td className="exercise-name-cell">
+                                        <div className="exercise-name-wrapper">
+                                            <div className="exercise-name-content">
+                                                {
+                                                    exercise.name
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        {renderRoundExerciseInput(
+                                            exercise,
+                                            exerciseIndex,
+                                            prevExercise,
+                                            showUnits
+                                        )}
+                                    </td>
+
+                                    {exercise ===
+                                        nonCardioExercises[0] && (
+                                            <td
+                                                rowSpan={
+                                                    nonCardioExercises.length
+                                                }
+                                            >
+                                                <UnitInput
+                                                    value={
+                                                        newWorkout
+                                                            .rounds
+                                                            ?.count
+                                                    }
+                                                    placeholder={
+                                                        latestWorkout
+                                                            ?.rounds
+                                                            ?.count
+                                                    }
+                                                    unit="Rounds"
+                                                    onChange={e =>
+                                                        updateRounds(
+                                                            "count",
+                                                            handleNumberInput(
+                                                                e.target.value,
+                                                                999
+                                                            )
+                                                        )
+                                                    }
+                                                />
+                                            </td>
+                                        )}
+
+                                    {exercise ===
+                                        nonCardioExercises[0] &&
+                                        renderNotes(
+                                            newWorkout
+                                                .exercises
+                                                .length
+                                        )}
+                                </tr>
+                            );
+                        }
+                    )}
+
+                    {cardioExercises.map(
+                        exercise => {
+                            const exerciseIndex =
+                                exercise.originalIndex;
+
+                            const prevExercise =
+                                getPreviousExercise(
+                                    latestWorkout,
+                                    exercise.name
+                                );
+
+                            return (
+                                <tr
+                                    key={
+                                        exerciseIndex
+                                    }
+                                >
+                                    <td className="exercise-name-cell">
+                                        <div className="exercise-name-wrapper">
+                                            <div className="exercise-name-content">
+                                                {
+                                                    exercise.name
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td
+                                        colSpan={
+                                            hasRoundExercises
+                                                ? 2
+                                                : 1
+                                        }
+                                        className="cardio-cell"
+                                    >
+                                        {renderCardioInputs(
+                                            exercise,
+                                            exerciseIndex,
+                                            prevExercise,
+                                            true
+                                        )}
+                                    </td>
+
+                                    {!hasRoundExercises &&
+                                        exercise ===
+                                        cardioExercises[0] &&
+                                        renderNotes(
+                                            cardioExercises.length
+                                        )}
+                                </tr>
+                            );
+                        }
+                    )}
+
+                    <tr>
+                        <td
+                            className="submitbtn"
+                            colSpan={
+                                hasRoundExercises
+                                    ? 4
+                                    : 3
+                            }
+                        >
+                            <button
+                                onClick={
+                                    submitTable
+                                }
+                            >
+                                Submit
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        );
+    };
+
+    /* ========================================================
+       NORMAL EXERCISE INPUT
+       ======================================================== */
+
+    const renderSetInput = (
+        exercise,
+        set,
+        setIndex,
+        exerciseIndex,
+        previousSet,
+        showUnits
+    ) => {
+        if (
+            exercise.type ===
+            "weight_reps"
+        ) {
+            return (
+                <div className="set-inputs">
+
+                    <UnitInput
+                        value={set.weight}
+                        placeholder={
+                            weightUnit === "kg"
+                                ? previousSet?.weight !=
+                                    null &&
+                                    previousSet.weight !==
+                                    ""
+                                    ? Number(
+                                        lbsToKg(
+                                            previousSet.weight
+                                        ).toFixed(
+                                            1
+                                        )
+                                    )
+                                    : undefined
+                                : previousSet?.weight !=
+                                    null &&
+                                    previousSet.weight !==
+                                    ""
+                                    ? Number(
+                                        Number(
+                                            previousSet.weight
+                                        ).toFixed(
+                                            1
+                                        )
+                                    )
+                                    : undefined
+                        }
+                        unit={weightUnit}
+                        showUnit={showUnits}
+                        onChange={e =>
+                            updateSet(
+                                exerciseIndex,
+                                setIndex,
+                                "weight",
+                                handleDecimalInput(
+                                    e.target.value,
+                                    999
+                                )
+                            )
+                        }
+                    />
+
+                    <UnitInput
+                        value={set.reps}
+                        placeholder={
+                            previousSet?.reps
+                        }
+                        unit="reps"
+                        showUnit={showUnits}
+                        onChange={e =>
+                            updateSet(
+                                exerciseIndex,
+                                setIndex,
+                                "reps",
+                                handleNumberInput(
+                                    e.target.value,
+                                    99
+                                )
+                            )
+                        }
+                    />
+
+                </div>
+            );
+        }
+
+        if (
+            exercise.type === "reps"
+        ) {
+            return (
+                <div className="set-inputs">
+                    <UnitInput
+                        value={set.reps}
+                        placeholder={
+                            previousSet?.reps
+                        }
+                        unit="reps"
+                        showUnit={showUnits}
+                        onChange={e =>
+                            updateSet(
+                                exerciseIndex,
+                                setIndex,
+                                "reps",
+                                handleNumberInput(
+                                    e.target.value,
+                                    99
+                                )
+                            )
+                        }
+                    />
+                </div>
+            );
+        }
+
+        if (
+            exercise.type === "time"
+        ) {
+            return (
+                <div className="set-inputs">
+                    <DurationInputs
+                        minutes={
+                            set.minutes
+                        }
+                        seconds={
+                            set.seconds
+                        }
+                        minutesPlaceholder={
+                            previousSet?.minutes
+                        }
+                        secondsPlaceholder={
+                            previousSet?.seconds
+                        }
+                        showUnits={
+                            showUnits
+                        }
+                        onMinutesChange={e =>
+                            updateSet(
+                                exerciseIndex,
+                                setIndex,
+                                "minutes",
+                                handleNumberInput(
+                                    e.target.value,
+                                    120
+                                )
+                            )
+                        }
+                        onSecondsChange={e =>
+                            updateSet(
+                                exerciseIndex,
+                                setIndex,
+                                "seconds",
+                                handleNumberInput(
+                                    e.target.value,
+                                    59
+                                )
+                            )
+                        }
+                    />
+                </div>
+            );
+        }
+
+        return null;
+    };
+
+    /* ========================================================
+       NORMAL WORKOUT
+       ======================================================== */
+
+    const renderNormalWorkout = () => {
+        const firstNonCardio =
+            newWorkout.exercises.find(
+                ex => ex.type !== "cardio"
+            );
+
+        const setCount =
+            firstNonCardio?.sets?.length ||
+            3;
+
+        const hasNonCardio =
+            Boolean(firstNonCardio);
+
+        return (
+            <table className="addWorkoutTable">
+                <tbody>
+
+                    {renderDate(12)}
+
+                    <tr>
+                        <th>
+                            {newWorkout.workoutName}
+                        </th>
+
+                        {hasNonCardio ? (
+                            Array.from({
+                                length: setCount
+                            }).map(
+                                (_, index) => (
+                                    <th
+                                        key={
+                                            index
+                                        }
+                                    >
+                                        Set{" "}
+                                        {index + 1}
+                                    </th>
+                                )
+                            )
+                        ) : (
+                            <th colSpan={3}>
+                                Stats
+                            </th>
+                        )}
+
+                        <th>Notes</th>
+                    </tr>
+
+                    {displayExercises.map(
+                        (exercise, i) => {
+                            const exerciseIndex =
+                                exercise.originalIndex;
+
+                            const showUnits =
+                                i === 0 ||
+                                displayExercises[
+                                    i - 1
+                                ].type !==
+                                exercise.type;
+
+                            const prevExercise =
+                                getPreviousExercise(
+                                    latestWorkout,
+                                    exercise.name
+                                );
+
+                            return (
+                                <Fragment
+                                    key={
+                                        exerciseIndex
+                                    }
+                                >
+                                    <tr>
+
+                                        <td className="exercise-name-cell">
+                                            <div className="exercise-name-wrapper">
+                                                <div className="exercise-name-content">
+                                                    {
+                                                        exercise.name
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        {exercise.type ===
+                                            "cardio" ? (
+                                            <td
+                                                className="cardio-cell"
+                                                colSpan={
+                                                    firstNonCardio
+                                                        ?.sets
+                                                        ?.length ||
+                                                    3
+                                                }
+                                            >
+                                                {renderCardioInputs(
+                                                    exercise,
+                                                    exerciseIndex,
+                                                    prevExercise,
+                                                    showUnits
+                                                )}
+                                            </td>
+                                        ) : (
+                                            exercise.sets.map(
+                                                (
+                                                    set,
+                                                    j
+                                                ) => (
+                                                    <td
+                                                        className="Sets"
+                                                        key={
+                                                            j
+                                                        }
+                                                    >
+                                                        <div className="Sets-content">
+                                                            {renderSetInput(
+                                                                exercise,
+                                                                set,
+                                                                j,
+                                                                exerciseIndex,
+                                                                prevExercise
+                                                                    ?.sets?.[
+                                                                j
+                                                                ],
+                                                                showUnits
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                )
+                                            )
+                                        )}
+
+                                        {i === 0 &&
+                                            renderNotes(
+                                                displayExercises.length
+                                            )}
+
+                                    </tr>
+                                </Fragment>
+                            );
+                        }
+                    )}
+
+                    {hasNonCardio && (
+                        <tr>
+                            <td colSpan={5}>
+                                <div className="SetControls">
+
+                                    <button
+                                        className="addButton"
+                                        onClick={
+                                            addSets
+                                        }
+                                    >
+                                        Add Set
+                                    </button>
+
+                                    <button
+                                        className="minusButton"
+                                        onClick={
+                                            delSets
+                                        }
+                                    >
+                                        Delete Set
+                                    </button>
+
+                                </div>
+                            </td>
+                        </tr>
+                    )}
+
+                    <tr>
+                        <td
+                            className="submitbtn"
+                            colSpan={12}
+                        >
+                            <button
+                                onClick={
+                                    submitTable
+                                }
+                            >
+                                Submit
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        );
+    };
+
+    /* ========================================================
+       RETURN
+       ======================================================== */
 
     return (
-
         <>
+            <div>
 
-            <div >
+                {feedback && (
+                    <h2>{feedback}</h2>
+                )}
 
-                {feedback && <h2>{feedback}</h2>}
                 {newWorkout && (
+                    <div className="table-container">
 
-                    < div className="table-container">
-                        <table className="addWorkoutTable">
-                            <tbody>
-                                <tr>
-                                    <td className="spanrow2" colSpan={12}>
-                                        <input
-                                            type="date"
-                                            max = {getLocalDate()}
-                                            value={newWorkout.date || ""}
-                                            onChange={(e) =>
-                                                setNewWorkout(prev => ({
-                                                    ...prev,
-                                                    date: e.target.value
-                                                }))
-                                            }
-                                            className="date-input"
-                                        />
-                                    </td>
-                                </tr>
+                        {newWorkout.isRounds
+                            ? renderRoundsWorkout()
+                            : renderNormalWorkout()}
 
+                        {newWorkout.description && (
+                            <div className="selector-hint">
+                                <p>
 
-                                <tr>
-
-                                    <th>
-                                        {newWorkout.workoutName}
-                                    </th>
-
-                                    {newWorkout.exercises.some(ex => ex.type !== "cardio") ? (
-                                        Array.from({
-                                            length: newWorkout.exercises.find(ex => ex.type !== "cardio").sets.length
-                                        }).map((_, index) => (
-                                            <th key={index}>
-                                                Set {index + 1}
-                                            </th>
-                                        ))
-                                    ) : (
-                                        <th colSpan={3}>Stats</th>
-                                    )}
-
-
-                                    <th>
-                                        Notes
-                                    </th>
-
-                                </tr>
-
-
-                                {displayExercises.map((exercise, i) => {
-
-                                    const exerciseIndex = exercise.originalIndex;
-
-                                    const showUnits =
-                                        i === 0 ||
-                                        displayExercises[i - 1].type !== exercise.type;
-
-
-                                    const prevExercise =
-                                        latestWorkout?.exercises?.find(
-                                            ex => ex.name === exercise.name
-                                        );
-
-
-                                    return (
-
-                                        <Fragment key={exerciseIndex}>
-
-
-                                            <tr>
-
-
-                                                <td className="exercise-name-cell">
-
-                                                    <div className="exercise-name-wrapper">
-
-                                                        <div className="exercise-name-content">
-                                                            {exercise.name}
-                                                        </div>
-
-                                                    </div>
-
-                                                </td>
-
-                                                {exercise.type === "cardio" ? (
-                                                    <td className="cardio-cell" colSpan={newWorkout.exercises.find(ex => ex.type !== "cardio")?.sets.length || 3}>
-                                                        <div className="cardio-inputs">
-
-                                                            <div className="inputWithUnit">
-                                                                <input
-                                                                    type="number"
-                                                                    className="no-spinner"
-                                                                    step= "1"
-                                                                    value={exercise.duration ?? ""}
-                                                                    placeholder={prevExercise?.duration ?? ""}
-                                                                    onKeyDown={(e) => {
-                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
-                                                                            e.preventDefault();
-                                                                        }
-                                                                    }}
-                                                                    onChange={e => {
-                                                                        setNewWorkout(prev => ({
-                                                                            ...prev,
-                                                                            exercises: prev.exercises.map((ex, index) =>
-                                                                                index === exerciseIndex
-                                                                                    ? {
-                                                                                        ...ex,
-                                                                                        duration: handleNumberInput(e.target.value,
-                                                                                                999,
-                                                                                                ex.duration
-                                                                                            )
-                                                                                        }
-                                                                                        : ex
-                                                                                )
-                                                                            }));
-                                                                        }}
-                                                                />
-                                                                <span className="unit">mins</span>
-                                                            </div>
-
-                                                            <div className="inputWithUnit">
-                                                                <input
-                                                                    type="number"
-                                                                    className="no-spinner"
-                                                                    step="0.1"
-                                                                    value={exercise.distance ?? ""}
-                                                                    placeholder={
-                                                                        distanceUnit === "km"
-                                                                            ? prevExercise?.distance != null
-                                                                                ? milesToKm(prevExercise.distance).toFixed(2)
-                                                                                : ""
-                                                                            : prevExercise?.distance != null
-                                                                                ? prevExercise.distance.toFixed(2)
-                                                                                : ""
-                                                                    }
-                                                                    onKeyDown={(e) => {
-                                                                        if (["e", "E", "+", "-"].includes(e.key)) {
-                                                                            e.preventDefault();
-                                                                        }
-                                                                    }}
-                                                                    onChange={e => {
-                                                                        const value = e.target.value;
-
-                                                                        if (!/^\d*\.?\d{0,2}$/.test(value)) {
-                                                                            return;
-                                                                        }
-
-                                                                        setNewWorkout(prev => ({
-                                                                            ...prev,
-                                                                            exercises: prev.exercises.map((ex, index) =>
-                                                                                index === exerciseIndex
-                                                                                    ? {
-                                                                                        ...ex,
-                                                                                        distance: value === ""
-                                                                                            ? null
-                                                                                            : Math.min(99, Math.max(0, Number(value)))
-                                                                                    }
-                                                                                    : ex
-                                                                            )
-                                                                        }));
-                                                                    }}
-                                                                />
-                                                                <span className="unit">{distanceUnit}</span>
-                                                            </div>
-
-                                                            <div className="inputWithUnit">
-                                                                <input
-                                                                    type="number"
-                                                                    className="no-spinner"
-                                                                    step= "1"
-                                                                    value={exercise.calories ?? ""}
-                                                                    placeholder={prevExercise?.calories ?? ""}
-                                                                    onKeyDown={(e) => {
-                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
-                                                                            e.preventDefault();
-                                                                        }
-                                                                    }}
-                                                                    onChange={e => {
-                                                                        setNewWorkout(prev => ({
-                                                                            ...prev,
-                                                                            exercises: prev.exercises.map((ex, index) =>
-                                                                                index === exerciseIndex
-                                                                                    ? {
-                                                                                        ...ex,
-                                                                                        calories: handleNumberInput( 
-                                                                                            e.target.value,
-                                                                                                999,
-                                                                                                ex.calories
-                                                                                            )
-                                                                                        }
-                                                                                        : ex
-                                                                                )
-                                                                            }));
-                                                                        }}
-                                                                />
-                                                                <span className="unit">cals</span>
-                                                            </div>
-
-                                                        </div>
-                                                    </td>
-                                                ) : (
-                                                    exercise.sets.map((set, j) => {
-                                                        const prevSet = prevExercise?.sets?.[j];
-                                                        return (
-                                                            <td className="Sets" key={j}>
-                                                                <div className="Sets-content">
-                                                                    {exercise.type === "weight_reps" && (
-                                                                        <div className="set-inputs">
-                                                                            <div className="inputWithUnit">
-                                                                                <input
-                                                                                    type="number"
-                                                                                    value={set.weight}
-                                                                                    placeholder={
-                                                                                        weightUnit === "kg"
-                                                                                            ? prevSet?.weight != null && prevSet.weight !== ""
-                                                                                                ? Number(lbsToKg(prevSet.weight).toFixed(1))
-                                                                                                : undefined
-                                                                                            : prevSet?.weight != null && prevSet.weight !== ""
-                                                                                                ? Number(Number(prevSet.weight).toFixed(1))
-                                                                                                : undefined}
-                                                                                    onKeyDown={(e) => {
-                                                                                        if (["e", "E", "+", "-"].includes(e.key)) {
-                                                                                            e.preventDefault();
-                                                                                        }
-                                                                                    }}
-                                                                                    onChange={(e) =>
-                                                                                        updateSet(
-                                                                                            exerciseIndex,
-                                                                                            j,
-                                                                                            "weight",
-                                                                                            handleDecimalInput(e.target.value, 999)
-                                                                                        )}
-                                                                                />
-                                                                                {showUnits &&
-                                                                                    <span className="unit">
-                                                                                        {weightUnit}
-                                                                                    </span>
-                                                                                }
-                                                                            </div>
-                                                                            <div className="inputWithUnit">
-                                                                                <input
-                                                                                    type="number"
-                                                                                    value={set.reps}
-                                                                                    placeholder={prevSet?.reps}
-                                                                                    onKeyDown={(e) => {
-                                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
-                                                                                            e.preventDefault();
-                                                                                        }
-                                                                                    }}
-                                                                                    onChange={(e) =>
-                                                                                        updateSet(
-                                                                                            exerciseIndex,
-                                                                                            j,
-                                                                                            "reps",
-                                                                                            handleNumberInput(e.target.value, 99)
-                                                                                        )}
-                                                                                />
-                                                                                {showUnits &&
-                                                                                    <span className="unit">
-                                                                                        reps
-                                                                                    </span>
-                                                                                }
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
-                                                                    {exercise.type === "reps" && (
-                                                                        <div className="set-inputs">
-                                                                            <div className="inputWithUnit">
-                                                                                <input
-                                                                                    type="number"
-                                                                                    value={set.reps}
-                                                                                    placeholder={prevSet?.reps}
-                                                                                    onKeyDown={(e) => {
-                                                                                        if (["e", "E", "+", "-", "."].includes(e.key)) {
-                                                                                            e.preventDefault();
-                                                                                        }
-                                                                                    }}
-                                                                                    onChange={(e) =>
-                                                                                        updateSet(
-                                                                                            exerciseIndex,
-                                                                                            j,
-                                                                                            "reps",
-                                                                                            handleNumberInput(e.target.value, 99)
-                                                                                        )}
-                                                                                />
-                                                                                {showUnits &&
-                                                                                    <span className="unit">
-                                                                                        reps
-                                                                                    </span>
-                                                                                }
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
-                                                                    {exercise.type === "time" && (
-                                                                        <div className="set-inputs">
-
-                                                                            <div className="duration-input">
-                                                                                {showUnits &&
-                                                                                    <div className="duration-labels">
-
-                                                                                        <span className="unit">mins</span>
-                                                                                        <span className="unit">sec</span>
-
-                                                                                    </div>}
-
-                                                                                <div className="duration-values">
-                                                                                    <input
-                                                                                        type="number"
-                                                                                        value={set.minutes}
-                                                                                        placeholder={prevSet?.minutes}
-                                                                                        onKeyDown={(e) => {
-                                                                                            if (["e", "E", "+", "-", "."].includes(e.key)) {
-                                                                                                e.preventDefault();
-                                                                                            }
-                                                                                        }}
-                                                                                        onChange={(e) =>
-                                                                                            updateSet(
-                                                                                                exerciseIndex,
-                                                                                                j,
-                                                                                                "minutes",
-                                                                                                handleNumberInput(e.target.value, 120)
-                                                                                            )
-                                                                                        }
-                                                                                    />
-                                                                                    <span className="time-divider">:</span>
-                                                                                    <input
-                                                                                        type="text"
-                                                                                        value={
-                                                                                            set.seconds === "" || set.seconds == null
-                                                                                                ? ""
-                                                                                                : String(set.seconds).padStart(2, "0")
-                                                                                        }
-                                                                                        placeholder={
-                                                                                            prevSet?.seconds != null
-                                                                                                ? String(prevSet.seconds).padStart(2, "0")
-                                                                                                : ""
-                                                                                        }
-                                                                                        onChange={(e) =>
-                                                                                            updateSet(
-                                                                                                exerciseIndex,
-                                                                                                j,
-                                                                                                "seconds",
-                                                                                                handleNumberInput(e.target.value, 59)
-                                                                                            )
-                                                                                        }
-                                                                                    />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
-                                                                </div>
-                                                            </td>
-                                                        );
-                                                    })
-                                                )}
-
-                                                {i === 0 && (
-
-                                                    <td
-                                                        className="notes"
-                                                        rowSpan={displayExercises.length}
-                                                    >
-
-                                                        <textarea
-                                                            className="textarea"
-                                                            placeholder={
-                                                                latestWorkout?.notes ??
-                                                                "Workout notes..."
-                                                            }
-                                                            value={newWorkout.notes}
-                                                            onChange={(e) =>
-                                                                setNewWorkout({
-                                                                    ...newWorkout,
-                                                                    notes: e.target.value
-                                                                })
-                                                            }
-                                                        />
-                                                    </td>
-                                                )}
-                                            </tr>
-                                        </Fragment>
-                                    )
-                                })}
-
-                                <tr>
-                                    {newWorkout.exercises.some(ex => ex.type !== "cardio") ? (
-                                        <td colSpan={5}>
-
-                                            <div className="SetControls">
-                                                <button
-                                                    className="addButton"
-                                                    onClick={addSets}
-                                                >
-                                                    Add Set
-                                                </button>
-
-                                                <button
-                                                    className="minusButton"
-                                                    onClick={delSets}
-                                                >
-                                                    Delete Set
-                                                </button>
-                                            </div>
-                                        </td>) : (null)}
-                                </tr>
-
-
-                                <tr>
-                                    <td className="submitbtn" colSpan={12}>
-                                        <button onClick={submitTable}>
-                                            Submit
-                                        </button>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                                    {
+                                        newWorkout.description
+                                    }
+                                </p>
+                            </div>
+                        )}
 
                     </div>
                 )}
+
                 {showDurationPopup && (
-                    <div ref={durationRef} className="duration-section">
+                    <div
+                        ref={durationRef}
+                        className="duration-section"
+                    >
                         <div className="popup">
-                            <h3>Workout Duration (mins)</h3>
+
+                            <h3>
+                                Workout Duration (mins)
+                            </h3>
 
                             <input
                                 type="number"
+                                className="no-spinner"
                                 min={0}
                                 max={999}
-                                value={duration ?? ""}
-                                onKeyDown={(e) => {
-                                    if (["e", "E", "+", "-", "."].includes(e.key)) {
-                                        e.preventDefault();
-                                    }
-                                }}
-                                onChange={(e) => {
-                                    const value = e.target.value;
+                                value={
+                                    duration ?? ""
+                                }
+                                onChange={e => {
+                                    const value =
+                                        e.target.value;
 
-                                    if (value === "") {
-                                        setDuration(null);
+                                    if (
+                                        value === ""
+                                    ) {
+                                        setDuration(
+                                            null
+                                        );
                                         return;
                                     }
 
-                                    setDuration(Math.min(999, Number(value)));
+                                    setDuration(
+                                        Math.min(
+                                            999,
+                                            Number(
+                                                value
+                                            )
+                                        )
+                                    );
                                 }}
                             />
 
                             <div className="popup-buttons">
+
                                 <button
                                     className="save-btn"
                                     onClick={() => {
-                                        saveWorkout(duration);
-                                        setShowDurationPopup(false);
+                                        saveWorkout(
+                                            duration
+                                        );
+
+                                        setShowDurationPopup(
+                                            false
+                                        );
                                     }}
                                 >
                                     Save
@@ -772,20 +1731,25 @@ export default function Add_workouts({ selectedWorkout, onSuccess }) {
                                 <button
                                     className="skip-btn"
                                     onClick={() => {
-                                        saveWorkout(null);
-                                        setShowDurationPopup(false);
+                                        saveWorkout(
+                                            null
+                                        );
+
+                                        setShowDurationPopup(
+                                            false
+                                        );
                                     }}
                                 >
                                     Skip
                                 </button>
+
                             </div>
+
                         </div>
                     </div>
                 )}
 
-            </div >
+            </div>
         </>
-    )
-
+    );
 }
-

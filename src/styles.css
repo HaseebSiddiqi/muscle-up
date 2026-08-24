@@ -16,7 +16,7 @@
     --table-header: #d2d5d8;
     --success: #22c55e;
     /* green */
-  
+
 
     --danger: #ef4444;
     /* red */
@@ -548,7 +548,7 @@ input[type="date"]:focus {
     gap: 12px;
 }
 
-.DangerZone{
+.DangerZone {
     width: 90%;
     padding: 15px;
     background: #f8fafc !important;
@@ -558,6 +558,7 @@ input[type="date"]:focus {
     display: flex;
     flex-direction: column;
 }
+
 /* Delete button */
 
 .delete-account {
@@ -597,12 +598,14 @@ input[type="date"]:focus {
     background: white;
     color: var(--success);
 }
-.Confirm-Delete{
+
+.Confirm-Delete {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 7px;
 }
+
 .Confirm-Delete input {
     width: 145px;
     font-size: 14px;
@@ -711,12 +714,11 @@ input[type="date"]:focus {
     font-weight: bold;
     border-radius: 15px;
 }
+
 .workout-day.two-workouts {
-    background: linear-gradient(
-        to bottom right,
-        var(--primary-colour) 50%,
-        var(--secondary-colour) 50%
-    );
+    background: linear-gradient(to bottom right,
+            var(--primary-colour) 50%,
+            var(--secondary-colour) 50%);
 }
 
 .primary-blue {
@@ -726,18 +728,23 @@ input[type="date"]:focus {
 .primary-red {
     --primary-colour: var(--danger);
 }
+
 .primary-green {
     --primary-colour: var(--success);
 }
+
 .primary-yellow {
     --primary-colour: var(--yellow);
 }
+
 .primary-teal {
     --primary-colour: var(--teal);
 }
+
 .primary-pink {
     --primary-colour: var(--pink);
 }
+
 .primary-purple {
     --primary-colour: var(--purple);
 }
@@ -749,25 +756,30 @@ input[type="date"]:focus {
 .secondary-red {
     --secondary-colour: var(--danger);
 }
+
 .secondary-green {
     --secondary-colour: var(--success);
 }
+
 .secondary-yellow {
     --secondary-colour: var(--yellow);
 }
+
 .secondary-teal {
     --secondary-colour: var(--teal);
 }
+
 .secondary-pink {
     --secondary-colour: var(--pink);
 }
+
 .secondary-purple {
     --secondary-colour: var(--purple);
 }
 
 .workout-day:hover {
     opacity: 0.75;
-    
+
 
 }
 
@@ -840,7 +852,18 @@ input[type="date"]:focus {
 .inputValue {
     font-size: 1.4rem !important;
     font-weight: bold !important;
+
+
+}
+
+.rounds-cell {
+    vertical-align: middle;
     text-align: center;
+}
+
+.rounds-cell .inputWithUnit {
+    justify-content: center;
+    align-items: center;
 }
 
 td.spanrow2 {
@@ -976,18 +999,20 @@ td.spanrow2 {
     .createWorkout,
     .addWorkout {
         margin: 0 auto;
-        
+
     }
+
     .createWorkout {
         width: 100% !important;
         max-width: 100%;
         box-sizing: border-box;
 
     }
-    .userStats{
+
+    .userStats {
         order: 5;
     }
-   
+
 }
 
 .calendar-container {
@@ -1185,11 +1210,11 @@ td.spanrow2 {
     color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
 }
-.nav-welcome:hover{
+
+.nav-welcome:hover {
     font-size: 1.1rem;
     font-weight: 700;
     color: rgbargb(255, 255, 255)
-
 }
 
 .nav-btn {
@@ -1416,13 +1441,42 @@ td.spanrow2 {
     padding: 3px 16px !important;
 
 }
+
+.workout-type-container label,
+.Workout-Description label,
 .Colour-Picker label {
     font-size: 0.95rem;
     font-weight: 700;
     color: #1e293b;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+
+
 }
+
+.Workout-Description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Workout-Description input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    background-color: white;
+    font-family: inherit;
+    transition: all 0.15s ease;
+    box-sizing: border-box;
+}
+
+
+
 .colour-picker .colour-square {
     flex-shrink: 0;
 
@@ -1432,22 +1486,26 @@ td.spanrow2 {
     border-color: var(--secondary);
     background-color: #f0f9ff;
 }
+
 .colour-picker .Colour-Row {
     gap: 23px;
 }
+
 @media (max-width: 600px) {
-     .workout-item:nth-child(odd) .colour-picker {
-        
+    .workout-item:nth-child(odd) .colour-picker {
+
         left: 0;
         right: auto;
         width: max-content;
     }
-     .workout-item:nth-child(even) .colour-picker {
+
+    .workout-item:nth-child(even) .colour-picker {
         left: auto;
         right: 0;
         width: max-content;
     }
 }
+
 @media (max-width: 768px) {
 
 
@@ -1560,6 +1618,7 @@ td.exercise-name-cell {
     min-height: 40px;
     padding: 0 10px;
 }
+
 .no-spinner::-webkit-inner-spin-button,
 .no-spinner::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -1570,6 +1629,7 @@ td.exercise-name-cell {
     -moz-appearance: textfield;
     appearance: textfield;
 }
+
 /* Hide number spin buttons to keep numbers perfectly centered under labels */
 
 .set-inputs input[type="number"]::-webkit-outer-spin-button,
@@ -1600,6 +1660,14 @@ td.exercise-name-cell {
     height: 100%;
 }
 
+.round-input {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex: 1;
+    min-height: 40px;
+    height: 100%;
+}
 
 
 .set-input input {
@@ -1718,6 +1786,7 @@ td.exercise-name-cell {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
 }
 
 .duration-labels {
@@ -1730,9 +1799,9 @@ td.exercise-name-cell {
 .duration-values {
     display: flex;
     align-items: center;
-
+    width: 100%;
     text-align: center;
-
+    height: 100%;
 
 }
 
@@ -1865,7 +1934,7 @@ td.exercise-name-cell {
     font-family: inherit;
     transition: all 0.2s ease;
     box-sizing: border-box;
-}   
+}
 
 .workout-name-input:focus {
     outline: none;
@@ -1893,7 +1962,7 @@ td.exercise-name-cell {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding-bottom: 8px;
-    border-bottom: 2px solid #0ea5e9;
+    border-bottom: 2px solid var(--secondary);
 }
 
 .exercises-header {
@@ -1998,6 +2067,88 @@ td.exercise-name-cell {
     border-color: #0ea5e9;
     background-color: #f0f9ff;
     box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.08);
+}
+
+.workout-type-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin: 18px 0;
+}
+
+.workout-type-toggle {
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    padding: 4px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f1f5f9;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: inherit;
+}
+
+.workout-type-toggle>span {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.workout-type-toggle>span>span {
+    flex: 1;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #64748b;
+    transition: color 0.2s ease;
+}
+
+.workout-type-toggle::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    box-sizing: border-box;
+    border-radius: 6px;
+    background: white;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    transition: transform 0.25s ease;
+}
+
+.workout-type-toggle.rounds::before {
+    transform: translateX(100%);
+}
+
+.workout-type-toggle:not(.rounds)>span>span:first-child,
+.workout-type-toggle.rounds>span>span:last-child {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.workout-type-toggle:hover {
+    border-color: #94a3b8;
+    background: #e2e8f0;
+}
+
+.workout-type-toggle:active {
+    transform: scale(0.992);
 }
 
 /* Responsive: Stack exercise type below on smaller screens */
@@ -2285,7 +2436,7 @@ td.exercise-name-cell {
     padding: 8px;
     box-sizing: border-box;
     background-color: var(--table-header);
-   
+
 
 }
 
@@ -2375,6 +2526,7 @@ td.exercise-name-cell {
 .list:active {
     background-color: #e1e6ec;
 }
+
 /* Exercises cell — expands freely, wraps when table hits container edge */
 .workout-table td.exercises-td {
     white-space: normal;
@@ -2483,7 +2635,7 @@ td.exercise-name-cell {
     align-self: start;
 }
 
-.userStats{
+.userStats {
     background-color: white;
     border-radius: 12px;
     box-shadow: var(--drop-shadow);
@@ -2535,6 +2687,7 @@ td.exercise-name-cell {
         0 0 35px rgba(0, 123, 255, 0.25),
         inset 0 0 20px rgba(0, 123, 255, 0.08);
 }
+
 .weightNumber {
     width: 160px;
     border: none;
@@ -2564,6 +2717,7 @@ td.exercise-name-cell {
     font-size: 3rem;
     font-weight: 500;
 }
+
 .weightInput {
     display: flex;
     align-items: baseline;
@@ -2590,7 +2744,7 @@ td.exercise-name-cell {
 .weightSubmit {
     margin-top: 10px;
     padding: 12px 28px;
-    
+
     border: none;
     border-radius: 12px;
     background-color: var(--primary);
@@ -2604,7 +2758,7 @@ td.exercise-name-cell {
 .weightSubmit:hover {
     background-color: white;
     color: var(--primary);
-    
+
 }
 
 @media (min-width: 769px) {
@@ -2646,7 +2800,8 @@ td.exercise-name-cell {
         margin-top: 0;
         order: 2;
     }
-    .userStats{
+
+    .userStats {
         order: 3;
     }
 
@@ -2703,7 +2858,7 @@ td.exercise-name-cell {
     width: 120px;
 }
 
-.Colour-Row{
+.Colour-Row {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2760,6 +2915,7 @@ td.exercise-name-cell {
     --square-colour: var(--danger);
     background-color: var(--square-colour);
 }
+
 .green-square {
     --square-colour: var(--success);
     background-color: var(--square-colour);
@@ -2792,6 +2948,7 @@ td.exercise-name-cell {
     padding-top: 8px;
 
 }
+
 .legend-text {
     max-width: 130px;
     overflow-wrap: break-word;
@@ -2799,6 +2956,7 @@ td.exercise-name-cell {
     text-align: left;
 
 }
+
 .legend-item:nth-child(4n + 1) {
     justify-self: start;
     transform: translateX(30px);
@@ -2809,13 +2967,15 @@ td.exercise-name-cell {
 }
 
 @media (max-width: 600px) {
-    .legend-item{
+    .legend-item {
         gap: 4px;
     }
+
     .legend-text {
         max-width: 70px;
-  
+
     }
+
     .legend-item:nth-child(4n + 1) {
         justify-self: start;
         transform: translateX(22px);
@@ -2894,7 +3054,8 @@ td.exercise-name-cell {
 
     margin-bottom: 25px !important;
 }
-.metrics-chart-container h4{
+
+.metrics-chart-container h4 {
     text-align: center;
 }
 
@@ -2904,10 +3065,10 @@ td.exercise-name-cell {
 .metric-stat-card {
 
     background: #f8fafc !important;
-    
+
     border: 2px solid #e2e8f0 !important;
 
-   
+
 
     border-radius: 12px !important;
 
