@@ -4156,15 +4156,16 @@ td.exercise-name-cell {
 @media (max-width: 768px) {
     .workout-log-table .workout-date-row .date-input {
         display: inline-block !important;
-        width: 100%;
+        width: 250px;
         height: 4.5rem;
         padding-inline: 0.75rem 2.75rem;
-        font-size: clamp(1.35rem, 5vw, 1.55rem) !important;
+        font-size: clamp(1.5rem, 5vw, 1.85rem) !important;
         letter-spacing: -0.01em;
     }
 
     .workout-log-table .workout-date-row .date-input::-webkit-date-and-time-value {
-        font-size: clamp(1.35rem, 5vw, 1.55rem) !important;
+        font-size: clamp(1.5rem, 5vw, 1.85rem) !important;
+
         letter-spacing: -0.01em;
     }
 }
