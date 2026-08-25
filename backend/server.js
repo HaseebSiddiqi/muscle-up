@@ -42,7 +42,7 @@ const apiLimiter = rateLimit({
 app.use(express.json({ limit: "100kb" }));
 //Allow requests from the frontend
 app.use(cors({
-    origin: ["https://muscleup.live", "http://localhost:3000"],
+    origin: ["https://muscleup.live", "http://localhost:3000", "https://localhost"],
     credentials: true
 }));
 

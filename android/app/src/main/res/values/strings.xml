@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Muscle Up</string>
+    <string name="title_activity_main">Muscle Up</string>
+    <string name="package_name">com.muscleup.app</string>
+    <string name="custom_url_scheme">com.muscleup.app</string>
+</resources>
