@@ -890,7 +890,7 @@ export default function Add_workouts({
        ======================================================== */
 
     const renderDate = colSpan => (
-        <tr>
+        <tr className="workout-date-row">
             <td
                 className={
                     colSpan === 12
