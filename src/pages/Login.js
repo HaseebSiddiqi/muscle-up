@@ -169,7 +169,11 @@ export default function Login() {
                         </form>
                     </>
                 )}
-
+                <div className="privacy-link-container">
+                    <h4 onClick={() => navigate("/privacy")}>
+                        View Privacy Policy
+                    </h4>
+                </div>
                 <div style={{
                     fontSize: "10px",
                     opacity: 0.5,

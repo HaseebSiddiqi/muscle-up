@@ -63,7 +63,13 @@ export default function Landing() {
                   </button>
                 </div>
               )}
+               <div className="privacy-link-container">
+                                <h4 onClick={() => navigate("/privacy")}>
+                                    View Privacy Policy
+                                </h4>
+                            </div>
             </div>
+            
           </div>
 
           <div className="features-section">

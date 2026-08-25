@@ -90,6 +90,12 @@ export default function Signup() {
                             <p className="text-center">
                                 Already have an account? <Link to="/login">Log in</Link>
                             </p>
+                            
+                            <div className="privacy-link-container">
+                                <h4 onClick={() => navigate("/privacy")}>
+                                    View Privacy Policy
+                                </h4>
+                            </div>
                         </form>
                     </>
                 )}

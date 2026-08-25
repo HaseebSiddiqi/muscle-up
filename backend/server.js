@@ -34,7 +34,7 @@ const PORT = process.env.PORT || 5000;
 
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 200,
+    max: 400,
     standardHeaders: true,
     legacyHeaders: false,
 });
