@@ -530,7 +530,7 @@ export default function ViewWorkouts({
                                 ) {
                                     return (
                                         <table
-                                            className="addWorkoutTable"
+                                            className="addWorkoutTable workout-log-table workout-log-table--history"
                                             key={
                                                 w.workoutId
                                             }
@@ -1344,7 +1344,7 @@ export default function ViewWorkouts({
 
                                 return (
                                     <table
-                                        className="addWorkoutTable"
+                                        className="addWorkoutTable workout-log-table workout-log-table--history"
                                         key={
                                             w.workoutId
                                         }

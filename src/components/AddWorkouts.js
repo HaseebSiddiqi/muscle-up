@@ -1083,7 +1083,7 @@ export default function Add_workouts({
             nonCardioExercises.length > 0;
 
         return (
-            <table className="addWorkoutTable">
+            <table className="addWorkoutTable workout-log-table workout-log-table--entry">
                 <tbody>
 
                     {renderDate(
@@ -1458,7 +1458,7 @@ export default function Add_workouts({
             Boolean(firstNonCardio);
 
         return (
-            <table className="addWorkoutTable">
+            <table className="addWorkoutTable workout-log-table workout-log-table--entry">
                 <tbody>
 
                     {renderDate(12)}

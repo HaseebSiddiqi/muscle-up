@@ -3875,3 +3875,68 @@ td.exercise-name-cell {
     font-size: 0.95rem;
     font-weight: 700;
 }
+
+/* Workout log tables: shared structure with entry/history-specific mobile tuning. */
+.workout-log-table {
+    width: max-content;
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        align-items: stretch;
+        gap: clamp(0.75rem, 3vw, 1.25rem);
+        padding-inline: clamp(0.25rem, 2vw, 0.75rem);
+    }
+
+    /* Keep the compact layout so all workout columns continue to fit as before. */
+    .table-container .workout-log-table {
+        zoom: 0.7;
+        width: max-content !important;
+        min-width: 0;
+        margin-block: clamp(0.5rem, 2vw, 0.9rem);
+    }
+
+    .workout-log-table th {
+        font-size: clamp(1.6rem, 5.75vw, 1.85rem) !important;
+        padding: clamp(0.5rem, 2vw, 0.7rem) clamp(0.4rem, 1.75vw, 0.6rem) !important;
+    }
+
+    .workout-log-table td {
+        font-size: clamp(1.15rem, 4.25vw, 1.3rem);
+    }
+
+    .workout-log-table td input,
+    .workout-log-table .inputValue,
+    .workout-log-table .duration-value {
+        font-size: clamp(1.65rem, 6vw, 1.85rem) !important;
+    }
+
+    /* Keep exercise names and their weight/rep labels comfortably readable. */
+    .workout-log-table .exercise-name-content {
+        font-size: clamp(1.5rem, 5.5vw, 1.7rem);
+        line-height: 1.2;
+        padding-inline: clamp(0.35rem, 1.5vw, 0.6rem);
+    }
+
+    .workout-log-table .unit,
+    .workout-log-table .set-input .inputWithUnit .unit,
+    .workout-log-table .set-labels-spacer {
+        font-size: clamp(1.1rem, 4vw, 1.3rem);
+        line-height: 1.1;
+    }
+
+    /* The entry table favours larger controls while a session is being logged. */
+    .workout-log-table--entry td {
+        min-height: clamp(2.5rem, 9vw, 3rem);
+    }
+
+    .workout-log-table--entry td input,
+    .workout-log-table--entry td button {
+        min-height: clamp(2.5rem, 9vw, 3rem);
+    }
+
+    /* History can be a little denser so its edit/delete controls stay usable. */
+    .workout-log-table--history td {
+        font-size: clamp(1.1rem, 4vw, 1.2rem);
+    }
+}
