@@ -4153,6 +4153,22 @@ td.exercise-name-cell {
     border-top: 0;
 }
 
+@media (max-width: 768px) {
+    .workout-log-table .workout-date-row .date-input {
+        display: inline-block !important;
+        width: 100%;
+        height: 4.5rem;
+        padding-inline: 0.75rem 2.75rem;
+        font-size: clamp(1.35rem, 5vw, 1.55rem) !important;
+        letter-spacing: -0.01em;
+    }
+
+    .workout-log-table .workout-date-row .date-input::-webkit-date-and-time-value {
+        font-size: clamp(1.35rem, 5vw, 1.55rem) !important;
+        letter-spacing: -0.01em;
+    }
+}
+
 /* Add Workouts: date picker and workout description. */
 .workout-log-table .workout-date-row td {
     background: #f1f5f9 !important;
