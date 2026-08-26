@@ -4153,20 +4153,99 @@ td.exercise-name-cell {
     border-top: 0;
 }
 
+/* =========================
+   Mobile Date Picker
+========================= */
+
 @media (max-width: 768px) {
+
     .workout-log-table .workout-date-row .date-input {
         display: inline-block !important;
-        width: 250px;
-        height: 4.5rem;
-        padding-inline: 0.75rem 2.75rem;
-        font-size: clamp(1.5rem, 5vw, 1.85rem) !important;
-        letter-spacing: -0.01em;
+
+        width: 300px !important;
+        height: 4.5rem !important;
+
+        box-sizing: border-box;
+
+        padding: 0 2.75rem 0 0.75rem !important;
+
+        font-family: inherit !important;
+        font-size: 1.85rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+
+        letter-spacing: -0.01em !important;
+
+        text-align: center;
+
+        -webkit-appearance: auto !important;
+        appearance: auto !important;
     }
 
+    /* Android / Chrome date value */
     .workout-log-table .workout-date-row .date-input::-webkit-date-and-time-value {
-        font-size: clamp(1.5rem, 5vw, 1.85rem) !important;
+        font-family: inherit !important;
+        font-size: 1.85rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
 
-        letter-spacing: -0.01em;
+        letter-spacing: -0.01em !important;
+
+        text-align: center !important;
+    }
+
+    /* Date editing container */
+    .workout-log-table .workout-date-row .date-input::-webkit-datetime-edit {
+        font-family: inherit !important;
+        font-size: 1.85rem !important;
+        font-weight: 700 !important;
+
+        line-height: 1.2 !important;
+        letter-spacing: -0.01em !important;
+    }
+
+    .workout-log-table .workout-date-row .date-input::-webkit-datetime-edit-fields-wrapper {
+        font-family: inherit !important;
+        font-size: 1.85rem !important;
+        font-weight: 700 !important;
+    }
+
+    /* Month */
+    .workout-log-table .workout-date-row .date-input::-webkit-datetime-edit-month-field {
+        font-family: inherit !important;
+        font-size: 1.85rem !important;
+        font-weight: 700 !important;
+    }
+
+    /* Day */
+    .workout-log-table .workout-date-row .date-input::-webkit-datetime-edit-day-field {
+        font-family: inherit !important;
+        font-size: 1.85rem !important;
+        font-weight: 700 !important;
+    }
+
+    /* Year */
+    .workout-log-table .workout-date-row .date-input::-webkit-datetime-edit-year-field {
+        font-family: inherit !important;
+        font-size: 1.85rem !important;
+        font-weight: 700 !important;
+    }
+
+    /* Separators */
+    .workout-log-table .workout-date-row .date-input::-webkit-datetime-edit-text {
+        font-family: inherit !important;
+        font-size: 1.85rem !important;
+        font-weight: 700 !important;
+    }
+
+    /* Calendar button */
+    .workout-log-table .workout-date-row .date-input::-webkit-calendar-picker-indicator {
+        width: 2rem;
+        height: 2rem;
+
+        margin-right: 0.25rem;
+
+        cursor: pointer;
     }
 }
 
