@@ -373,7 +373,7 @@ input[type="date"]:focus {
     align-items: center;
     justify-content: center;
     gap: 12px;
-
+    font-size: 1.5rem;
     width: 100%;
     margin: 0 auto;
     padding: 10px 0;
@@ -910,7 +910,8 @@ td.spanrow2 {
 
     .addWorkout {
         padding: 10px !important;
-        margin: 10px !important;
+        margin: 0 auto !important;
+        
     }
 
 
@@ -998,15 +999,10 @@ td.spanrow2 {
 
     .createWorkout,
     .addWorkout {
-        margin: 0 auto;
-
-    }
-
-    .createWorkout {
         width: 100% !important;
         max-width: 100%;
+        margin: 0 auto;
         box-sizing: border-box;
-
     }
 
     .userStats {
@@ -1749,8 +1745,7 @@ td.exercise-name-cell {
 
     width: 100%;
     height: 14px;
-
-    font-size: 0.9rem;
+    font-size: clamp(1rem, 2vw, 1rem) !important;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -2616,8 +2611,12 @@ td.exercise-name-cell {
     box-shadow: var(--drop-shadow);
     padding: 30px;
     border: 2px solid #e2e8f0;
-    margin: 15px;
+    margin: 15px auto;
+    width: 100%;
+    max-width: 815px;
+    box-sizing: border-box;
     justify-self: center;
+    height: fit-content;
 }
 
 .createWorkout {
@@ -2972,7 +2971,7 @@ td.exercise-name-cell {
     }
 
     .legend-text {
-        max-width: 70px;
+        max-width: 80px;
 
     }
 
@@ -3918,12 +3917,7 @@ td.exercise-name-cell {
         padding-inline: clamp(0.35rem, 1.5vw, 0.6rem);
     }
 
-    .workout-log-table .unit,
-    .workout-log-table .set-input .inputWithUnit .unit,
-    .workout-log-table .set-labels-spacer {
-        font-size: clamp(1.1rem, 4vw, 1.3rem);
-        line-height: 1.1;
-    }
+  
 
     /* The entry table favours larger controls while a session is being logged. */
     .workout-log-table--entry td {
@@ -4231,28 +4225,32 @@ td.exercise-name-cell {
     }
 
     .workout-date-picker .date-input {
-        width: 250px !important;
-        height: 4rem !important;
+        width: 205px !important;
+        height: 1.3rem !important;
 
-        font-size: 2rem !important;
+        font-size: 1.2rem !important;
         font-weight: 700 !important;
 
-        padding: 0 12px !important;
+        padding: 0px 12px  !important;
 
         -webkit-appearance: auto;
         appearance: auto;
     }
 
     .workout-date-picker .date-input::-webkit-date-and-time-value {
-        font-size: 2rem !important;
+        font-size: 1.3em !important;
         font-weight: 700 !important;
     }
 
     .workout-date-picker .date-input::-webkit-calendar-picker-indicator {
-        width: 24px;
-        height: 20px;
-        transform: scale(1.35);
+        display: block;
+        cursor: pointer;
+        width: 10px;
+        height: 10px;
+        transform: scale(1.45);
+        color: black;
     }
+
 
     /* Remove unnecessary table whitespace */
     .table-container .addWorkoutTable {
@@ -4308,7 +4306,8 @@ td.exercise-name-cell {
 
     .workout-log-table .date-input,
     .workout-log-table .date-input::-webkit-date-and-time-value {
-        font-size: clamp(2.05rem, 7.5vw, 2.35rem) !important;
+        font-size: 1.3rem !important;
+        width: 200px !important;
     }
 
     .table-container .selector-hint {
