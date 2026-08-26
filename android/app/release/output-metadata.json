@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.muscleup.app",
+  "applicationId": "com.muscleup.live",
   "variantName": "release",
   "elements": [
     {

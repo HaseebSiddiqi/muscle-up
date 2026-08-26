@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.muscleup.app',
+  appId: 'com.muscleup.live',
   appName: 'Muscle Up',
   webDir: 'build'
 };

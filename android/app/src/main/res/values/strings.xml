@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">Muscle Up</string>
     <string name="title_activity_main">Muscle Up</string>
-    <string name="package_name">com.muscleup.app</string>
-    <string name="custom_url_scheme">com.muscleup.app</string>
+    <string name="package_name">com.muscleup.live</string>
+    <string name="custom_url_scheme">com.muscleup.live</string>
 </resources>

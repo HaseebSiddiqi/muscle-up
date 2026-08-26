@@ -1,4 +1,4 @@
-package com.muscleup.app;
+package com.muscleup.live;
 
 import com.getcapacitor.BridgeActivity;
 
