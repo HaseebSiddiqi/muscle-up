@@ -177,11 +177,19 @@ export default function Login() {
                 <div style={{
                     fontSize: "10px",
                     opacity: 0.5,
-                    textAlign: "center"
+                    textAlign: "center",
+                    
                 }}>
-                    Icon by Freepik (Flaticon)
+                    <a
+                        href="https://www.flaticon.com/free-icons/muscle"
+                        title="muscle icons"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ textDecoration: "none" }}
+                    >
+                        Muscle icons created by Magnific - Flaticon
+                    </a>
                 </div>
-
             </div>
         </>
     );
