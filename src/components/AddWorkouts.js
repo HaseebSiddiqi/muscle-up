@@ -889,31 +889,18 @@ export default function Add_workouts({
        DATE
        ======================================================== */
 
-    const renderDate = colSpan => (
-        <tr className="workout-date-row">
-            <td
-                className={
-                    colSpan === 12
-                        ? "spanrow2"
-                        : undefined
+    const renderDate = () => (
+        <div className="workout-date-picker">
+            <input
+                type="date"
+                max={getLocalDate()}
+                value={newWorkout.date || ""}
+                onChange={e =>
+                    updateDate(e.target.value)
                 }
-                colSpan={colSpan}
-            >
-                <input
-                    type="date"
-                    max={getLocalDate()}
-                    value={
-                        newWorkout.date || ""
-                    }
-                    onChange={e =>
-                        updateDate(
-                            e.target.value
-                        )
-                    }
-                    className="date-input"
-                />
-            </td>
-        </tr>
+                className="date-input"
+            />
+        </div>
     );
 
     /* ========================================================
@@ -1086,11 +1073,7 @@ export default function Add_workouts({
             <table className="addWorkoutTable workout-log-table workout-log-table--entry">
                 <tbody>
 
-                    {renderDate(
-                        hasRoundExercises
-                            ? 4
-                            : 3
-                    )}
+                    
 
                     <tr>
                         <th>
@@ -1461,7 +1444,7 @@ export default function Add_workouts({
             <table className="addWorkoutTable workout-log-table workout-log-table--entry">
                 <tbody>
 
-                    {renderDate(12)}
+                    
 
                     <tr>
                         <th>
@@ -1648,8 +1631,9 @@ export default function Add_workouts({
                 )}
 
                 {newWorkout && (
+                    
                     <div className="table-container">
-
+                        {renderDate()}
                         {newWorkout.isRounds
                             ? renderRoundsWorkout()
                             : renderNormalWorkout()}
