@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import Calendar from "react-calendar";
 import { useUnits } from "../contexts/unitContext";
 import { apiFetch } from "./apiClient.js";
@@ -19,6 +19,7 @@ export default function ViewWorkouts({
 
     const [viewCalender, updateCalender] = useState(true);
     const [currentDate, setDate] = useState(null);
+    
     const [feedback, setFeedback] = useState("");
     const [editingWorkoutId, setEditingWorkoutId] =
         useState(null);
@@ -27,7 +28,17 @@ export default function ViewWorkouts({
     const [workoutTypes, setWorkoutTypes] =
         useState([]);
     const [calendarMonth, setCalendarMonth] =
-        useState(new Date().getMonth());
+        useState(new Date());
+    
+
+    const handleCalendarClick = date => {
+        const workouts = isWorkout(date);
+
+        if (workouts.length > 0) {
+            setDate(date);
+            updateCalender(false);
+        }
+    };
 
     useEffect(() => {
         const fetchWorkouts = async () => {
@@ -308,27 +319,10 @@ export default function ViewWorkouts({
                             showFixedNumberOfWeeks={
                                 true
                             }
-                            onActiveStartDateChange={({
-                                activeStartDate
-                            }) => {
-                                setCalendarMonth(
-                                    activeStartDate.getMonth()
-                                );
+                            onActiveStartDateChange={({ activeStartDate }) => {
+                                setCalendarMonth(activeStartDate.getMonth());
                             }}
-                            onClickDay={date => {
-                                const workouts =
-                                    isWorkout(date);
-
-                                if (
-                                    workouts.length >
-                                    0
-                                ) {
-                                    setDate(date);
-                                    updateCalender(
-                                        false
-                                    );
-                                }
-                            }}
+                            onClickDay={handleCalendarClick}
                             tileClassName={({
                                 date,
                                 view

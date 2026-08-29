@@ -380,6 +380,9 @@ input[type="date"]:focus {
     cursor: default;
     position: relative;
 }
+.react-calendar__month-view__days__day--neighboringMonth:not(.workout-day) {
+    pointer-events: none;
+}
 
 .drop-down {
     position: absolute;
