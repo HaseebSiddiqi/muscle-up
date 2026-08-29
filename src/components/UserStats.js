@@ -293,7 +293,7 @@ export default function UserStats() {
 
                         <div className="distributionGrapButtonRow">
                             <button
-                                className="distributionGraphButton"
+                                className={`distributionGraphButton ${selectedPeriod === "lifetime" ? "selected" : ""}`}
                                 onClick={() =>
                                     setSelectedPeriod("lifetime")
                                 }
@@ -302,7 +302,7 @@ export default function UserStats() {
                             </button>
 
                             <button
-                                className="distributionGraphButton"
+                                className={`distributionGraphButton ${selectedPeriod === "yearly" ? "selected" : ""}`}
                                 onClick={() =>
                                     setSelectedPeriod("yearly")
                                 }
@@ -311,7 +311,7 @@ export default function UserStats() {
                             </button>
 
                             <button
-                                className="distributionGraphButton"
+                                className={`distributionGraphButton ${selectedPeriod === "quarter" ? "selected" : ""}`}
                                 onClick={() =>
                                     setSelectedPeriod("quarter")
                                 }
@@ -320,7 +320,7 @@ export default function UserStats() {
                             </button>
 
                             <button
-                                className="distributionGraphButton"
+                                className={`distributionGraphButton ${selectedPeriod === "month" ? "selected" : ""}`}
                                 onClick={() =>
                                     setSelectedPeriod("month")
                                 }

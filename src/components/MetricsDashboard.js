@@ -301,10 +301,10 @@ export default function MetricsDashboard({ viewWorkouts }) {
                             </ResponsiveContainer>
                         </div>
                         <div className="distributionGrapButtonRow">
-                            <button className="distributionGraphButton" onClick={() => setSelectedPeriod("lifetime")}>Lifetime</button>
-                            <button className="distributionGraphButton" onClick={() => setSelectedPeriod("yearly")}>Last Year</button>
-                            <button className="distributionGraphButton" onClick={() => setSelectedPeriod("quarter")}>Last 4 Months</button>
-                            <button className="distributionGraphButton" onClick={() => setSelectedPeriod("month")}>Last Month</button>
+                            <button className={`distributionGraphButton ${selectedPeriod === "lifetime" ? "selected" : ""}`} onClick={() => setSelectedPeriod("lifetime")}>Lifetime</button>
+                            <button className={`distributionGraphButton ${selectedPeriod === "yearly" ? "selected" : ""}`}onClick={() => setSelectedPeriod("yearly")}>Last Year</button>
+                            <button className={`distributionGraphButton ${selectedPeriod === "yearly" ? "selected" : ""}`} onClick={() => setSelectedPeriod("quarter")}>Last 4 Months</button>
+                            <button className={`distributionGraphButton ${selectedPeriod === "month" ? "selected" : ""}`} onClick={() => setSelectedPeriod("month")}>Last Month</button>
                         </div>
                     </div>
 

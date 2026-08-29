@@ -1875,6 +1875,8 @@ td.exercise-name-cell {
     background: transparent;
     font-family: inherit;
     color: var(--text-main);
+    font-size: 1rem;
+
 }
 
 /* ============================================================================
@@ -3186,7 +3188,13 @@ td.exercise-name-cell {
 }
 
 .distributionGraphButton:active {
-    transform: scale(0.97);
+    transform: scale(0.93);
+}
+.distributionGraphButton.selected {
+    background: #f1f5f9;
+    border-color: var(--secondary);
+    color: var(--secondary);
+    transform: scale(1.07);
 }
 
 /* =========================
