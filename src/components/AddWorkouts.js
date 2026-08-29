@@ -440,6 +440,16 @@ export default function Add_workouts({
        LOAD SELECTED WORKOUT
        ======================================================== */
 
+
+    useEffect(() => {
+        if (!newWorkout) return;
+
+        localStorage.setItem(
+            `workoutDraft_${newWorkout.workoutName}`,
+            JSON.stringify(newWorkout)
+        );
+    }, [newWorkout]);
+
     useEffect(() => {
         if (!selectedWorkout) return;
 
@@ -464,6 +474,15 @@ export default function Add_workouts({
 
         setShowDurationPopup(false);
 
+
+         const savedWorkout = localStorage.getItem(
+            `workoutDraft_${selectedWorkout.workoutName}`
+        );
+
+        if (savedWorkout) {
+            setNewWorkout(JSON.parse(savedWorkout));
+            return;
+        }
         const exercises = (
             selectedWorkout.exercises || []
         ).map(exercise =>
@@ -499,6 +518,9 @@ export default function Add_workouts({
         viewWorkouts,
         getLocalDate
     ]);
+
+
+
 
     /* ========================================================
        FETCH WORKOUTS
@@ -734,6 +756,10 @@ export default function Add_workouts({
                 setNewWorkout(null);
                 onSuccess();
             }, 2000);
+
+            localStorage.removeItem(
+                `workoutDraft_${newWorkout.workoutName}`
+            );
         } catch (error) {
             console.error(
                 "Error saving workout:",
