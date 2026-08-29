@@ -270,8 +270,8 @@ export default function ViewWorkouts({
                         );
 
                     return (
-                        workoutDate.getMonth() ===
-                        calendarMonth
+                        workoutDate.getMonth() === calendarMonth.getMonth() && 
+                        workoutDate.getFullYear() === calendarMonth.getFullYear()
                     );
                 })
                 .map(workout => [
@@ -320,7 +320,7 @@ export default function ViewWorkouts({
                                 true
                             }
                             onActiveStartDateChange={({ activeStartDate }) => {
-                                setCalendarMonth(activeStartDate.getMonth());
+                                setCalendarMonth(activeStartDate);
                             }}
                             onClickDay={handleCalendarClick}
                             tileClassName={({

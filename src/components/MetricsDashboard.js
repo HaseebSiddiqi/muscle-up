@@ -157,17 +157,31 @@ export default function MetricsDashboard({ viewWorkouts }) {
 
     // Start with LAST week because the current week isn't complete
     const checkWeek = new Date(currentMonday);
-    checkWeek.setDate(checkWeek.getDate() - 7);
 
     let streak = 0;
-
-    while (true) {
-
-        const weekKey =
+    const currentWeekKey =
             `${checkWeek.getFullYear()}-${String(checkWeek.getMonth() + 1).padStart(2, "0")}-${String(checkWeek.getDate()).padStart(2, "0")}`;
 
+        
+    const currentWeekActiveDays =
+        weeklyActiveDays[currentWeekKey]?.size || 0;
+
+    if (currentWeekActiveDays >= 3) {
+            streak++;
+            
+            checkWeek.setDate(
+                checkWeek.getDate() - 7
+            );
+    }
+
+    while (true) {
+        const weekKey =
+                    `${checkWeek.getFullYear()}-${String(checkWeek.getMonth() + 1).padStart(2, "0")}-${String(checkWeek.getDate()).padStart(2, "0")}`;
+
+            
         const activeDays =
             weeklyActiveDays[weekKey]?.size || 0;
+   
 
         if (activeDays < 3) {
             break;
@@ -303,7 +317,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
                         <div className="distributionGrapButtonRow">
                             <button className={`distributionGraphButton ${selectedPeriod === "lifetime" ? "selected" : ""}`} onClick={() => setSelectedPeriod("lifetime")}>Lifetime</button>
                             <button className={`distributionGraphButton ${selectedPeriod === "yearly" ? "selected" : ""}`}onClick={() => setSelectedPeriod("yearly")}>Last Year</button>
-                            <button className={`distributionGraphButton ${selectedPeriod === "yearly" ? "selected" : ""}`} onClick={() => setSelectedPeriod("quarter")}>Last 4 Months</button>
+                            <button className={`distributionGraphButton ${selectedPeriod === "quarter" ? "selected" : ""}`} onClick={() => setSelectedPeriod("quarter")}>Last 4 Months</button>
                             <button className={`distributionGraphButton ${selectedPeriod === "month" ? "selected" : ""}`} onClick={() => setSelectedPeriod("month")}>Last Month</button>
                         </div>
                     </div>

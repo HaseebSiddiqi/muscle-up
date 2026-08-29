@@ -480,7 +480,11 @@ export default function Add_workouts({
         );
 
         if (savedWorkout) {
-            setNewWorkout(JSON.parse(savedWorkout));
+            const workout = JSON.parse(savedWorkout);
+            setNewWorkout({...workout,
+                date:getLocalDate()
+            });
+            
             return;
         }
         const exercises = (
