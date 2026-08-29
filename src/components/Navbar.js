@@ -103,11 +103,12 @@ export default function Navbar() {
             <div className="nav-actions">
                 {user ? (
                     <>
-                        <span className="nav-welcome" onClick={() => setDropDown(!dropDown)}>
+                    <div ref={ref}>
+                        <span className="nav-welcome" onClick={() => setDropDown(prev => !prev)}>
                             Welcome, {user.username.charAt(0).toUpperCase() + user.username.slice(1)}
                         </span>
                         {dropDown && (
-                            <div className="drop-down" ref={ref}>
+                            <div className="drop-down" >
                                 <div className="setting-row">
                                     <span>Set Weight Units</span>
 
@@ -200,7 +201,7 @@ export default function Navbar() {
                                 
                             
                         )}
-
+                    </div>
                         <button className="nav-btn" onClick={handleSignOut}>
                             Sign Out
                         </button>
