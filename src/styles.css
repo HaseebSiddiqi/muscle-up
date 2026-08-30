@@ -3185,9 +3185,15 @@ td.exercise-name-cell {
     border-color: var(--secondary);
     color: var(--secondary);
 }
+.distributionGraphButton .selected {
+    background: #f1f5f9;
+    border-color: var(--secondary);
+    color: var(--secondary);
+    transform: scale(1.05);
 
+}
 .distributionGraphButton:active {
-    transform: scale(0.97);
+    transform: scale(1.05);
 }
 
 /* =========================
