@@ -380,9 +380,6 @@ input[type="date"]:focus {
     cursor: default;
     position: relative;
 }
-.react-calendar__month-view__days__day--neighboringMonth:not(.workout-day) {
-    pointer-events: none;
-}
 
 .drop-down {
     position: absolute;
@@ -1878,8 +1875,7 @@ td.exercise-name-cell {
     background: transparent;
     font-family: inherit;
     color: var(--text-main);
-    font-size: 1rem;
-
+    font-size: 36;
 }
 
 /* ============================================================================
@@ -3191,13 +3187,7 @@ td.exercise-name-cell {
 }
 
 .distributionGraphButton:active {
-    transform: scale(0.93);
-}
-.distributionGraphButton.selected {
-    background: #f1f5f9;
-    border-color: var(--secondary);
-    color: var(--secondary);
-    transform: scale(1.07);
+    transform: scale(0.97);
 }
 
 /* =========================
@@ -3712,40 +3702,40 @@ td.exercise-name-cell {
 }
 
 .feature-description li {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     line-height: 1.5;
-    color: #475569;
-    font-weight: 500;
+    color: #334155;
+    font-weight: 650;
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 13px;
+    letter-spacing: -0.01em;
 }
 
 .check-icon {
-    background: rgba(249, 115, 22, 0.1);
+    background: rgba(249, 115, 22, 0.12);
     color: var(--primary);
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: 900;
     flex-shrink: 0;
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     margin-top: 1px;
+    line-height: 1;
 }
 
 .feature-card-right .check-icon {
-    background: rgba(14, 165, 233, 0.1);
+    background: rgba(14, 165, 233, 0.12);
     color: var(--secondary);
 }
-
 
 /* =========================
    MOBILE (RESPONSIVE)
    ========================= */
-
 @media (max-width: 960px) {
     .landing {
         padding: 40px 16px 60px;
@@ -3800,20 +3790,29 @@ td.exercise-name-cell {
     }
 
     .feature-description {
-        text-align: center;
-        max-width: 100%;
+        text-align: left;
+        max-width: 560px;
         min-width: 0;
         padding: 0;
         box-sizing: border-box;
+        margin: 0 auto;
     }
 
     .feature-description h2 {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
 
     .feature-description li {
-        justify-content: center;
+        justify-content: flex-start;
         text-align: left;
+        font-size: 1.15rem;
+        line-height: 1.5;
+    }
+
+    .check-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.95rem;
     }
 }
 
@@ -3836,12 +3835,33 @@ td.exercise-name-cell {
         padding: 12px 20px;
     }
 
+    .feature-description {
+        width: min(100%, 480px);
+        margin: 0 auto;
+        text-align: left;
+    }
+
     .feature-description h2 {
-        font-size: 1.45rem;
+        font-size: 1.7rem;
+        line-height: 1.2;
+        text-align: center;
     }
 
     .feature-description li {
-        font-size: 0.95rem;
+        font-size: 1.1rem;
+        line-height: 1.5;
+        font-weight: 650;
+    }
+
+    .check-icon {
+        width: 27px;
+        height: 27px;
+        font-size: 0.9rem;
+    }
+
+    .image-container img {
+        max-width: 100%;
+        border-radius: 14px;
     }
 }
 
