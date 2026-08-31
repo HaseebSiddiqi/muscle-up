@@ -123,77 +123,72 @@ export default function MetricsDashboard({ viewWorkouts }) {
 
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
     }
-
     const weeklyActiveDays = {};
 
-    viewWorkouts.forEach(workout => {
-        if (!workout.date) return;
+viewWorkouts.forEach(workout => {
+    if (!workout.date) return;
 
-        const dateKey = workout.date.substring(0, 10);
-        const weekKey = getWeekKey(dateKey);
+    const dateKey = workout.date.substring(0, 10);
+    const weekKey = getWeekKey(dateKey);
 
-        if (!weeklyActiveDays[weekKey]) {
-            weeklyActiveDays[weekKey] = new Set();
-        }
-
-        weeklyActiveDays[weekKey].add(dateKey);
-    });
-
-    // Get Monday of the current week
-    const today = new Date();
-
-    const daysSinceMonday =
-        today.getDay() === 0 ? 6 : today.getDay() - 1;
-
-    const currentMonday = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate()
-    );
-
-    currentMonday.setDate(
-        currentMonday.getDate() - daysSinceMonday
-    );
-
-    // Start with LAST week because the current week isn't complete
-    const checkWeek = new Date(currentMonday);
-
-    let streak = 0;
-    const currentWeekKey =
-            `${checkWeek.getFullYear()}-${String(checkWeek.getMonth() + 1).padStart(2, "0")}-${String(checkWeek.getDate()).padStart(2, "0")}`;
-
-        
-    const currentWeekActiveDays =
-        weeklyActiveDays[currentWeekKey]?.size || 0;
-
-    if (currentWeekActiveDays >= 3) {
-            streak++;
-            
-            checkWeek.setDate(
-                checkWeek.getDate() - 7
-            );
+    if (!weeklyActiveDays[weekKey]) {
+        weeklyActiveDays[weekKey] = new Set();
     }
 
-    while (true) {
-        const weekKey =
-                    `${checkWeek.getFullYear()}-${String(checkWeek.getMonth() + 1).padStart(2, "0")}-${String(checkWeek.getDate()).padStart(2, "0")}`;
+    weeklyActiveDays[weekKey].add(dateKey);
+});
 
-            
-        const activeDays =
-            weeklyActiveDays[weekKey]?.size || 0;
+// Get Monday of the current week
+const today = new Date();
+
+const daysSinceMonday =
+    today.getDay() === 0 ? 6 : today.getDay() - 1;
+
+const currentMonday = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+);
+
+currentMonday.setDate(
+    currentMonday.getDate() - daysSinceMonday
+);
+
+const currentWeekKey =
+    `${currentMonday.getFullYear()}-${String(currentMonday.getMonth() + 1).padStart(2, "0")}-${String(currentMonday.getDate()).padStart(2, "0")}`;
+
+const currentWeekActiveDays =
+    weeklyActiveDays[currentWeekKey]?.size || 0;
+
+let streak = 0;
+
+// Current week
+if (currentWeekActiveDays >= 3) {
+    streak++;
+}
+
+// Check previous completed weeks
+const checkWeek = new Date(currentMonday);
+checkWeek.setDate(checkWeek.getDate() - 7);
+
+while (true) {
+    const weekKey =
+        `${checkWeek.getFullYear()}-${String(checkWeek.getMonth() + 1).padStart(2, "0")}-${String(checkWeek.getDate()).padStart(2, "0")}`;
+
+    const activeDays =
+        weeklyActiveDays[weekKey]?.size || 0;
+
+    if (activeDays < 3) {
+        break;
+    }
+
+    streak++;
+
+    checkWeek.setDate(
+        checkWeek.getDate() - 7
+    );
+}
    
-
-        if (activeDays < 3) {
-            break;
-        }
-
-        streak++;
-
-        checkWeek.setDate(
-            checkWeek.getDate() - 7
-        );
-    }
-
     // -----------------------------
     // Monthly Workout Frequency
     // -----------------------------
