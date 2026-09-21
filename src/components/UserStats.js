@@ -225,6 +225,8 @@ export default function UserStats() {
                                         dataKey="timestamp"
                                         domain={["dataMin", "dataMax"]}
                                         scale="time"
+                                        minTickGap={25}
+
                                         tickLine={false}
                                         axisLine={false}
                                         tick={{
@@ -283,9 +285,15 @@ export default function UserStats() {
                                         type="monotone"
                                         dataKey="weight"
                                         stroke="var(--secondary)"
+                                    
                                         fillOpacity={1}
                                         fill="url(#colorWeight)"
                                         strokeWidth={3}
+                                        dot={{  r: 3, 
+                                                fill: "white",
+                                                stroke: "var(--secondary)",
+                                                strokeWidth: 2
+                                        }}
                                     />
                                 </AreaChart>
                             </ResponsiveContainer>
@@ -325,7 +333,7 @@ export default function UserStats() {
                                     setSelectedPeriod("month")
                                 }
                             >
-                                Last Month
+                                Last 30 Days
                             </button>
                         </div>
                     </div>

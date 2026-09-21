@@ -313,7 +313,7 @@ while (true) {
                             <button className={`distributionGraphButton ${selectedPeriod === "lifetime" ? "selected" : ""}`} onClick={() => setSelectedPeriod("lifetime")}>Lifetime</button>
                             <button className={`distributionGraphButton ${selectedPeriod === "yearly" ? "selected" : ""}`}onClick={() => setSelectedPeriod("yearly")}>Last Year</button>
                             <button className={`distributionGraphButton ${selectedPeriod === "quarter" ? "selected" : ""}`} onClick={() => setSelectedPeriod("quarter")}>Last 4 Months</button>
-                            <button className={`distributionGraphButton ${selectedPeriod === "month" ? "selected" : ""}`} onClick={() => setSelectedPeriod("month")}>Last Month</button>
+                            <button className={`distributionGraphButton ${selectedPeriod === "month" ? "selected" : ""}`} onClick={() => setSelectedPeriod("month")}>Last 30 Days</button>
                         </div>
                     </div>
 
