@@ -654,11 +654,12 @@ export default function ViewWorkouts({
                                                                                         </div>
                                                                                     )}
 
-                                                                                    <span className="unit">
-                                                                                        {
-                                                                                            weightUnit
-                                                                                        }
-                                                                                    </span>
+                                                                                
+                                                                                    {showUnits && (
+                                                                                        <span className="unit">
+                                                                                            {weightUnit}
+                                                                                        </span>
+                                                                                    )}
                                                                                 </div>
 
                                                                                 <div className="inputWithUnit">
@@ -767,9 +768,11 @@ export default function ViewWorkouts({
                                                                             <div className="duration-input">
                                                                                 {showUnits && (
                                                                                     <div className="duration-labels">
-                                                                                        <span className="unit">
-                                                                                            mins
-                                                                                        </span>
+                                                                                        {showUnits && (
+                                                                                            <span className="unit">
+                                                                                                mins
+                                                                                            </span>
+                                                                                        )}
 
                                                                                         <span className="unit">
                                                                                             sec
@@ -897,10 +900,6 @@ export default function ViewWorkouts({
                                                                             }
                                                                             className="rounds-cell"
                                                                         >
-                                                                            <span className="unit">
-                                                                                Rounds
-                                                                            </span>
-
                                                                             <div className="inputWithUnit">
                                                                                 {editing ? (
                                                                                     <input
@@ -990,9 +989,15 @@ export default function ViewWorkouts({
                                                 )}
 
                                                 {cardioExercises.map(
-                                                    exercise => {
+                                                    (
+                                                        exercise,
+                                                        index
+                                                    ) => {
                                                         const exerciseIndex =
                                                             exercise.originalIndex;
+
+                                                        const showUnits =
+                                                            index === 0;
 
                                                         const editExercise =
                                                             editing
@@ -1063,10 +1068,12 @@ export default function ViewWorkouts({
                                                                                     }
                                                                                 </div>
                                                                             )}
-
-                                                                            <span className="unit">
-                                                                                mins
-                                                                            </span>
+                                                                            
+                                                                            {showUnits && (
+                                                                                <span className="unit">
+                                                                                    mins
+                                                                                </span>
+                                                                            )}
                                                                         </div>
 
                                                                         <div className="inputWithUnit">
@@ -1149,11 +1156,13 @@ export default function ViewWorkouts({
                                                                                 </div>
                                                                             )}
 
-                                                                            <span className="unit">
-                                                                                {
-                                                                                    distanceUnit
-                                                                                }
-                                                                            </span>
+                                                                            {showUnits && (
+                                                                                <span className="unit">
+                                                                                    {
+                                                                                        distanceUnit
+                                                                                    }
+                                                                                </span>
+                                                                            )}
                                                                         </div>
 
                                                                         <div className="inputWithUnit">
@@ -1197,9 +1206,11 @@ export default function ViewWorkouts({
                                                                                 </div>
                                                                             )}
 
-                                                                            <span className="unit">
-                                                                                cals
-                                                                            </span>
+                                                                            {showUnits && (
+                                                                                <span className="unit">
+                                                                                    cals
+                                                                                </span>
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                 </td>

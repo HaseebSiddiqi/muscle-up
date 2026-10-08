@@ -130,7 +130,8 @@ const validSets = sets => {
 
 const getPreviousExercise = (
     workout,
-    exerciseName
+    exerciseName,
+    
 ) =>
     workout?.exercises?.find(
         ex => ex.name === exerciseName
@@ -474,19 +475,44 @@ export default function Add_workouts({
 
         setShowDurationPopup(false);
 
-
-         const savedWorkout = localStorage.getItem(
+        const sameWorkoutConfig = (draft, current)=>
+        {
+            if (draft.workoutName !== current.workoutName || draft.isRounds !== current.isRounds )
+                {
+                    return false;
+                }
+            if (draft.exercises.length !== current.exercises.length){
+                    return false;
+                }
+            for(let i = 0; i < draft.exercises.length; i++){
+               
+                if (draft.exercises[i].name !== current.exercises[i].name || draft.exercises[i].type !== current.exercises[i].type){
+                    return false;
+                }
+            }
+            return true;
+                
+        }
+        
+        const savedWorkout = localStorage.getItem(
             `workoutDraft_${selectedWorkout.workoutName}`
         );
 
         if (savedWorkout) {
             const workout = JSON.parse(savedWorkout);
+
+            if (sameWorkoutConfig(workout, selectedWorkout)){
             setNewWorkout({...workout,
                 date:getLocalDate()
             });
             
             return;
+            } else {
+                localStorage.removeItem(`workoutDraft_${selectedWorkout.workoutName}`);
+            }
         }
+        
+        
         const exercises = (
             selectedWorkout.exercises || []
         ).map(exercise =>
@@ -1183,7 +1209,7 @@ export default function Add_workouts({
                                                             ?.rounds
                                                             ?.count
                                                     }
-                                                    unit="Rounds"
+                                                    showUnit={false}
                                                     onChange={e =>
                                                         updateRounds(
                                                             "count",
@@ -1210,7 +1236,7 @@ export default function Add_workouts({
                     )}
 
                     {cardioExercises.map(
-                        exercise => {
+                        (exercise, index) => {
                             const exerciseIndex =
                                 exercise.originalIndex;
 
@@ -1248,7 +1274,7 @@ export default function Add_workouts({
                                             exercise,
                                             exerciseIndex,
                                             prevExercise,
-                                            true
+                                            index === 0
                                         )}
                                     </td>
 
