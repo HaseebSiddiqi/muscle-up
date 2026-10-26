@@ -7,6 +7,7 @@ import ViewWorkouts from "../components/ViewWorkouts";
 import WorkoutTypes from "../components/WorkoutTypes";
 import MetricsDashboard from "../components/MetricsDashboard";
 import UserStats from "../components/UserStats.js";
+import EditTemplates from "../components/EditTemplates";
 import { apiFetch } from "../components/apiClient.js";
 
 
@@ -19,7 +20,8 @@ export default function Home() {
     const [refreshKey, setRefreshKey] = useState(0);
 
     const bottomRef = useRef(null);
-
+    
+    const [mode, setMode] = useState("default");
 
 
     const refreshWorkouts = () => {
@@ -106,7 +108,18 @@ export default function Home() {
                         </div>
 
                         <div ref={activeComponent === "create" ? bottomRef : null} className="createWorkout" style={{ display: activeComponent === "create" ? "block" : "none" }}>
-                            <CreateWorkouts onSuccess={refreshWorkouts} active = {activeComponent === "create"} />
+                            <CreateWorkouts onSuccess={() => {
+                                    refreshWorkouts();
+                                    setActiveComponent("home");
+                                }} active = {activeComponent === "create"} />
+                        </div>
+                         <div ref={activeComponent === "edit" ? bottomRef : null} className="createWorkout" style={{ display: activeComponent === "edit" ? "block" : "none" }}>
+                            <EditTemplates selectedWorkout={selectedWorkout} onSuccess={() => {
+                                    refreshWorkouts();
+                                    setActiveComponent("home");
+                                    setMode("default")
+                                }}
+                                active = {activeComponent === "home"} />
                         </div>
                     </div>
 
@@ -116,6 +129,7 @@ export default function Home() {
                             setActiveComponent={setActiveComponent}
                             refreshKey={refreshKey}
                             setRefreshKey={setRefreshKey}
+                            mode = {mode} setMode={setMode}
                         />
                     </div>
                     <div className="userStats">

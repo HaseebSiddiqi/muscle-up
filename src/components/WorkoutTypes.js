@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { apiFetch } from "./apiClient.js";
 
-export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refreshKey, setRefreshKey }) {
+export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refreshKey, setRefreshKey, mode, setMode  }) {
     const [workouts, setWorkouts] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [colourPicker, setColourPicker] = useState(null);
     const [selectedColour, setSelectedColour] = useState(null);
     const [feedback, setFeedback] = useState("");
     const colourPickerRef = useRef(null);
+    
 
+   
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
@@ -106,8 +108,12 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
 
 
             <div className="workout-selector-container">
-                <h2>Your Created Workouts</h2>
-                {workouts.length > 0 ? (
+                
+                {workouts.length > 0 ?  (
+
+                    mode === "default" ? (
+                    <div>
+                    <h2>Your Workout Templates</h2>
                     <div className="workout-list" >
                         {workouts.map((workout, i) => (
                             <div key={i} className="workout-item" >
@@ -150,32 +156,85 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                                         </p>
                                     </div>
                                 )}
-                                <button
-                                    className="workout-item-delete"
-                                    onClick={() => {
-                                        const confirmed = window.confirm("Delete this workout?");
-                                        if (confirmed) { deleteWorkout(i); }
-                                    }}
-                                >
-                                    ❌
-                                </button>
+                                
 
                             </div>
 
                         ))}
+                        
 
                     </div>
-                ) : (
-                    <h3 className="empty-workouts-text">Add your first workout type to get started</h3>
+
+                    <button
+                        className="main-action-btn"
+                        onClick={() => { onSelectWorkout(null); setActiveComponent("create"); }}
+                    >
+                        + Add Workout Type
+                    </button>
+                     <p></p>
+                    <button
+                        className="main-action-btn"
+                        onClick={()=> {setMode("edit");}}>
+                            Edit Workout Templates
+                    </button>
+                    <p className="selector-hint">Select a workout type to log a session</p>
+                    </div>
+                ):(
+                    <div> 
+                        <h2>Edit Workout Templates</h2>
+                        <div className="workout-list" >
+                            {workouts.map((workout, i) => (
+                                <div key={i} className="workout-item" >
+                                    <span
+                                        className="workout-item-name"
+                                        onClick={() => { onSelectWorkout(workout); setActiveComponent("edit"); }}
+                                    >
+                                        {workout.workoutName}
+                                    </span>
+                                   
+                                    <button
+                                        className="workout-item-delete"
+                                        onClick={() => {
+                                            const confirmed = window.confirm("Delete this workout?");
+                                            if (confirmed) { deleteWorkout(i); }
+                                        }}
+                                    >
+                                        ❌
+                                    </button>
+
+                                </div>
+
+                            ))}
+                        
+
+                        </div>
+                        
+                         <button
+                        className="main-action-btn"
+                        onClick={()=> {setMode("default"); setActiveComponent("home")}}>
+                           back
+                    </button>
+                    <p className="selector-hint">Select a template to edit</p>
+                    
+
+                    </div>
+                )
+            ) : (
+                    <div>
+                        <h2>Create Workout Templates</h2>
+                        <h3 className="empty-workouts-text">Add your first workout type to get started</h3>
+                            <button
+                        className="main-action-btn"
+                        onClick={() => { onSelectWorkout(null); setActiveComponent("create"); }}
+                    >
+                        + Add Workout Type
+                    </button>
+                    </div>
+
                 )}
 
-                <button
-                    className="main-action-btn"
-                    onClick={() => { onSelectWorkout(null); setActiveComponent("create"); }}
-                >
-                    + Add Workout Type
-                </button>
-                <p className="selector-hint">Select a workout type to log a session</p>
+            
+               
             </div>
 
             {feedback && <h2>{feedback}</h2>}

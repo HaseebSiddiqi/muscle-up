@@ -131,7 +131,6 @@ const validSets = sets => {
 const getPreviousExercise = (
     workout,
     exerciseName,
-    
 ) =>
     workout?.exercises?.find(
         ex => ex.name === exerciseName
@@ -441,7 +440,6 @@ export default function Add_workouts({
        LOAD SELECTED WORKOUT
        ======================================================== */
 
-
     useEffect(() => {
         if (!newWorkout) return;
 
@@ -475,25 +473,40 @@ export default function Add_workouts({
 
         setShowDurationPopup(false);
 
-        const sameWorkoutConfig = (draft, current)=>
-        {
-            if (draft.workoutName !== current.workoutName || draft.isRounds !== current.isRounds )
-                {
-                    return false;
-                }
-            if (draft.exercises.length !== current.exercises.length){
-                    return false;
-                }
-            for(let i = 0; i < draft.exercises.length; i++){
-               
-                if (draft.exercises[i].name !== current.exercises[i].name || draft.exercises[i].type !== current.exercises[i].type){
+        const sameWorkoutConfig = (draft, current) => {
+            if (
+                draft.workoutName !== current.workoutName ||
+                draft.isRounds !== current.isRounds ||
+                draft.description !== current.description
+            ) {
+                return false;
+            }
+
+            if (
+                draft.exercises.length !==
+                current.exercises.length
+            ) {
+                return false;
+            }
+
+            for (
+                let i = 0;
+                i < draft.exercises.length;
+                i++
+            ) {
+                if (
+                    draft.exercises[i].name !==
+                        current.exercises[i].name ||
+                    draft.exercises[i].type !==
+                        current.exercises[i].type
+                ) {
                     return false;
                 }
             }
+
             return true;
-                
         }
-        
+
         const savedWorkout = localStorage.getItem(
             `workoutDraft_${selectedWorkout.workoutName}`
         );
@@ -501,18 +514,20 @@ export default function Add_workouts({
         if (savedWorkout) {
             const workout = JSON.parse(savedWorkout);
 
-            if (sameWorkoutConfig(workout, selectedWorkout)){
-            setNewWorkout({...workout,
-                date:getLocalDate()
-            });
-            
-            return;
+            if (sameWorkoutConfig(workout, selectedWorkout)) {
+                setNewWorkout({
+                    ...workout,
+                    date: getLocalDate()
+                });
+
+                return;
             } else {
-                localStorage.removeItem(`workoutDraft_${selectedWorkout.workoutName}`);
+                localStorage.removeItem(
+                    `workoutDraft_${selectedWorkout.workoutName}`
+                );
             }
         }
-        
-        
+
         const exercises = (
             selectedWorkout.exercises || []
         ).map(exercise =>
@@ -548,9 +563,6 @@ export default function Add_workouts({
         viewWorkouts,
         getLocalDate
     ]);
-
-
-
 
     /* ========================================================
        FETCH WORKOUTS
@@ -1128,9 +1140,6 @@ export default function Add_workouts({
         return (
             <table className="addWorkoutTable workout-log-table workout-log-table--entry">
                 <tbody>
-
-                    
-
                     <tr>
                         <th>
                             {newWorkout.workoutName}
@@ -1499,9 +1508,6 @@ export default function Add_workouts({
         return (
             <table className="addWorkoutTable workout-log-table workout-log-table--entry">
                 <tbody>
-
-                    
-
                     <tr>
                         <th>
                             {newWorkout.workoutName}
