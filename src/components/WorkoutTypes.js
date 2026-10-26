@@ -164,7 +164,7 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                         
 
                     </div>
-
+                    <p className="selector-hint">Select a workout type to log a session</p>
                     <button
                         className="main-action-btn"
                         onClick={() => { onSelectWorkout(null); setActiveComponent("create"); }}
@@ -177,7 +177,7 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                         onClick={()=> {setMode("edit");}}>
                             Edit Workout Templates
                     </button>
-                    <p className="selector-hint">Select a workout type to log a session</p>
+                    
                     </div>
                 ):(
                     <div> 
@@ -208,13 +208,13 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                         
 
                         </div>
-                        
-                         <button
+                    <p className="selector-hint">Select a template to edit</p>
+                    <button
                         className="main-action-btn"
                         onClick={()=> {setMode("default"); setActiveComponent("home")}}>
                            back
                     </button>
-                    <p className="selector-hint">Select a template to edit</p>
+                    
                     
 
                     </div>

@@ -7,7 +7,7 @@ import ViewWorkouts from "../components/ViewWorkouts";
 import WorkoutTypes from "../components/WorkoutTypes";
 import MetricsDashboard from "../components/MetricsDashboard";
 import UserStats from "../components/UserStats.js";
-import EditTemplates from "../components/EditTemplates";
+import EditTemplates from "../components/EditTemplates.js";
 import { apiFetch } from "../components/apiClient.js";
 
 
@@ -52,7 +52,7 @@ export default function Home() {
     }, [refreshKey])
 
     useEffect(() => {
-        if (activeComponent === "add" || activeComponent === "create") {
+        if (activeComponent === "add" || activeComponent === "create" || activeComponent ==="edit") {
             requestAnimationFrame(() => {
                 setTimeout(() => {
                     const element = bottomRef.current;
@@ -117,7 +117,7 @@ export default function Home() {
                             <EditTemplates selectedWorkout={selectedWorkout} onSuccess={() => {
                                     refreshWorkouts();
                                     setActiveComponent("home");
-                                    setMode("default")
+                                    setMode("default");
                                 }}
                                 active = {activeComponent === "home"} />
                         </div>

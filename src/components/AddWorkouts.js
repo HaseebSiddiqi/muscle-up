@@ -1637,14 +1637,7 @@ export default function Add_workouts({
                             <td colSpan={5}>
                                 <div className="SetControls">
 
-                                    <button
-                                        className="addButton"
-                                        onClick={
-                                            addSets
-                                        }
-                                    >
-                                        Add Set
-                                    </button>
+                                  
 
                                     <button
                                         className="minusButton"
@@ -1654,7 +1647,14 @@ export default function Add_workouts({
                                     >
                                         Delete Set
                                     </button>
-
+                                    <button
+                                        className="addButton"
+                                        onClick={
+                                            addSets
+                                        }
+                                    >
+                                        Add Set
+                                    </button>
                                 </div>
                             </td>
                         </tr>

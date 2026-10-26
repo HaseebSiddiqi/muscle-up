@@ -111,14 +111,22 @@ export default function Edit_templates({selectedWorkout, onSuccess, active }) {
             {feedback && <h2>{feedback}</h2>}
 
             <form className="create-workout-form">
+              
+              
+               
                 <div className="form-section">
-                    <h2>Edit Template</h2>
+                    <div className="form-header"> 
+                        <h2>Edit Template</h2>
+                        <button type = "button" className="CloseComponent" onClick={onSuccess}>
+                        ❌
+                        </button>
+                   </div>
+
                     <h3>
                         Workout Name: {selectedWorkout?.workoutName}
                     </h3>
-                    
                 </div>
-
+               
 
                 <div className="exercises-section">
                     <h3>Exercises</h3>
@@ -237,13 +245,14 @@ export default function Edit_templates({selectedWorkout, onSuccess, active }) {
                 </div>
 
                 <div className="form-controls">
-                    <button type="button" className="addButton"
-                        onClick={() => setExercises(prev => prev.length < 10 ? [...prev, { name: "", type: "weight_reps" }] : prev)}>
-                        ADD EXERCISE
-                    </button>
+                    
                     <button type="button" className="minusButton"
                         onClick={() => setExercises(prev => prev.length > 1 ? prev.slice(0, -1) : prev)}>
                         DELETE EXERCISE
+                    </button>
+                    <button type="button" className="addButton"
+                        onClick={() => setExercises(prev => prev.length < 10 ? [...prev, { name: "", type: "weight_reps" }] : prev)}>
+                        ADD EXERCISE
                     </button>
                 </div>
 

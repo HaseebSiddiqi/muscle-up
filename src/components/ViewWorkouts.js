@@ -1283,6 +1283,23 @@ export default function ViewWorkouts({
                                                 <tr>
                                                     <td colSpan={99}>
                                                         <div className="SetControls">
+                                                            
+                                                            <button
+                                                                className="minusButton"
+                                                                onClick={() => {
+                                                                    if (
+                                                                        window.confirm(
+                                                                            "Delete this workout?"
+                                                                        )
+                                                                    ) {
+                                                                        handleDelete(
+                                                                            w.workoutId
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            >
+                                                                Delete
+                                                            </button>
                                                             <button
                                                                 className="addButton"
                                                                 onClick={() => {
@@ -1307,23 +1324,6 @@ export default function ViewWorkouts({
                                                                 {editing
                                                                     ? "Save"
                                                                     : "Edit"}
-                                                            </button>
-
-                                                            <button
-                                                                className="minusButton"
-                                                                onClick={() => {
-                                                                    if (
-                                                                        window.confirm(
-                                                                            "Delete this workout?"
-                                                                        )
-                                                                    ) {
-                                                                        handleDelete(
-                                                                            w.workoutId
-                                                                        );
-                                                                    }
-                                                                }}
-                                                            >
-                                                                Delete
                                                             </button>
                                                         </div>
                                                     </td>
@@ -2172,6 +2172,24 @@ export default function ViewWorkouts({
                                             <tr>
                                                 <td colSpan={99}>
                                                     <div className="SetControls">
+                                                        
+
+                                                        <button
+                                                            className="minusButton"
+                                                            onClick={() => {
+                                                                if (
+                                                                    window.confirm(
+                                                                        "Delete this workout?"
+                                                                    )
+                                                                ) {
+                                                                    handleDelete(
+                                                                        w.workoutId
+                                                                    );
+                                                                }
+                                                            }}
+                                                        >
+                                                            Delete
+                                                        </button>
                                                         <button
                                                             className="addButton"
                                                             onClick={() => {
@@ -2196,23 +2214,6 @@ export default function ViewWorkouts({
                                                             {editing
                                                                 ? "Save"
                                                                 : "Edit"}
-                                                        </button>
-
-                                                        <button
-                                                            className="minusButton"
-                                                            onClick={() => {
-                                                                if (
-                                                                    window.confirm(
-                                                                        "Delete this workout?"
-                                                                    )
-                                                                ) {
-                                                                    handleDelete(
-                                                                        w.workoutId
-                                                                    );
-                                                                }
-                                                            }}
-                                                        >
-                                                            Delete
                                                         </button>
                                                     </div>
                                                 </td>
