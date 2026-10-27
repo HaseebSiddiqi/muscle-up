@@ -1427,7 +1427,7 @@ td.spanrow2 {
 .workout-type-container label,
 .Workout-Description label,
 .Colour-Picker label {
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #1e293b;
   text-transform: uppercase;
@@ -1446,7 +1446,7 @@ td.spanrow2 {
   padding: 8px 10px;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #0f172a;
   background-color: white;
@@ -1877,6 +1877,7 @@ td.exercise-name-cell {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  font-size: 1.2rem;
 }
 
 .form-section label {
@@ -1891,7 +1892,7 @@ td.exercise-name-cell {
   padding: 10px 12px;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: #0f172a;
   background-color: #f8fafc;
@@ -1920,7 +1921,7 @@ td.exercise-name-cell {
 
 .exercises-section h3 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #1e293b;
   text-transform: uppercase;
@@ -1970,6 +1971,7 @@ td.exercise-name-cell {
   overflow: visible;
   z-index: 20;
   width: 100%;
+ 
 }
 
 .exercise-input-wrapper label {
@@ -1980,7 +1982,7 @@ td.exercise-name-cell {
   padding: 8px 10px;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #0f172a;
   background-color: white;
@@ -2015,7 +2017,7 @@ td.exercise-name-cell {
   padding: 8px 10px;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #0f172a;
   background-color: white;
@@ -2023,13 +2025,17 @@ td.exercise-name-cell {
   cursor: pointer;
   transition: all 0.15s ease;
   box-sizing: border-box;
+  
 }
 
 .exercise-type-select:focus {
   outline: none;
   border-color: #0ea5e9;
   background-color: #f0f9ff;
+  width: 75%;
+
   box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.08);
+  font-size: 1.2rem;
 }
 
 .workout-type-container {
@@ -2074,7 +2080,7 @@ td.exercise-name-cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 1.2rem;
   font-weight: 500;
   color: #64748b;
   transition: color 0.2s ease;
@@ -2136,7 +2142,7 @@ td.exercise-name-cell {
 
 /* Exercise selector dropdown - keep existing styles */
 .exercise-selector {
-  font-size: 15px;
+  font-size: 1rem;
   text-align: left;
   font-weight: 500;
   max-height: 220px;
@@ -2152,10 +2158,10 @@ td.exercise-name-cell {
   width: calc(200% + 12px);
 }
 
-.exercise-selector h5 {
+.exercise-selector h5  {
   margin: 0;
   padding: 10px 12px;
-  font-size: 16px;
+  font-size: 1.25rem !important;
   font-weight: 700;
   cursor: pointer;
   border-bottom: 1px solid #e1e5ea;
@@ -2178,6 +2184,7 @@ td.exercise-name-cell {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  font-size: 1.25rem;
 }
 
 .list:hover {
@@ -2300,17 +2307,44 @@ td.exercise-name-cell {
 
   .form-section label,
   .exercises-section h3 {
-    font-size: 0.85rem;
+    font-size: 1.2rem;
   }
 
   .exercise-name-input {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
   }
 
   .exercise-type-select {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
+  }
+  .exercise-selector h5  {
+    margin: 0;
+    padding: 10px 12px;
+    font-size: 1.1rem !important;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 1px solid #e1e5ea;
+    background-color: #f5f7fa;
   }
 
+  .exercise-selector h5:hover {
+    background-color: #e9edf2;
+  }
+
+  .exercise-selector h5:active {
+    background-color: #dfe4ea;
+  }
+
+  .list {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.1rem;
+  }
   .exercise-selector {
     width: calc(200% + 12px) !important;
   }
@@ -4117,13 +4151,16 @@ td.exercise-name-cell {
   .workout-date-picker {
     margin: 0 0 6px;
     padding: 0;
+    
   }
+ 
+
 
   .workout-date-picker .date-input {
     width: 205px !important;
     height: 1.3rem !important;
 
-    font-size: 1.2rem !important;
+    font-size: 1.48rem !important;
     font-weight: 700 !important;
 
     padding: 0px 12px !important;
@@ -4133,7 +4170,7 @@ td.exercise-name-cell {
   }
 
   .workout-date-picker .date-input::-webkit-date-and-time-value {
-    font-size: 1.3em !important;
+    font-size: 1.4rem !important;
     font-weight: 700 !important;
   }
 
@@ -4142,7 +4179,7 @@ td.exercise-name-cell {
     cursor: pointer;
     width: 10px;
     height: 10px;
-    transform: scale(1.45);
+    transform: scale(2.0);
     color: black;
   }
 
