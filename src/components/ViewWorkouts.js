@@ -413,8 +413,15 @@ export default function ViewWorkouts({
                                         ></span>
 
                                         <span className="legend-text">
-                                            {workoutNames.join(
-                                                ", "
+                                            {workoutNames.map(
+                                                workoutName => (
+                                                    <span
+                                                        className="legend-workout"
+                                                        key={workoutName}
+                                                    >
+                                                        {workoutName}
+                                                    </span>
+                                                )
                                             )}
                                         </span>
                                     </p>

@@ -1,5 +1,6 @@
 /* Theme variables */
 :root {
+  --calendar-inline-padding: 14px;
   --bg-main: #fdfdfd;
   --text-main: #0f172a;
   --primary: #f97316;
@@ -366,7 +367,7 @@ input[type="date"]:focus {
   margin: 0 auto;
   font-size: x-large;
   font-weight: bolder;
-  padding: 14px 10px 10px;
+  padding: 14px var(--calendar-inline-padding) 10px;
   box-sizing: border-box;
   cursor: default;
   background: transparent;
@@ -685,10 +686,14 @@ input[type="date"]:focus {
 }
 
 @media (max-width: 600px) {
+  :root {
+    --calendar-inline-padding: 9px;
+  }
+
   .react-calendar {
     width: 100%;
     font-size: 0.8rem;
-    padding: 5px;
+    padding: 5px var(--calendar-inline-padding);
   }
 
   .react-calendar__navigation {
@@ -2323,7 +2328,7 @@ td.exercise-name-cell {
 .form-controls .addButton,
 .form-controls .minusButton {
   padding: 10px 12px !important;
-  font-size: 1.2rem !important;
+  font-size: 1.1rem !important;
   font-weight: 800;
   border-radius: 6px !important;
   border: none !important;
@@ -3005,51 +3010,61 @@ td.exercise-name-cell {
   background-color: var(--square-colour);
 }
 
+.Calander.bottom {
+  width: 95%;
+  max-width: 650px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
 .legend {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px 10px;
-  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0
+    calc(var(--calendar-inline-padding) - 4px)
+    0
+    calc(var(--calendar-inline-padding) + 4px);
+  gap: 12px 8px;
+  align-items: start;
 }
 
 .legend-item {
   margin: 0;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 6px;
   min-width: 0;
-  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
   padding-top: 8px;
 }
 
+.legend-color {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+}
+
 .legend-text {
-  max-width: 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
   overflow-wrap: break-word;
   word-break: normal;
   text-align: left;
 }
 
-.legend-item:nth-child(4n + 1) {
-  justify-self: start;
-  transform: translateX(30px);
-}
-
-.legend-item:not(:nth-child(4n + 1)) {
-  justify-self: center;
+.legend-workout {
+  min-width: 0;
 }
 
 @media (max-width: 600px) {
   .legend-item {
     gap: 4px;
-  }
-
-  .legend-text {
-    max-width: 80px;
-  }
-
-  .legend-item:nth-child(4n + 1) {
-    justify-self: start;
-    transform: translateX(22px);
   }
 }
 
