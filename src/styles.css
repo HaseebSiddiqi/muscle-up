@@ -89,6 +89,8 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .my-button:hover {
   background-color: white;
   color: var(--primary);
@@ -96,6 +98,7 @@ body {
   box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
 }
 
 /* WORKOUT TABLES
@@ -250,9 +253,12 @@ body {
   cursor: pointer;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .addWorkoutTable td button:hover,
 .workout-table td button:hover {
   background-color: rgba(0, 0, 0, 0.08);
+}
 }
 
 .addWorkoutTable td input {
@@ -270,11 +276,14 @@ body {
   font-weight: bold;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .addWorkoutTable td input:hover {
   cursor: pointer;
   filter: brightness(0.94);
   transition: filter 0.3s;
   background-color: rgba(0, 0, 0, 0.08);
+}
 }
 
 /* Highlight rows */
@@ -292,9 +301,12 @@ table .spanrow2 {
   padding: 0%;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 th.spanrow2 button:hover {
   background-color: rgba(0, 0, 0, 0.08);
   cursor: pointer;
+}
 }
 
 .spanrow input[type="date"] {
@@ -322,10 +334,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-weight: bold;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .display-workout:hover {
   background-color: silver;
   transform: scale(1.03);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 }
 
 /* Date inputs */
@@ -554,7 +569,15 @@ input[type="date"]:focus {
   transition: background 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .delete-account:hover {
+  background: white;
+  color: var(--danger);
+}
+}
+
+.delete-account:active {
   background: white;
   color: var(--danger);
 }
@@ -572,9 +595,12 @@ input[type="date"]:focus {
   transition: background 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .delete-account-back:hover {
   background: white;
   color: var(--success);
+}
 }
 
 .Confirm-Delete {
@@ -752,8 +778,11 @@ input[type="date"]:focus {
   --secondary-colour: var(--purple);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .workout-day:hover {
   opacity: 0.75;
+}
 }
 
 /* Back button - Styled as premium  Pill button */
@@ -775,10 +804,13 @@ input[type="date"]:focus {
   width: fit-content;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .back:hover {
   background-color: white !important;
   color: var(--primary) !important;
   transform: translateY(-2px);
+}
 }
 
 /* Containers */
@@ -1090,8 +1122,10 @@ td.spanrow2 {
     cursor: pointer;
     font-size: 1.25rem;
 }
+@media (hover: hover) and (pointer: fine) {
 .CloseComponent:hover{
   transform: scale(1.2);
+}
 }
 .btn-primary {
   background-color: var(--primary);
@@ -1099,7 +1133,16 @@ td.spanrow2 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .btn-primary:hover {
+  background-color: white;
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+}
+
+.btn-primary:active {
   background-color: white;
   color: var(--primary);
   transform: translateY(-2px);
@@ -1200,10 +1243,13 @@ td.spanrow2 {
   cursor: pointer;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .nav-welcome:hover {
   font-size: 1.1rem;
   font-weight: 700;
   color: white;
+}
 }
 
 .nav-btn {
@@ -1219,7 +1265,16 @@ td.spanrow2 {
   transition: all 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .nav-btn:hover {
+  background: white;
+  border-color: white;
+  color: var(--secondary);
+}
+}
+
+.nav-btn:active {
   background: white;
   border-color: white;
   color: var(--secondary);
@@ -1232,7 +1287,16 @@ td.spanrow2 {
   box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .nav-btn-primary:hover {
+  background: white;
+  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.3);
+  color: var(--primary);
+}
+}
+
+.nav-btn-primary:active {
   background: white;
   box-shadow: 0 6px 16px rgba(249, 115, 22, 0.3);
   color: var(--primary);
@@ -1262,7 +1326,7 @@ td.spanrow2 {
 
 .SetControls button {
   flex: 1;
-  font-size: 1rem !important;
+  font-size: 1.1rem !important;
   font-weight: 800 !important;
   padding: 12px;
   margin: 0;
@@ -1280,10 +1344,13 @@ td.spanrow2 {
   transition: all 0.2s ease-in-out;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .addButton:hover {
   background-color: white !important;
   color: var(--success) !important;
   filter: none !important;
+}
 }
 
 .minusButton {
@@ -1292,10 +1359,13 @@ td.spanrow2 {
   transition: all 0.2s ease-in-out;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .minusButton:hover {
   background-color: white !important;
   color: var(--danger) !important;
   filter: none !important;
+}
 }
 
 .submitbtn {
@@ -1317,9 +1387,12 @@ td.spanrow2 {
   transition: all 0.25s ease-in-out !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .submitbtn button:hover {
   background-color: white !important;
   color: var(--primary) !important;
+}
 }
 
 /* Shared set-cell sizing */
@@ -1374,11 +1447,14 @@ td.spanrow2 {
   transition: all 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .workout-item:hover {
   border-color: var(--secondary);
   background-color: #f0f9ff;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(14, 165, 233, 0.05);
+}
 }
 
 .workout-item-name {
@@ -1391,8 +1467,11 @@ td.spanrow2 {
   transition: color 0.15s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .workout-item-name:hover {
   color: var(--secondary);
+}
 }
 
 .workout-item-delete {
@@ -1408,8 +1487,11 @@ td.spanrow2 {
   margin-left: 15px;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .workout-item-delete:hover {
   transform: scale(1.2);
+}
 }
 
 .colour-picker {
@@ -1459,9 +1541,12 @@ td.spanrow2 {
   flex-shrink: 0;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .colour-picker:hover {
   border-color: var(--secondary);
   background-color: #f0f9ff;
+}
 }
 
 .colour-picker .Colour-Row {
@@ -1512,10 +1597,13 @@ td.spanrow2 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .main-action-btn:hover {
   background-color: white !important;
   color: var(--primary) !important;
   transform: translateY(-2px);
+}
 }
 
 .selector-hint {
@@ -1820,8 +1908,11 @@ td.exercise-name-cell {
   pointer-events: none;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .set-inputs input:hover {
   background-color: rgba(0, 0, 0, 0.08);
+}
 }
 
 /* Add Workouts-only notes cell */
@@ -2111,9 +2202,12 @@ td.exercise-name-cell {
   font-weight: 600;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .workout-type-toggle:hover {
   border-color: #94a3b8;
   background: #e2e8f0;
+}
 }
 
 .workout-type-toggle:active {
@@ -2168,8 +2262,11 @@ td.exercise-name-cell {
   background-color: #f5f7fa;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .exercise-selector h5:hover {
   background-color: #e9edf2;
+}
 }
 
 .exercise-selector h5:active {
@@ -2187,8 +2284,11 @@ td.exercise-name-cell {
   font-size: 1.25rem;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .list:hover {
   background-color: #f0f3f7;
+}
 }
 
 .list:active {
@@ -2223,7 +2323,7 @@ td.exercise-name-cell {
 .form-controls .addButton,
 .form-controls .minusButton {
   padding: 10px 12px !important;
-  font-size: 0.8rem !important;
+  font-size: 1.2rem !important;
   font-weight: 800;
   border-radius: 6px !important;
   border: none !important;
@@ -2237,7 +2337,16 @@ td.exercise-name-cell {
   color: white !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .form-controls .addButton:hover {
+  background-color: white !important;
+  color: #22c55e !important;
+  filter: none !important;
+}
+}
+
+.form-controls .addButton:active {
   background-color: white !important;
   color: #22c55e !important;
   filter: none !important;
@@ -2248,7 +2357,16 @@ td.exercise-name-cell {
   color: white !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .form-controls .minusButton:hover {
+  background-color: white !important;
+  color: #ef4444 !important;
+  filter: none !important;
+}
+}
+
+.form-controls .minusButton:active {
   background-color: white !important;
   color: #ef4444 !important;
   filter: none !important;
@@ -2263,7 +2381,7 @@ td.exercise-name-cell {
 .form-submit button {
   width: 100%;
   padding: 12px 14px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -2276,9 +2394,12 @@ td.exercise-name-cell {
   box-sizing: border-box;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .form-submit button:hover {
   background-color: white;
   color: var(--primary);
+}
 }
 
 .form-submit button:active {
@@ -2327,8 +2448,11 @@ td.exercise-name-cell {
     background-color: #f5f7fa;
   }
 
+  @media (hover: hover) and (pointer: fine) {
+
   .exercise-selector h5:hover {
     background-color: #e9edf2;
+  }
   }
 
   .exercise-selector h5:active {
@@ -2522,8 +2646,11 @@ td.exercise-name-cell {
   transform-origin: center;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .btn.btn-secondary:hover {
   transform: scale(1.25);
+}
 }
 
 .workout-name-cell {
@@ -2533,8 +2660,11 @@ td.exercise-name-cell {
     color 0.2s ease !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .workout-name-cell:hover {
   background-color: rgba(0, 0, 0, 0.08) !important;
+}
 }
 
 .pageH {
@@ -2724,9 +2854,12 @@ td.exercise-name-cell {
   transition: all 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .weightSubmit:hover {
   background-color: white;
   color: var(--primary);
+}
 }
 
 @media (min-width: 769px) {
@@ -2819,9 +2952,12 @@ td.exercise-name-cell {
     box-shadow 0.15s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .colour-square:hover {
   transform: translateY(-2px) scale(1.08);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
 }
 
 .colour-square.selected {
@@ -3010,12 +3146,15 @@ td.exercise-name-cell {
     box-shadow 0.2s !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .metric-stat-card:hover {
   border-color: var(--secondary) !important;
   background-color: #f0f9ff !important;
   transform: translateY(-2px) !important;
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+}
 }
 
 .metric-stat-card .card-label {
@@ -3032,8 +3171,11 @@ td.exercise-name-cell {
   margin-bottom: 8px !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .metric-stat-card .card-label:hover {
   color: var(--secondary) !important;
+}
 }
 
 .metric-stat-card .card-value {
@@ -3097,7 +3239,16 @@ td.exercise-name-cell {
   white-space: nowrap;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .distributionGraphButton:hover {
+  background: #f1f5f9;
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+}
+
+.distributionGraphButton:active {
   background: #f1f5f9;
   border-color: var(--secondary);
   color: var(--secondary);
@@ -3108,10 +3259,6 @@ td.exercise-name-cell {
   color: var(--secondary);
   transform: scale(1.05);
 }
-.distributionGraphButton:active {
-  transform: scale(1.05);
-}
-
 /* =========================
    Workout Duration Styling
    ========================= */
@@ -3242,8 +3389,11 @@ td.exercise-name-cell {
   color: white;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .save-btn:hover {
   background: var(--primary-hover);
+}
 }
 
 .skip-btn {
@@ -3251,8 +3401,11 @@ td.exercise-name-cell {
   color: #475569;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .skip-btn:hover {
   background: #e2e8f0;
+}
 }
 
 /* Duration Display Values */
@@ -3391,9 +3544,12 @@ td.exercise-name-cell {
     box-shadow 0.25s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .hero-copy:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.09);
+}
 }
 
 .hero h1 {
@@ -3439,8 +3595,11 @@ td.exercise-name-cell {
     background-color 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .hero-btn:hover {
   transform: translateY(-2px);
+}
 }
 
 .hero-btn:active {
@@ -3453,9 +3612,12 @@ td.exercise-name-cell {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .primary-btn:hover {
   background: white;
   color: var(--primary);
+}
 }
 
 .secondary-btn {
@@ -3464,9 +3626,12 @@ td.exercise-name-cell {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .secondary-btn:hover {
   background: white;
   color: var(--secondary);
+}
 }
 
 /* =========================
@@ -3497,18 +3662,24 @@ td.exercise-name-cell {
     border-color 0.3s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .feature-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
   border-color: rgba(249, 115, 22, 0.25);
+}
 }
 
 .feature-card-right {
   flex-direction: row-reverse;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .feature-card-right:hover {
   border-color: rgba(14, 165, 233, 0.25);
+}
 }
 
 /* =========================
@@ -3563,9 +3734,12 @@ td.exercise-name-cell {
     box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .image-container img:hover {
   transform: translateY(-6px) scale(1.02);
   box-shadow: 0 22px 48px rgba(15, 23, 42, 0.16);
+}
 }
 
 /* =========================
@@ -3923,9 +4097,12 @@ td.exercise-name-cell {
     border-color 150ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .workout-log-table td input:hover,
 .workout-log-table .textarea:hover {
   background: #eff6ff;
+}
 }
 
 .workout-log-table td input:focus,
@@ -4002,9 +4179,12 @@ td.exercise-name-cell {
   transition: background-color 150ms ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .workout-log-table td input:hover,
 .workout-log-table .textarea:hover {
   background: #f8fafc;
+}
 }
 
 .workout-log-table td input:focus,
@@ -4322,9 +4502,12 @@ td.exercise-name-cell {
   box-shadow: none;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .workout-log-table td input:hover,
 .workout-log-table .textarea:hover {
   background: rgba(0, 0, 0, 0.08);
+}
 }
 
 .workout-log-table td input:focus,
@@ -4365,9 +4548,12 @@ td.exercise-name-cell {
     transform 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .privacy-link-container h4:hover {
   color: var(--primary);
   transform: translateY(-1px);
+}
 }
 
 .privacy-policy {
@@ -4539,10 +4725,13 @@ td.exercise-name-cell {
     opacity 0.2s ease;
 }
 
+@media (hover: hover) and (pointer: fine) {
+
 .privacy-policy a:hover {
   color: var(--secondary);
   opacity: 0.8;
   text-decoration: none;
+}
 }
 
 /* =========================
