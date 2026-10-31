@@ -1311,6 +1311,12 @@ td.spanrow2 {
   body {
     zoom: 0.7;
   }
+  .SetControls button{
+    font-size: 1.27rem !important;
+  }
+  .submitbtn button{
+    font-size: 1.4rem !important;
+  }
 
   .card.login-card {
     position: absolute;
@@ -1331,7 +1337,7 @@ td.spanrow2 {
 
 .SetControls button {
   flex: 1;
-  font-size: 1.1rem !important;
+  font-size: 1rem ;
   font-weight: 800 !important;
   padding: 12px;
   margin: 0;
@@ -1378,7 +1384,7 @@ td.spanrow2 {
 }
 
 .submitbtn button {
-  font-size: 1.2rem !important;
+  font-size: 1.2rem;
   font-weight: 800 !important;
   height: 48px !important;
   margin: 0 !important;
@@ -1586,7 +1592,7 @@ td.spanrow2 {
 .main-action-btn {
   width: 100%;
   padding: 12px 20px;
-  font-size: 0.9rem !important;
+  font-size: 1rem !important;
   font-weight: 800 !important;
   background-color: var(--primary) !important;
   color: white !important;
@@ -2325,9 +2331,10 @@ td.exercise-name-cell {
 .form-controls .addButton,
 .form-controls .minusButton {
   padding: 10px 12px !important;
-  font-size: 1.1rem !important;
-  font-weight: 800;
+  font-size: 0.9rem !important;
+  font-weight: 800 !important;
   border-radius: 6px !important;
+  letter-spacing: 0.06em !important;
   border: none !important;
   margin: 0 !important;
   cursor: pointer;
@@ -2383,7 +2390,7 @@ td.exercise-name-cell {
 .form-submit button {
   width: 100%;
   padding: 12px 14px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -3162,15 +3169,12 @@ td.exercise-name-cell {
     box-shadow 0.2s !important;
 }
 
-@media (hover: hover) and (pointer: fine) {
-
 .metric-stat-card:hover {
   border-color: var(--secondary) !important;
   background-color: #f0f9ff !important;
   transform: translateY(-2px) !important;
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
-}
 }
 
 .metric-stat-card .card-label {
@@ -3187,11 +3191,8 @@ td.exercise-name-cell {
   margin-bottom: 8px !important;
 }
 
-@media (hover: hover) and (pointer: fine) {
-
 .metric-stat-card .card-label:hover {
   color: var(--secondary) !important;
-}
 }
 
 .metric-stat-card .card-value {
