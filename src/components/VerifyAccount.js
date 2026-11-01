@@ -103,7 +103,7 @@ export default function VerifyAccount({ username, password, onSuccess, onBack })
             <form onSubmit={handleVerify}>
                 <input className="modern-input" type="text" placeholder="Code" value={code} onChange={(e) => setCode(e.target.value)} required />
                 {error && <p className="form-error">{error}</p>}
-                <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Verify</button>
+                <button type="submit" className="main-action-btn" style={{ marginTop: '10px' }}>Verify</button>
                 <button type="button" className="btn btn-secondary" style={{ marginTop: '10px', backgroundColor: 'transparent', color: '#64748b', boxShadow: 'none' }} onClick={() => { onBack?.(); navigate("/login"); }}>Back to Login</button>
             </form>
 

@@ -573,12 +573,17 @@ input[type="date"]:focus {
 @media (hover: hover) and (pointer: fine) {
 
 .delete-account:hover {
+  border: 1px solid;
+  border-color: var(--danger);
+  
   background: white;
   color: var(--danger);
 }
 }
 
 .delete-account:active {
+  border: 1px solid;
+  border-color: var(--danger);
   background: white;
   color: var(--danger);
 }
@@ -812,10 +817,23 @@ input[type="date"]:focus {
 @media (hover: hover) and (pointer: fine) {
 
 .back:hover {
+ 
+  border: 1px solid;
+  border-color: var(--primary);
+ 
   background-color: white !important;
   color: var(--primary) !important;
   transform: translateY(-2px);
 }
+}
+.back:active {
+ 
+  border: 1px solid;
+  border-color: var(--primary);
+ 
+  background-color: white !important;
+  color: var(--primary) !important;
+  transform: translateY(-2px);
 }
 
 /* Containers */
@@ -1141,6 +1159,7 @@ td.spanrow2 {
 @media (hover: hover) and (pointer: fine) {
 
 .btn-primary:hover {
+  border-color: var(--secondary);
   background-color: white;
   color: var(--primary);
   transform: translateY(-2px);
@@ -1148,6 +1167,7 @@ td.spanrow2 {
 }
 
 .btn-primary:active {
+  border-color: var(--secondary);
   background-color: white;
   color: var(--primary);
   transform: translateY(-2px);
@@ -1536,7 +1556,7 @@ td.spanrow2 {
   padding: 8px 10px;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #0f172a;
   background-color: white;
@@ -1589,12 +1609,12 @@ td.spanrow2 {
   }
 }
 
-.main-action-btn {
+.main-action-btn, .second-action-btn {
   width: 100%;
   padding: 12px 20px;
   font-size: 1rem !important;
   font-weight: 800 !important;
-  background-color: var(--primary) !important;
+  
   color: white !important;
   border: 0;
   border-radius: 99px !important;
@@ -1604,14 +1624,48 @@ td.spanrow2 {
   transition: all 0.25s ease-in-out !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
-
+.main-action-btn{
+  background-color: var(--primary) !important;
+}
+.second-action-btn{
+  background-color: var(--secondary);
+}
 @media (hover: hover) and (pointer: fine) {
 
 .main-action-btn:hover {
+  border: 1px solid;
+  border-color: var(--primary);
   background-color: white !important;
   color: var(--primary) !important;
   transform: translateY(-2px);
 }
+}
+
+.main-action-btn:active{
+  border: 1px solid;
+  border-color: var(--primary);
+  background-color: white !important;
+  color: var(--primary) !important;
+  transform: translateY(-2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+.second-action-btn:hover {
+  border: 1px solid;
+  border-color: var(--secondary);
+  background-color: white !important;
+  color: var(--secondary) !important;
+  transform: translateY(-2px);
+}
+}
+
+.second-action-btn:active{
+  border: 1px solid;
+  border-color: var(--secondary);
+  background-color: white !important;
+  color: var(--secondary) !important;
+  transform: translateY(-2px);
 }
 
 .selector-hint {
@@ -2179,7 +2233,7 @@ td.exercise-name-cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 500;
   color: #64748b;
   transition: color 0.2s ease;
@@ -2335,7 +2389,7 @@ td.exercise-name-cell {
   font-weight: 800 !important;
   border-radius: 6px !important;
   letter-spacing: 0.06em !important;
-  border: none !important;
+  border: none;
   margin: 0 !important;
   cursor: pointer;
   transition: all 0.2s ease-in-out !important;
@@ -2349,13 +2403,17 @@ td.exercise-name-cell {
 @media (hover: hover) and (pointer: fine) {
 
 .form-controls .addButton:hover {
+  border: 1px solid;
+  border-color: var(--success);
   background-color: white !important;
-  color: #22c55e !important;
+  color: var(--success) !important;
   filter: none !important;
 }
 }
 
 .form-controls .addButton:active {
+  border: 1px solid;
+  border-color: var(--success);
   background-color: white !important;
   color: #22c55e !important;
   filter: none !important;
@@ -2369,15 +2427,19 @@ td.exercise-name-cell {
 @media (hover: hover) and (pointer: fine) {
 
 .form-controls .minusButton:hover {
+  border: 1px solid;
+  border-color: var(--danger);
   background-color: white !important;
-  color: #ef4444 !important;
+  color: var(--danger) !important;
   filter: none !important;
 }
 }
 
 .form-controls .minusButton:active {
+  border: 1px solid;
+  border-color: var(--danger);
   background-color: white !important;
-  color: #ef4444 !important;
+  color: var(--danger) !important;
   filter: none !important;
 }
 
@@ -2406,13 +2468,18 @@ td.exercise-name-cell {
 @media (hover: hover) and (pointer: fine) {
 
 .form-submit button:hover {
+  border: 1px solid;
+  border-color: var(--primary);
   background-color: white;
   color: var(--primary);
 }
 }
 
 .form-submit button:active {
-  filter: brightness(0.95);
+  border: 1px solid;
+  border-color: var(--primary);
+  background-color: white;
+  color: var(--primary);
 }
 
 /* Responsive adjustments */
@@ -2437,15 +2504,15 @@ td.exercise-name-cell {
 
   .form-section label,
   .exercises-section h3 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 
   .exercise-name-input {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .exercise-type-select {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   .exercise-selector h5  {
     margin: 0;
@@ -2658,7 +2725,7 @@ td.exercise-name-cell {
 @media (hover: hover) and (pointer: fine) {
 
 .btn.btn-secondary:hover {
-  transform: scale(1.25);
+  transform: scale(1.12);
 }
 }
 
@@ -2866,9 +2933,18 @@ td.exercise-name-cell {
 @media (hover: hover) and (pointer: fine) {
 
 .weightSubmit:hover {
+  border: 1px solid;
+  border-color: var(--primary);
   background-color: white;
   color: var(--primary);
 }
+}
+
+.weightSubmit:active {
+  border: 1px solid;
+  border-color: var(--primary);
+  background-color: white;
+  color: var(--primary);
 }
 
 @media (min-width: 769px) {
@@ -4906,4 +4982,252 @@ td.exercise-name-cell {
 
 .workout-log-table tr:last-child > td {
   border-bottom: 1px solid #e2e8f0 !important;
+}
+
+body.welcome-page {
+  zoom: 1;
+  background-color: #f5f7fb;
+}
+
+.welcome-screen > .nav {
+  zoom: 0.8;
+}
+
+.welcome-screen {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  color: #172033;
+  background: #f5f7fb;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: border-box;
+}
+
+.welcome-footer button {
+  border: 0;
+  background: none;
+  color: #526074;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.welcome-footer button:hover {
+  color: #ea580c;
+}
+
+.welcome-main {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 28px 20px;
+}
+
+.welcome-panel {
+  width: min(100%, 480px);
+  padding: 38px 34px 30px;
+  box-sizing: border-box;
+  border: 1px solid #e6eaf0;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 16px 48px rgba(23, 32, 51, 0.07);
+  text-align: center;
+}
+
+.welcome-app-icon {
+  display: block;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 20px;
+  border-radius: 21px;
+  box-shadow: 0 8px 18px rgba(14, 165, 233, 0.2);
+}
+
+.welcome-eyebrow {
+  margin: 0 0 12px;
+  color: #718096;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+}
+
+.welcome-panel h1 {
+  margin: 0;
+  color: #172033;
+  font-size: clamp(2rem, 7vw, 2.55rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 1.08;
+}
+
+.welcome-description {
+  max-width: 340px;
+  margin: 16px auto 0;
+  color: #657187;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.welcome-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+
+.welcome-benefits {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 25px 0 0;
+  padding: 15px 0 0;
+  border-top: 1px solid #eef1f5;
+  color: #718096;
+  font-size: 0.82rem;
+  font-weight: 600;
+  list-style: none;
+}
+
+.welcome-benefits li {
+  flex: 1;
+}
+
+.welcome-benefits li + li {
+  border-left: 1px solid #e6eaf0;
+}
+
+.welcome-footer {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 20px;
+}
+
+.welcome-footer button {
+  font-size: 0.82rem;
+}
+
+@media (max-width: 480px) {
+  .welcome-main {
+    padding: 20px 16px;
+  }
+
+  .welcome-panel {
+    padding: 32px 22px 26px;
+    border-radius: 24px;
+  }
+}
+
+@media (max-width: 480px) and (max-height: 700px) {
+  .welcome-main {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .welcome-panel {
+    padding: 18px 18px 16px;
+  }
+
+  .welcome-app-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 8px;
+    border-radius: 16px;
+  }
+
+  .welcome-eyebrow {
+    margin-bottom: 6px;
+  }
+
+  .welcome-panel h1 {
+    font-size: clamp(1.75rem, 7vw, 2rem);
+  }
+
+  .welcome-description {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .welcome-actions {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .welcome-actions .main-action-btn,
+  .welcome-actions .second-action-btn {
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .welcome-benefits {
+    margin-top: 12px;
+    padding-top: 8px;
+    font-size: 0.7rem;
+  }
+
+  .welcome-benefits li {
+    white-space: nowrap;
+  }
+
+  .welcome-footer {
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-screen > .nav {
+    zoom: 0.7;
+  }
+}
+
+@media (min-width: 768px) {
+  .welcome-main {
+    padding: 40px 32px;
+  }
+
+  .welcome-panel {
+    width: min(100%, 520px);
+    padding: 48px 52px 38px;
+    border-radius: 32px;
+  }
+
+  .welcome-app-icon {
+    width: 84px;
+    height: 84px;
+  }
+
+  .welcome-actions {
+    margin-top: 32px;
+  }
+}
+
+@media (hover: none) {
+  .welcome-primary:active {
+    border-color: #f97316;
+    background: #ffffff;
+    color: #f97316;
+    transform: scale(0.975);
+  }
+
+  .welcome-secondary:active {
+    border-color: var(--secondary);
+    background: #ffffff;
+    color: var(--secondary);
+    transform: scale(0.975);
+  }
+
+  .welcome-footer button:active {
+    color: #ea580c;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-primary,
+  .welcome-secondary {
+    transition: none;
+  }
 }

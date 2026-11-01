@@ -141,7 +141,7 @@ export default function Login() {
 
                             <button
                                 type="submit"
-                                className="btn btn-primary"
+                                className="main-action-btn"
                                 style={{ marginTop: '10px' }}
                             >
                                 Sign In

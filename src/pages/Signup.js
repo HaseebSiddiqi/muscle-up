@@ -85,7 +85,7 @@ export default function Signup() {
 
                             {error && <p className="form-error">{error}</p>}
 
-                            <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Create Account</button>
+                            <button type="submit" className="main-action-btn" style={{ marginTop: '10px' }}>Create Account</button>
 
                             <p className="text-center">
                                 Already have an account? <Link to="/login">Log in</Link>

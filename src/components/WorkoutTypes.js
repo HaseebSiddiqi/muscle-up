@@ -173,7 +173,7 @@ export default function WorkoutTypes({ onSelectWorkout, setActiveComponent, refr
                     </button>
                      <p></p>
                     <button
-                        className="main-action-btn"
+                        className="second-action-btn"
                         onClick={()=> {setMode("edit");}}>
                             Edit Workout Templates
                     </button>
