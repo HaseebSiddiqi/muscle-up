@@ -3219,8 +3219,8 @@ td.exercise-name-cell {
   margin-bottom: 25px !important;
 }
 
-.metrics-chart-container h4 {
-  text-align: center;
+.metrics-chart-container h3 {
+  text-align: center !important;
 }
 
 /* Individual Metric Cards */
@@ -3334,24 +3334,48 @@ td.exercise-name-cell {
 
 @media (hover: hover) and (pointer: fine) {
 
-.distributionGraphButton:hover {
+.distributionGraphButton:hover, .year-button:hover {
   background: #f1f5f9;
   border-color: var(--secondary);
   color: var(--secondary);
 }
 }
 
-.distributionGraphButton:active {
+.distributionGraphButton:active, .year-button:active{
   background: #f1f5f9;
   border-color: var(--secondary);
   color: var(--secondary);
 }
-.distributionGraphButton.selected {
+.distributionGraphButton.selected, .year-button.selected {
   background: #f1f5f9;
   border-color: var(--secondary);
   color: var(--secondary);
   transform: scale(1.05);
 }
+
+.year-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.year-button{
+  padding: 7px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #f8fafc;
+  color: #64748b;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+
+
 /* =========================
    Workout Duration Styling
    ========================= */
@@ -4033,10 +4057,19 @@ td.exercise-name-cell {
   }
 }
 
-.recharts-sector:focus {
-  outline: none;
+.recharts-wrapper,
+.recharts-wrapper *,
+.recharts-surface,
+.recharts-cartesian-axis-tick-value,
+.recharts-cartesian-axis-tick {
+    outline: none !important;
 }
 
+.recharts-wrapper *:focus,
+.recharts-wrapper *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
 .toggle-hint {
   display: block;
   font-size: 0.65rem;
@@ -5076,7 +5109,6 @@ body.welcome-page {
   margin-top: 26px;
 }
 
-
 .welcome-benefits {
   display: flex;
   justify-content: center;
@@ -5206,20 +5238,6 @@ body.welcome-page {
 }
 
 @media (hover: none) {
-  .welcome-primary:active {
-    border-color: #f97316;
-    background: #ffffff;
-    color: #f97316;
-    transform: scale(0.975);
-  }
-
-  .welcome-secondary:active {
-    border-color: var(--secondary);
-    background: #ffffff;
-    color: var(--secondary);
-    transform: scale(0.975);
-  }
-
   .welcome-footer button:active {
     color: #ea580c;
   }
@@ -5230,4 +5248,25 @@ body.welcome-page {
   .welcome-secondary {
     transition: none;
   }
+}
+
+.main-action-btn,
+.second-action-btn,
+.submitbtn button,
+.form-submit button,
+.delete-account,
+.form-controls .addButton,
+.form-controls .minusButton,
+.weightSubmit,
+.back,
+.nav-btn {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.submitbtn button:active {
+  background-color: white !important;
+  color: var(--primary) !important;
 }

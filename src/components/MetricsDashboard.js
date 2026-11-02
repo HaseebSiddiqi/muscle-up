@@ -7,6 +7,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
     const { distanceUnit } = useUnits();
     const [useMiles, setUseMiles] = useState(distanceUnit === "miles");
     const [selectedPeriod, setSelectedPeriod] = useState("lifetime");
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
     useEffect(() => {
         setUseMiles(distanceUnit === "miles");
@@ -82,7 +83,7 @@ export default function MetricsDashboard({ viewWorkouts }) {
 
             const workoutDate = date.getFullYear() * 12 + date.getMonth();
             const currentMonth = today.getFullYear() * 12 + today.getMonth();
-            return currentMonth - workoutDate <= 3;
+            return currentMonth - workoutDate <= 2;
         });
     }
 
@@ -193,11 +194,16 @@ while (true) {
     // Monthly Workout Frequency
     // -----------------------------
 
+    
     const monthlyWorkouts = Array(12).fill(0);
 
-    viewWorkouts.forEach(workout => {
-        const date = new Date(workout.date);
-        const month = date.getMonth();
+    const yearlyWorkouts = viewWorkouts.filter(workout =>
+        Number(workout.date.split("-")[0]) === selectedYear
+        
+    );
+    yearlyWorkouts.forEach(workout => {
+        
+        const month = Number(workout.date.split("-")[1]) - 1;
 
         monthlyWorkouts[month]++;
     });
@@ -283,7 +289,7 @@ while (true) {
 
                     {/* Workout Type Distribution (Donut Chart) */}
                     <div className="metrics-chart-container">
-                        <h4>Workout Type Distribution</h4>
+                        <h3>Workout Type Distribution</h3>
                         <div style={{ width: '100%', height: 250 }}>
                             <ResponsiveContainer>
                                 <PieChart>
@@ -312,14 +318,15 @@ while (true) {
                         <div className="distributionGrapButtonRow">
                             <button className={`distributionGraphButton ${selectedPeriod === "lifetime" ? "selected" : ""}`} onClick={() => setSelectedPeriod("lifetime")}>Lifetime</button>
                             <button className={`distributionGraphButton ${selectedPeriod === "yearly" ? "selected" : ""}`}onClick={() => setSelectedPeriod("yearly")}>Last Year</button>
-                            <button className={`distributionGraphButton ${selectedPeriod === "quarter" ? "selected" : ""}`} onClick={() => setSelectedPeriod("quarter")}>Last 4 Months</button>
+                            <button className={`distributionGraphButton ${selectedPeriod === "quarter" ? "selected" : ""}`} onClick={() => setSelectedPeriod("quarter")}>Last 3 Months</button>
                             <button className={`distributionGraphButton ${selectedPeriod === "month" ? "selected" : ""}`} onClick={() => setSelectedPeriod("month")}>Last 30 Days</button>
                         </div>
                     </div>
 
                     {/* Monthly Workout Frequency (AreaChart) */}
                     <div className="metrics-chart-container">
-                        <h4>Monthly Workout Frequency</h4>
+                        
+                        <h3>Monthly Workout Frequency in {selectedYear}</h3>
                         <div style={{ width: '100%', height: 250 }}>
                             <ResponsiveContainer>
                                 <AreaChart data={LineData}>
@@ -333,7 +340,7 @@ while (true) {
                                     <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
                                     <YAxis tickLine={false} axisLine={false} width={30} tick={{ fill: '#64748b', fontSize: 12 }} />
                                     <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} />
-                                    <Legend />
+                                    <Legend/>
                                     <Area
                                         type="monotone"
                                         dataKey="workouts"
@@ -342,8 +349,14 @@ while (true) {
                                         fill="url(#colorWorkouts)"
                                         strokeWidth={3}
                                     />
+                                  
                                 </AreaChart>
                             </ResponsiveContainer>
+                        </div>
+                         <div className="year-selector">
+                                    <button className={"year-button"} onClick={() => setSelectedYear(selectedYear -1)}>Prev Year</button>
+                                    <span className="selected-year">{selectedYear}</span>
+                                    <button className={"year-button"} onClick={() => setSelectedYear(selectedYear +1)}>Next Year</button>
                         </div>
                     </div>
                 </>

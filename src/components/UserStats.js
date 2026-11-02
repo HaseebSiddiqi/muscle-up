@@ -76,7 +76,7 @@ export default function UserStats() {
                 const currentMonth =
                     today.getFullYear() * 12 + today.getMonth();
 
-                return currentMonth - entryDate <= 3;
+                return currentMonth - entryDate <= 2;
             })
             .map(formatGraphEntry);
     }
@@ -187,7 +187,7 @@ export default function UserStats() {
             {weightData.length !== 0 ? (
                 <>
                     <div className="metrics-chart-container">
-                        <h4>Weight Over Time</h4>
+                        <h3>Weight Over Time</h3>
 
                         <div style={{ width: "100%", height: 285 }}>
                             <ResponsiveContainer>
@@ -324,7 +324,7 @@ export default function UserStats() {
                                     setSelectedPeriod("quarter")
                                 }
                             >
-                                Last 4 Months
+                                Last 3 Months
                             </button>
 
                             <button
