@@ -531,11 +531,18 @@ export default function ViewWorkouts({
                                 ) {
                                     return (
                                         <table
-                                            className="addWorkoutTable workout-log-table workout-log-table--history"
+                                            className="addWorkoutTable addWorkoutTable--rounds workout-log-table workout-log-table--history"
                                             key={
                                                 w.workoutId
                                             }
                                         >
+                                            <colgroup>
+                                                <col />
+                                                <col />
+                                                <col />
+                                                <col />
+                                                <col />
+                                            </colgroup>
                                             <tbody>
                                                 <tr>
                                                     <th>
@@ -544,12 +551,15 @@ export default function ViewWorkouts({
                                                         }
                                                     </th>
 
-                                                    <th>
+                                                    <th
+                                                        className="per-round-header"
+                                                        colSpan={2}
+                                                    >
                                                         Per
                                                         Round
                                                     </th>
 
-                                                    <th>
+                                                    <th className="round-count-header">
                                                         Rounds
                                                     </th>
 
@@ -596,7 +606,10 @@ export default function ViewWorkouts({
                                                                     </div>
                                                                 </td>
 
-                                                                <td>
+                                                                <td
+                                                                    className="per-round-cell"
+                                                                    colSpan={2}
+                                                                >
                                                                     {exercise.type ===
                                                                         "weight_reps" && (
                                                                             <div className="set-inputs">
@@ -1029,9 +1042,7 @@ export default function ViewWorkouts({
                                                                 </td>
 
                                                                 <td
-                                                                    colSpan={
-                                                                        2
-                                                                    }
+                                                                    colSpan={3}
                                                                     className="cardio-cell"
                                                                 >
                                                                     <div className="cardio-inputs">
@@ -1221,6 +1232,7 @@ export default function ViewWorkouts({
                                                                         </div>
                                                                     </div>
                                                                 </td>
+                                                                <td aria-hidden="true" />
                                                             </tr>
                                                         );
                                                     }
@@ -1374,26 +1386,25 @@ export default function ViewWorkouts({
                                                         ex.type !==
                                                         "cardio"
                                                 ) ? (
-                                                    Array.from(
-                                                        {
-                                                            length: setColumns
-                                                        }
-                                                    ).map(
-                                                        (
-                                                            _,
-                                                            i
-                                                        ) => (
-                                                            <th
-                                                                key={
-                                                                    i
-                                                                }
-                                                            >
-                                                                Set{" "}
-                                                                {i +
-                                                                    1}
-                                                            </th>
-                                                        )
-                                                    )
+                                                    <th
+                                                        colSpan={3}
+                                                        className="sets-header"
+                                                    >
+                                                        <div
+                                                            className="set-columns"
+                                                            style={{
+                                                                gridTemplateColumns: `repeat(${setColumns}, minmax(0, 1fr))`
+                                                            }}
+                                                        >
+                                                            {Array.from(
+                                                                { length: setColumns }
+                                                            ).map((_, i) => (
+                                                                <span key={i}>
+                                                                    Set {i + 1}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    </th>
                                                 ) : (
                                                     <th
                                                         colSpan={
@@ -1448,9 +1459,7 @@ export default function ViewWorkouts({
                                                                 "cardio" ? (
                                                                 <td
                                                                     className="cardio-cell"
-                                                                    colSpan={
-                                                                        setColumns
-                                                                    }
+                                                                    colSpan={3}
                                                                 >
                                                                     <div className="cardio-inputs">
                                                                         <div className="inputWithUnit">
@@ -1677,18 +1686,22 @@ export default function ViewWorkouts({
                                                                     </div>
                                                                 </td>
                                                             ) : (
-                                                                exercise.sets.map(
-                                                                    (
-                                                                        set,
-                                                                        setIndex
-                                                                    ) => (
-                                                                        <td
-                                                                            className="Sets"
-                                                                            key={
-                                                                                setIndex
-                                                                            }
-                                                                        >
-                                                                            <div className="Sets-content">
+                                                                <td
+                                                                    className="Sets sets-cell"
+                                                                    colSpan={3}
+                                                                >
+                                                                    <div
+                                                                        className="set-columns"
+                                                                        style={{
+                                                                            gridTemplateColumns: `repeat(${exercise.sets.length}, minmax(0, 1fr))`
+                                                                        }}
+                                                                    >
+                                                                        {exercise.sets.map(
+                                                                            (set, setIndex) => (
+                                                                                <div
+                                                                                    className="Sets-content"
+                                                                                    key={setIndex}
+                                                                                >
                                                                                 <div className="set-inputs">
                                                                                     {editing ? (
                                                                                         <>
@@ -2069,10 +2082,11 @@ export default function ViewWorkouts({
                                                                                         </>
                                                                                     )}
                                                                                 </div>
-                                                                            </div>
-                                                                        </td>
-                                                                    )
-                                                                )
+                                                                                </div>
+                                                                            )
+                                                                        )}
+                                                                    </div>
+                                                                </td>
                                                             )}
 
                                                             {i ===

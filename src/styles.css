@@ -1150,6 +1150,9 @@ td.spanrow2 {
   transform: scale(1.2);
 }
 }
+.CloseComponent:active{
+  transform: scale(1.2);
+}
 .btn-primary {
   background-color: var(--primary);
   color: white;
@@ -1384,6 +1387,12 @@ td.spanrow2 {
 }
 }
 
+.addButton:active{
+  background-color: white !important;
+  color: var(--success) !important;
+  filter: none !important;
+}
+
 .minusButton {
   background-color: var(--danger) !important;
   color: white !important;
@@ -1397,6 +1406,11 @@ td.spanrow2 {
   color: var(--danger) !important;
   filter: none !important;
 }
+}
+.minusButton:active{
+  background-color: white !important;
+  color: var(--danger) !important;
+  filter: none !important;
 }
 
 .submitbtn {
@@ -1495,12 +1509,11 @@ td.spanrow2 {
   transition: color 0.15s ease;
 }
 
-@media (hover: hover) and (pointer: fine) {
 
 .workout-item-name:hover {
   color: var(--secondary);
 }
-}
+
 
 .workout-item-delete {
   background: transparent;
@@ -1520,6 +1533,10 @@ td.spanrow2 {
 .workout-item-delete:hover {
   transform: scale(1.2);
 }
+}
+
+.workout-item-delete:active{
+   transform: scale(1.2);
 }
 
 .colour-picker {
@@ -2054,12 +2071,14 @@ td.exercise-name-cell {
   box-sizing: border-box;
 }
 
-.workout-name-input:focus {
+.workout-name-input:focus,
+.Workout-Description input:focus {
   outline: none;
-  border-color: #0ea5e9;
+  border-color: var(--secondary);
   background-color: white;
   box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
+
 
 .workout-name-input::placeholder {
   color: #94a3b8;
@@ -2185,7 +2204,7 @@ td.exercise-name-cell {
   outline: none;
   border-color: #0ea5e9;
   background-color: #f0f9ff;
-  width: 75%;
+  
 
   box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.08);
   font-size: 1.2rem;
@@ -3043,6 +3062,10 @@ td.exercise-name-cell {
   transform: translateY(-2px) scale(1.08);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
 }
+}
+.colour-square:active{
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
 }
 
 .colour-square.selected {
@@ -5017,6 +5040,65 @@ td.exercise-name-cell {
   border-bottom: 1px solid #e2e8f0 !important;
 }
 
+.addWorkoutTable th.sets-header,
+.addWorkoutTable td.sets-cell {
+  width: 450px;
+  min-width: 450px;
+  padding: 0 !important;
+}
+
+.addWorkoutTable th.sets-header .set-columns,
+.addWorkoutTable td.sets-cell .set-columns {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+.addWorkoutTable th.sets-header .set-columns {
+  min-height: 48px;
+  align-items: stretch;
+}
+
+.addWorkoutTable th.sets-header .set-columns span,
+.addWorkoutTable td.sets-cell .Sets-content {
+  min-width: 0;
+}
+
+.addWorkoutTable th.sets-header .set-columns span + span,
+.addWorkoutTable td.sets-cell .Sets-content + .Sets-content {
+  border-left: 1px solid rgba(148, 163, 184, 0.45);
+}
+
+.addWorkoutTable th.sets-header .set-columns span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addWorkoutTable td.sets-cell .Sets-content {
+  display: flex;
+  width: 100%;
+}
+
+.addWorkoutTable td.per-round-cell {
+  padding: 0 !important;
+}
+
+.addWorkoutTable td.per-round-cell > .round-input {
+  width: 100%;
+  min-width: 0;
+}
+
+.addWorkoutTable--rounds {
+  width: max-content;
+  table-layout: fixed;
+}
+
+.addWorkoutTable--rounds > colgroup > col {
+  width: 150px;
+}
+
 body.welcome-page {
   zoom: 1;
   background-color: #f5f7fb;
@@ -5255,11 +5337,22 @@ body.welcome-page {
 .submitbtn button,
 .form-submit button,
 .delete-account,
-.form-controls .addButton,
-.form-controls .minusButton,
+.addButton,
+.minusButton,
 .weightSubmit,
 .back,
-.nav-btn {
+.nav-btn, 
+.distributionGraphButton, 
+.year-button,
+.workout-item-name, 
+.colour-square, 
+.workout-item-delete,
+.workout-type-toggle, 
+.exercise-type-select,
+.CloseComponent, 
+.workout-date-picker, 
+.toggle,
+.metric-stat-card {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;

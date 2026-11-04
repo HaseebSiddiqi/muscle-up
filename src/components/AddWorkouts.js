@@ -1138,7 +1138,14 @@ export default function Add_workouts({
             nonCardioExercises.length > 0;
 
         return (
-            <table className="addWorkoutTable workout-log-table workout-log-table--entry">
+            <table className="addWorkoutTable addWorkoutTable--rounds workout-log-table workout-log-table--entry">
+                <colgroup>
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                </colgroup>
                 <tbody>
                     <tr>
                         <th>
@@ -1147,11 +1154,11 @@ export default function Add_workouts({
 
                         {hasRoundExercises ? (
                             <>
-                                <th>Per Round</th>
-                                <th>Rounds</th>
+                                <th className="per-round-header" colSpan={2}>Per Round</th>
+                                <th className="round-count-header">Rounds</th>
                             </>
                         ) : (
-                            <th>Cardio Stats</th>
+                            <th colSpan={3}>Cardio Stats</th>
                         )}
 
                         <th>Notes</th>
@@ -1191,7 +1198,9 @@ export default function Add_workouts({
                                         </div>
                                     </td>
 
-                                    <td>
+                                    <td
+                                        className="per-round-cell"
+                                        colSpan={2}>
                                         {renderRoundExerciseInput(
                                             exercise,
                                             exerciseIndex,
@@ -1203,6 +1212,7 @@ export default function Add_workouts({
                                     {exercise ===
                                         nonCardioExercises[0] && (
                                             <td
+                                                className="round-count-cell"
                                                 rowSpan={
                                                     nonCardioExercises.length
                                                 }
@@ -1272,11 +1282,7 @@ export default function Add_workouts({
                                     </td>
 
                                     <td
-                                        colSpan={
-                                            hasRoundExercises
-                                                ? 2
-                                                : 1
-                                        }
+                                        colSpan={3}
                                         className="cardio-cell"
                                     >
                                         {renderCardioInputs(
@@ -1301,11 +1307,7 @@ export default function Add_workouts({
                     <tr>
                         <td
                             className="submitbtn"
-                            colSpan={
-                                hasRoundExercises
-                                    ? 4
-                                    : 3
-                            }
+                            colSpan={5}
                         >
                             <button
                                 onClick={
@@ -1514,20 +1516,22 @@ export default function Add_workouts({
                         </th>
 
                         {hasNonCardio ? (
-                            Array.from({
-                                length: setCount
-                            }).map(
-                                (_, index) => (
-                                    <th
-                                        key={
-                                            index
-                                        }
-                                    >
-                                        Set{" "}
-                                        {index + 1}
-                                    </th>
-                                )
-                            )
+                            <th colSpan={3} className="sets-header">
+                                <div
+                                    className="set-columns"
+                                    style={{
+                                        gridTemplateColumns: `repeat(${setCount}, minmax(0, 1fr))`
+                                    }}
+                                >
+                                    {Array.from({ length: setCount }).map(
+                                        (_, index) => (
+                                            <span key={index}>
+                                                Set {index + 1}
+                                            </span>
+                                        )
+                                    )}
+                                </div>
+                            </th>
                         ) : (
                             <th colSpan={3}>
                                 Stats
@@ -1577,12 +1581,7 @@ export default function Add_workouts({
                                             "cardio" ? (
                                             <td
                                                 className="cardio-cell"
-                                                colSpan={
-                                                    firstNonCardio
-                                                        ?.sets
-                                                        ?.length ||
-                                                    3
-                                                }
+                                                colSpan={3}
                                             >
                                                 {renderCardioInputs(
                                                     exercise,
@@ -1592,33 +1591,38 @@ export default function Add_workouts({
                                                 )}
                                             </td>
                                         ) : (
-                                            exercise.sets.map(
-                                                (
-                                                    set,
-                                                    j
-                                                ) => (
-                                                    <td
-                                                        className="Sets"
-                                                        key={
-                                                            j
-                                                        }
-                                                    >
-                                                        <div className="Sets-content">
-                                                            {renderSetInput(
-                                                                exercise,
-                                                                set,
-                                                                j,
-                                                                exerciseIndex,
-                                                                prevExercise
-                                                                    ?.sets?.[
-                                                                j
-                                                                ],
-                                                                showUnits
-                                                            )}
-                                                        </div>
-                                                    </td>
-                                                )
-                                            )
+                                            <td
+                                                className="Sets sets-cell"
+                                                colSpan={3}
+                                            >
+                                                <div
+                                                    className="set-columns"
+                                                    style={{
+                                                        gridTemplateColumns: `repeat(${exercise.sets.length}, minmax(0, 1fr))`
+                                                    }}
+                                                >
+                                                    {exercise.sets.map(
+                                                        (set, j) => (
+                                                            <div
+                                                                className="Sets-content"
+                                                                key={j}
+                                                            >
+                                                                {renderSetInput(
+                                                                    exercise,
+                                                                    set,
+                                                                    j,
+                                                                    exerciseIndex,
+                                                                    prevExercise
+                                                                        ?.sets?.[
+                                                                        j
+                                                                    ],
+                                                                    showUnits
+                                                                )}
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </td>
                                         )}
 
                                         {i === 0 &&
@@ -1663,7 +1667,7 @@ export default function Add_workouts({
                     <tr>
                         <td
                             className="submitbtn"
-                            colSpan={12}
+                            colSpan={5}
                         >
                             <button
                                 onClick={

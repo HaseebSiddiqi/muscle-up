@@ -4,12 +4,9 @@ const exerciseList = {
         Chest: [
             { name: "Bench Press", type: "weight_reps" },
             { name: "Incline Bench Press", type: "weight_reps" },
-            { name: "Decline Bench Press", type: "weight_reps" },
-            { name: "Dumbbell Bench Press", type: "weight_reps" },
-            { name: "Incline Dumbbell Press", type: "weight_reps" },
+            { name: "Decline Bench", type: "weight_reps" },
+            { name: "Incline Bench", type: "weight_reps" },
             { name: "Chest Fly", type: "weight_reps" },
-            { name: "Cable Chest Fly", type: "weight_reps" },
-            { name: "Dumbbell Chest Fly", type: "weight_reps" },
             { name: "Push Ups", type: "reps" },
             { name: "Incline Push Ups", type: "reps" },
             { name: "Decline Push Ups", type: "reps" },
@@ -19,13 +16,9 @@ const exerciseList = {
 
         Shoulders: [
             { name: "Shoulder Press", type: "weight_reps" },
-            { name: "Dumbbell Shoulder Press", type: "weight_reps" },
             { name: "Arnold Press", type: "weight_reps" },
             { name: "Lateral Raises", type: "weight_reps" },
-            { name: "Dumbbell Lateral Raises", type: "weight_reps" },
-            { name: "Cable Lateral Raises", type: "weight_reps" },
             { name: "Front Raises", type: "weight_reps" },
-            { name: "Dumbbell Front Raises", type: "weight_reps" },
             { name: "Rear Delt Fly", type: "weight_reps" },
             { name: "Face Pulls", type: "weight_reps" },
             { name: "Upright Row", type: "weight_reps" }
@@ -39,13 +32,10 @@ const exerciseList = {
             { name: "Assisted Chin Ups", type: "weight_reps" },
             { name: "Weighted Chin Ups", type: "weight_reps" },
             { name: "Lat Pulldown", type: "weight_reps" },
-            { name: "Seated Cable Row", type: "weight_reps" },
-            { name: "One Arm Cable Row", type: "weight_reps" },
-            { name: "Dumbbell Row", type: "weight_reps" },
-            { name: "Barbell Row", type: "weight_reps" },
+            { name: "Rows", type: "weight_reps" },
+            { name: "One Arm Row", type: "weight_reps" },
             { name: "T-Bar Row", type: "weight_reps" },
-            { name: "Chest Supported Row", type: "weight_reps" },
-            { name: "Straight Arm Pulldown", type: "weight_reps" }
+           
         ],
 
         Biceps: [
@@ -54,7 +44,7 @@ const exerciseList = {
             { name: "Barbell Curl", type: "weight_reps" },
             { name: "Cable Curl", type: "weight_reps" },
             { name: "Preacher Curl", type: "weight_reps" },
-            { name: "Incline Dumbbell Curl", type: "weight_reps" },
+            { name: "Incline Curl", type: "weight_reps" },
             { name: "Concentration Curl", type: "weight_reps" },
             { name: "Reverse Curl", type: "weight_reps" }
         ],
@@ -71,7 +61,7 @@ const exerciseList = {
 
         Legs: [
             { name: "Squats", type: "weight_reps" },
-            { name: "Body Weight Squats", type: "reps" },
+            { name: "BodyWeight Squats", type: "reps" },
             { name: "Leg Press", type: "weight_reps" },
             { name: "Leg Extension", type: "weight_reps" },
             { name: "Leg Curl", type: "weight_reps" },
