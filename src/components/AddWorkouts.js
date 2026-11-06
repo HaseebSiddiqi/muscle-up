@@ -12,6 +12,8 @@ const TYPE_ORDER = {
     cardio: 3
 };
 
+const createWorkoutId = () => Date.now().toString();
+
 /* ============================================================
    REUSABLE INPUT COMPONENTS
    ============================================================ */
@@ -517,6 +519,7 @@ export default function Add_workouts({
             if (sameWorkoutConfig(workout, selectedWorkout)) {
                 setNewWorkout({
                     ...workout,
+                    workoutId: createWorkoutId(),
                     date: getLocalDate()
                 });
 
@@ -544,7 +547,7 @@ export default function Add_workouts({
         );
 
         setNewWorkout({
-            workoutId: Date.now().toString(),
+            workoutId: createWorkoutId(),
             workoutName:
                 selectedWorkout.workoutName,
             date: getLocalDate(),
@@ -770,7 +773,7 @@ export default function Add_workouts({
             rounds: workout.rounds
         };
         try {
-            await apiFetch(
+            const response = await apiFetch(
                 WORKOUT_API,
                 {
                     method: "POST",
@@ -783,6 +786,12 @@ export default function Add_workouts({
                     )
                 }
             );
+
+            if (!response.ok) {
+                throw new Error(
+                    `Workout save failed (${response.status})`
+                );
+            }
 
             setViewWorkouts(prev => [
                 ...prev,
