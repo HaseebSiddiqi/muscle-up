@@ -56,7 +56,7 @@ export default function ResetPassword({ onBack }) {
                     </div>
                     {error && <p className='form-error'>{error}</p>}
 
-                    <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>
+                    <button type="submit" className="main-action-btn" style={{ marginTop: '10px' }}>
                         Send Reset Code
                     </button>
 
@@ -94,7 +94,7 @@ export default function ResetPassword({ onBack }) {
 
                     {error && <p className='form-error'>{error}</p>}
 
-                    <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>
+                    <button type="submit" className="main-action-btn" style={{ marginTop: '10px' }}>
                         Reset Password
                     </button>
 

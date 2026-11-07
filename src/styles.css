@@ -673,8 +673,31 @@ input[type="date"]:focus {
   border: 3px var(--bg-main) solid;
   border-radius: 15px;
   transition: background-color 0.2s ease;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+
+}
+.react-calendar__tile.today {
+  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+ 
+}
+.react-calendar__tile.today abbr {
+  position: relative;
 }
 
+.react-calendar__tile.today abbr::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 3px;
+  background-color: white;
+  border-radius: 10px;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
 /* Days outside the current month */
 .react-calendar__month-view__days__day--neighboringMonth {
   opacity: 0.6;
@@ -689,6 +712,8 @@ input[type="date"]:focus {
 .react-calendar__month-view__weekdays {
   font-weight: bold;
 }
+
+
 
 @media (max-width: 600px) {
   :root {
@@ -720,7 +745,7 @@ input[type="date"]:focus {
 .workout-day {
   background-color: var(--primary-colour);
   color: white;
-  font-weight: bold;
+  
   border-radius: 15px;
 }
 
@@ -1639,7 +1664,8 @@ td.spanrow2 {
   letter-spacing: 0.06em !important;
   cursor: pointer !important;
   transition: all 0.25s ease-in-out !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),  inset 0 0 0 2px rgba(0, 0, 0, 0.1);
+
 }
 .main-action-btn{
   background-color: var(--primary) !important;
@@ -1655,6 +1681,7 @@ td.spanrow2 {
   background-color: white !important;
   color: var(--primary) !important;
   transform: translateY(-2px);
+  box-shadow: none;
 }
 }
 
@@ -1664,6 +1691,8 @@ td.spanrow2 {
   background-color: white !important;
   color: var(--primary) !important;
   transform: translateY(-2px);
+  box-shadow: none;
+
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1674,6 +1703,8 @@ td.spanrow2 {
   background-color: white !important;
   color: var(--secondary) !important;
   transform: translateY(-2px);
+  box-shadow: none;
+
 }
 }
 
@@ -1683,6 +1714,8 @@ td.spanrow2 {
   background-color: white !important;
   color: var(--secondary) !important;
   transform: translateY(-2px);
+  box-shadow: none;
+
 }
 
 .selector-hint {
@@ -2412,6 +2445,7 @@ td.exercise-name-cell {
   margin: 0 !important;
   cursor: pointer;
   transition: all 0.2s ease-in-out !important;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
 .form-controls .addButton {
@@ -2427,6 +2461,7 @@ td.exercise-name-cell {
   background-color: white !important;
   color: var(--success) !important;
   filter: none !important;
+  box-shadow: none;
 }
 }
 
@@ -2436,11 +2471,14 @@ td.exercise-name-cell {
   background-color: white !important;
   color: #22c55e !important;
   filter: none !important;
+  box-shadow: none;
+
 }
 
 .form-controls .minusButton {
   background-color: #ef4444 !important;
   color: white !important;
+
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2451,6 +2489,8 @@ td.exercise-name-cell {
   background-color: white !important;
   color: var(--danger) !important;
   filter: none !important;
+  box-shadow: none;
+
 }
 }
 
@@ -2460,6 +2500,8 @@ td.exercise-name-cell {
   background-color: white !important;
   color: var(--danger) !important;
   filter: none !important;
+  box-shadow: none;
+
 }
 
 /* Form Submit Section */
@@ -2482,6 +2524,8 @@ td.exercise-name-cell {
   cursor: pointer;
   transition: all 0.25s ease-in-out;
   box-sizing: border-box;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
+
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2491,6 +2535,7 @@ td.exercise-name-cell {
   border-color: var(--primary);
   background-color: white;
   color: var(--primary);
+  box-shadow: none;
 }
 }
 
@@ -2499,6 +2544,7 @@ td.exercise-name-cell {
   border-color: var(--primary);
   background-color: white;
   color: var(--primary);
+  box-shadow: none;
 }
 
 /* Responsive adjustments */
@@ -2741,12 +2787,12 @@ td.exercise-name-cell {
   transform-origin: center;
 }
 
-@media (hover: hover) and (pointer: fine) {
+
 
 .btn.btn-secondary:hover {
   transform: scale(1.12);
 }
-}
+
 
 .workout-name-cell {
   cursor: pointer !important;
@@ -3050,7 +3096,7 @@ td.exercise-name-cell {
   border-radius: 5px;
   vertical-align: middle;
   cursor: pointer;
-
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1) !important;
   transition:
     transform 0.15s ease,
     box-shadow 0.15s ease;
@@ -5158,8 +5204,13 @@ body.welcome-page {
   margin: 0 auto 20px;
   border-radius: 21px;
   box-shadow: 0 8px 18px rgba(14, 165, 233, 0.2);
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
+.welcome-app-icon:hover{
+  transform: translateY(-5px);
+  filter: drop-shadow(0 0 8px rgba(7, 136, 241, 0.5));
+}
 .welcome-eyebrow {
   margin: 0 0 12px;
   color: #718096;
@@ -5352,7 +5403,8 @@ body.welcome-page {
 .CloseComponent, 
 .workout-date-picker, 
 .toggle,
-.metric-stat-card {
+.metric-stat-card,
+.btn.btn-secondary {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;

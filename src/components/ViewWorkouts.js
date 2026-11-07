@@ -19,7 +19,7 @@ export default function ViewWorkouts({
 
     const [viewCalender, updateCalender] = useState(true);
     const [currentDate, setDate] = useState(null);
-    
+   
     const [feedback, setFeedback] = useState("");
     const [editingWorkoutId, setEditingWorkoutId] =
         useState(null);
@@ -30,6 +30,9 @@ export default function ViewWorkouts({
     const [calendarMonth, setCalendarMonth] =
         useState(new Date());
     
+    const {getLocalDate} = useUnits();
+    const today = getLocalDate();
+
 
     const handleCalendarClick = date => {
         const workouts = isWorkout(date);
@@ -327,6 +330,9 @@ export default function ViewWorkouts({
                                 date,
                                 view
                             }) => {
+                                const tileDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+                                const isToday = tileDate === today;
                                 if (
                                     view !== "month"
                                 ) {
@@ -340,7 +346,7 @@ export default function ViewWorkouts({
                                     workouts.length ===
                                     0
                                 ) {
-                                    return null;
+                                    return isToday ? "today" : null;
                                 }
 
                                 const primaryType =
@@ -379,12 +385,14 @@ export default function ViewWorkouts({
                                         two-workouts
                                         primary-${primary}
                                         secondary-${secondary}
+                                        ${isToday ? "today" : ""}
                                     `;
                                 }
 
                                 return `
                                     workout-day
                                     primary-${primary}
+                                    ${isToday ? "today" : ""}
                                 `;
                             }}
                         />
