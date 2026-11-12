@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { apiFetch } from "../components/apiClient.js";
 import { useUnits } from "../contexts/unitContext";
 export default function Navbar() {
+    const [isOnline, setIsOnline] = useState(navigator.onLine);
     const { user, handleSignOut } = useAuth();
     const [dropDown, setDropDown] = useState(false);
     const { weightUnit, distanceUnit, setWeightUnit, setDistanceUnit } = useUnits();
@@ -12,7 +13,18 @@ export default function Navbar() {
     const [confirmText, setConfirmText] = useState("");
     const [deleteWarning, setDeleteWarning] = useState(false);
     const ref = useRef();
+    useEffect(() => {
+        const handleOnline = () => setIsOnline(true);
+        const handleOffline = () => setIsOnline(false);
 
+        window.addEventListener("online", handleOnline);
+        window.addEventListener("offline", handleOffline);
+
+        return () => {
+            window.removeEventListener("online", handleOnline);
+            window.removeEventListener("offline", handleOffline);
+        };
+    }, []);
     const deleteAccount = async () => {
         try {
             await apiFetch("https://workouttracker-production-4d3e.up.railway.app/deleteAccount", {
@@ -94,12 +106,13 @@ export default function Navbar() {
         };
     }, []);
     return (
+        <>
         <nav className="nav">
             <Link to="/" className="site-brand">
                 <span className="brand-text">MUSCLE UP</span>
                 <img src="/strong.png" alt="Logo" className="brand-logo" />
             </Link>
-
+           
             <div className="nav-actions">
                 {user ? (
                     <>
@@ -212,9 +225,19 @@ export default function Navbar() {
                     </Link>
                 )}
             </div>
+     
 
+           
+        
+ 
         </nav >
-
+       
+        {!isOnline && (
+                        <div className="offline-warning">
+                            You are offline. An internet connection is required to load and save workouts.
+                        </div>
+                    )}
+        </>
 
     );
 }

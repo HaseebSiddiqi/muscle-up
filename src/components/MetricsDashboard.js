@@ -236,7 +236,7 @@ while (true) {
         "#ef4444",
         "#22c55e",
         "#f009e1ff",
-        "#fdde11ff",
+        "#ffcc00",
         "#a211fdff",
         "#814938ff",
     ];
@@ -299,9 +299,9 @@ while (true) {
                                         nameKey="name"
                                         cx="50%"
                                         cy="50%"
-                                        innerRadius={70}
+                                        innerRadius={65}
                                         outerRadius={100}
-                                        paddingAngle={4}
+                                        paddingAngle={2}
                                     >
                                         {data.map((entry, index) => (
                                             <Cell
