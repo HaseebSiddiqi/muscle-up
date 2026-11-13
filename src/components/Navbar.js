@@ -13,18 +13,28 @@ export default function Navbar() {
     const [confirmText, setConfirmText] = useState("");
     const [deleteWarning, setDeleteWarning] = useState(false);
     const ref = useRef();
+    
+
     useEffect(() => {
-        const handleOnline = () => setIsOnline(true);
-        const handleOffline = () => setIsOnline(false);
+        const checkConnection = async () => {
+            try {
+                const res = await fetch(
+                    "https://workouttracker-production-4d3e.up.railway.app/health"
+                );
 
-        window.addEventListener("online", handleOnline);
-        window.addEventListener("offline", handleOffline);
-
-        return () => {
-            window.removeEventListener("online", handleOnline);
-            window.removeEventListener("offline", handleOffline);
+                setIsOnline(res.ok);
+            } catch {
+                setIsOnline(false);
+            }
         };
+
+        checkConnection();
+
+        const interval = setInterval(checkConnection, 10000);
+
+        return () => clearInterval(interval);
     }, []);
+
     const deleteAccount = async () => {
         try {
             await apiFetch("https://workouttracker-production-4d3e.up.railway.app/deleteAccount", {
@@ -214,7 +224,10 @@ export default function Navbar() {
                                 
                             
                         )}
+                  
                     </div>
+                       
+
                         <button className="nav-btn" onClick={handleSignOut}>
                             Sign Out
                         </button>
@@ -234,7 +247,7 @@ export default function Navbar() {
        
         {!isOnline && (
                         <div className="offline-warning">
-                            You are offline. An internet connection is required to load and save workouts.
+                            Unable to connect. Check your internet connection. Workouts may not load or save.
                         </div>
                     )}
         </>
