@@ -1250,12 +1250,17 @@ td.spanrow2 {
   animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .offline-warning {
+
+    position: sticky;
+    top: 70px;
+    z-index: 99;
     background-color: var(--danger);
     color: #ffffff;
     padding: 7px;
     text-align: center;
     font-size: 0.9rem;
     font-weight: bold;
+    animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
    
    
 }
@@ -5166,7 +5171,8 @@ body.welcome-page {
   background-color: #f5f7fb;
 }
 
-.welcome-screen > .nav {
+.welcome-screen > .nav, .welcome-screen > .offline-warning {
+
   zoom: 0.8;
 }
 
@@ -5360,7 +5366,7 @@ body.welcome-page {
 }
 
 @media (max-width: 768px) {
-  .welcome-screen > .nav {
+  .welcome-screen > .nav, .welcome-screen > .offline-warning {
     zoom: 0.7;
   }
 }

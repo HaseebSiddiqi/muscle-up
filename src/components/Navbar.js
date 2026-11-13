@@ -3,7 +3,7 @@ import { useAuth } from "./AuthContext";
 import { useState, useEffect, useRef } from "react";
 import { apiFetch } from "../components/apiClient.js";
 import { useUnits } from "../contexts/unitContext";
-export default function Navbar() {
+export default function Navbar(  {setRefreshKey}) {
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const { user, handleSignOut } = useAuth();
     const [dropDown, setDropDown] = useState(false);
@@ -14,23 +14,28 @@ export default function Navbar() {
     const [deleteWarning, setDeleteWarning] = useState(false);
     const ref = useRef();
     
-
+    const wasOnline = useRef(isOnline);
     useEffect(() => {
         const checkConnection = async () => {
             try {
                 const res = await fetch(
                     "https://workouttracker-production-4d3e.up.railway.app/health"
                 );
-
+                
+                if (res.ok && !wasOnline.current){
+                    setRefreshKey(prev => prev + 1);
+                }
+     
                 setIsOnline(res.ok);
             } catch {
+                wasOnline.current = false;
                 setIsOnline(false);
             }
         };
 
         checkConnection();
 
-        const interval = setInterval(checkConnection, 10000);
+        const interval = setInterval(checkConnection, 5000);
 
         return () => clearInterval(interval);
     }, []);

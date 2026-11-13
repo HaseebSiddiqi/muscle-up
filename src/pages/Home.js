@@ -78,7 +78,7 @@ export default function Home() {
 
     return (
         <>
-            <Navbar />
+            <Navbar setRefreshKey={setRefreshKey}/>
 
             <div className="pageH">
 
