@@ -1081,13 +1081,23 @@ td.spanrow2 {
   width: max-content;
 }
 
+/* Shared appearance for main cards — edit these four fields here only. */
+.card,
+.viewWorkouts,
+.workoutTypes,
+.addWorkout,
+.createWorkout,
+.userStats,
+.dashboard,
+.welcome-panel {
+  background-color: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  box-shadow: var(--drop-shadow);
+}
+
 /* Modern Card Styles */
 .card {
-  background-color: var(--surface, #ffffff);
-  border-radius: 20px;
-  box-shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
   padding: 40px;
   width: 100%;
   max-width: 450px;
@@ -1100,6 +1110,7 @@ td.spanrow2 {
   top: 30%;
   left: 50%;
   transform: translate(-50%, -30%);
+ 
 }
 
 /* Login UI */
@@ -2841,11 +2852,7 @@ td.exercise-name-cell {
 }
 
 .viewWorkouts {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: var(--drop-shadow);
   padding: 5px;
-  border: 2px solid #e2e8f0;
   width: fit-content;
   height: fit-content;
   margin: 15px;
@@ -2853,11 +2860,7 @@ td.exercise-name-cell {
 }
 
 .workoutTypes {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: var(--drop-shadow);
   padding: 20px;
-  border: 2px solid #e2e8f0;
 
   width: 100%;
   max-width: 813px;
@@ -2869,11 +2872,7 @@ td.exercise-name-cell {
 }
 
 .addWorkout {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: var(--drop-shadow);
   padding: 30px;
-  border: 2px solid #e2e8f0;
   margin: 15px auto;
   width: 100%;
   max-width: 815px;
@@ -2883,11 +2882,7 @@ td.exercise-name-cell {
 }
 
 .createWorkout {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: var(--drop-shadow);
   padding: 30px;
-  border: 2px solid #e2e8f0;
   margin: 15px auto;
   width: 100%;
   max-width: 813px;
@@ -2898,11 +2893,7 @@ td.exercise-name-cell {
 }
 
 .userStats {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: var(--drop-shadow);
   padding: 30px;
-  border: 2px solid #e2e8f0;
   margin: 15px auto;
   width: 100%;
   max-width: 813px;
@@ -3259,10 +3250,6 @@ td.exercise-name-cell {
    =========================== */
 
 .dashboard {
-  background-color: white !important;
-  border-radius: 16px !important;
-  box-shadow: var(--drop-shadow) !important;
-  border: 1px solid #e2e8f0 !important;
   text-align: left !important;
   margin: 15px;
 }
@@ -5212,10 +5199,8 @@ body.welcome-page {
   width: min(100%, 480px);
   padding: 38px 34px 30px;
   box-sizing: border-box;
-  border: 1px solid #e6eaf0;
+
   border-radius: 28px;
-  background: #ffffff;
-  box-shadow: 0 16px 48px rgba(23, 32, 51, 0.07);
   text-align: center;
 }
 
@@ -5457,9 +5442,9 @@ body.welcome-page {
     padding: 0 20px;
     box-sizing: border-box;
 
-    background-color: #ffffff;
-    color: #1f1f1f;
-    border: 1px solid #dadce0;
+    background-color: #33353a;
+    color: #ffffff;
+    border: 3px solid #000000;
     border-radius: 28px;
 
     font-family: "Roboto", Arial, sans-serif;
@@ -5470,18 +5455,29 @@ body.welcome-page {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 
     transition:
-        background-color 0.2s ease,
-        box-shadow 0.2s ease,
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
         transform 0.2s ease;
 }
 
-.gsi-material-button:hover:not(:disabled) {
-    background-color: #e8e8e8;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+@media (hover: hover) and (pointer: fine) {
+    .gsi-material-button:hover:not(:disabled) {
+        background-color: #ffffff;
+        color: #33353a;
+        border-color: #33353a;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
 }
 
 .gsi-material-button:active:not(:disabled) {
-    transform: scale(0.98);
+    background-color: #ffffff;
+    color: #33353a;
+    border-color: #33353a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
 }
 
 .gsi-material-button:disabled {
@@ -5494,4 +5490,16 @@ body.welcome-page {
     width: 40px;
     height: 40px;
     object-fit: contain;
+}
+
+.gsi-material-button .google-logo {
+    position: absolute;
+    left: 16px;
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+}
+
+.login-card {
+    zoom: 1.22;
 }

@@ -1,19 +1,21 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Capacitor } from "@capacitor/core";
 import { SocialLogin } from "@capgo/capacitor-social-login";
-import { GoogleLogin } from "@react-oauth/google";
 
 const GOOGLE_CLIENT_ID =
     "331810302639-38t5brk0if3qf703vl71971cutseahcg.apps.googleusercontent.com";
 
 let initializationPromise = null;
 
-function initializeNativeGoogle() {
+function initializeGoogle() {
     if (!initializationPromise) {
         initializationPromise = SocialLogin.initialize({
             google: {
-                webClientId: GOOGLE_CLIENT_ID
+                webClientId: GOOGLE_CLIENT_ID,
+                ...(!Capacitor.isNativePlatform() && {
+                    redirectUrl: `${window.location.origin}/login`
+                })
             }
         }).catch(error => {
             initializationPromise = null;
@@ -30,18 +32,26 @@ export default function MuscleUpGoogleLogin({
 }) {
     const [loading, setLoading] = useState(false);
 
-    const isNative = Capacitor.isNativePlatform();
+    // Initialize on web so the Google popup redirect can be handled.
+    useEffect(() => {
+        if (!Capacitor.isNativePlatform()) {
+            initializeGoogle().catch(error => {
+                console.error("Google initialization error:", error);
+            });
+        }
+    }, []);
 
-    const handleNativeLogin = async () => {
+    const handleGoogleLogin = async () => {
         if (loading) return;
 
         setLoading(true);
 
         try {
-            await initializeNativeGoogle();
+            await initializeGoogle();
 
             const result = await SocialLogin.login({
-                provider: "google"
+                provider: "google",
+                options: {}
             });
 
             const credential = result.result?.idToken;
@@ -51,58 +61,30 @@ export default function MuscleUpGoogleLogin({
             }
 
             await onSuccess(credential);
-
         } catch (error) {
-            console.error("Native Google login error:", error);
+            console.error("Google login error:", error);
             onError?.(error);
         } finally {
             setLoading(false);
         }
     };
 
-   if (isNative) {
-        return (
-           
-            <button
-                type="button"
-                className="gsi-material-button"
-                onClick={handleNativeLogin}
-                disabled={loading}
-            >
-                <img
-                    src="/google-logo.svg"
-                    alt=""
-                    style={{
-                        width: "46px",
-                        height: "46px",
-                        objectFit: "contain",
-                        flexShrink: 0
-                    }}
-                />
-
-                <span>
-                    {loading ? "Signing in..." : "Continue with Google"}
-                </span>
-            </button>
-
-        );
-    }
-
     return (
-        <GoogleLogin
-            onSuccess={response => {
-                if (response.credential) {
-                    onSuccess(response.credential);
-                } else {
-                    onError?.(new Error("Missing Google credential."));
-                }
-            }}
-            onError={() => {
-                onError?.(new Error("Google login failed."));
-            }}
-            size="large"
-            shape="pill"
-            text="continue_with"
-        />
+        <button
+            type="button"
+            className="gsi-material-button"
+            onClick={handleGoogleLogin}
+            disabled={loading}
+        >
+            <img
+                src="/google-logo.svg"
+                alt=""
+                className="google-logo"
+            />
+
+            <span>
+                {loading ? "Signing in..." : "Continue with Google"}
+            </span>
+        </button>
     );
 }

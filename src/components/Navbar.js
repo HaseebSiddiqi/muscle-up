@@ -25,7 +25,7 @@ export default function Navbar(  {setRefreshKey}) {
                 if (res.ok && !wasOnline.current){
                     setRefreshKey(prev => prev + 1);
                 }
-     
+                wasOnline.current = res.ok;
                 setIsOnline(res.ok);
             } catch {
                 wasOnline.current = false;

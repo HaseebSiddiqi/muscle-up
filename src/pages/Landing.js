@@ -27,9 +27,9 @@ export default function Landing() {
             alt=""
           />
           <p className="welcome-eyebrow">YOUR WORKOUT TRACKER</p>
-          <h1 id="welcome-title">Make every workout count.</h1>
+          <h1 id="welcome-title">Build Lasting Habits</h1>
           <p className="welcome-description">
-            Build your routine, log every session, and see your strength add up.
+            A simple, hassle-free way to log your workouts and keep all your fitness data in one place.
           </p>
 
           <div className="welcome-actions">
@@ -62,9 +62,10 @@ export default function Landing() {
           </div>
 
           <ul className="welcome-benefits" aria-label="What you can do">
-            <li>Build habits</li>
-            <li>Track weight</li>
-            <li>Reach your goals</li>
+            <li>Train Smarter</li>
+            <li>Visualize progress</li>
+            <li>Stay Consistent</li>
+            
           </ul>
         </section>
       </main>
