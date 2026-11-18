@@ -38,7 +38,7 @@ export default function Navbar(  {setRefreshKey}) {
         const interval = setInterval(checkConnection, 5000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [setRefreshKey]);
 
     const deleteAccount = async () => {
         try {
