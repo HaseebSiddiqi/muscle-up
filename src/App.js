@@ -6,7 +6,7 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Landing from "./pages/Landing";
 import Privacy from "./pages/Privacy";
-
+import SelectUsername from './pages/SelectUsername';
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/select-username" element={<SelectUsername />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/privacy" element={<Privacy />}/>

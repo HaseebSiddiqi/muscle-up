@@ -3,6 +3,10 @@
   "version": "1.1.2",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2",
+    "@capgo/capacitor-social-login": "^8.7.11",
+    "@react-oauth/google": "^0.13.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -44,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.2"
   }
 }

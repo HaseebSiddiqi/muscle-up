@@ -1,7 +1,9 @@
+
 import { createContext, useContext, useState, useEffect } from "react";
-import { signOut } from "aws-amplify/auth";
+import { signOut, fetchAuthSession } from "aws-amplify/auth";
 import { useNavigate } from "react-router-dom";
-import { fetchAuthSession } from "aws-amplify/auth";
+import { apiFetch } from "./apiClient.js";
+
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -9,19 +11,41 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-
-
     const refreshUser = async () => {
         try {
             const session = await fetchAuthSession();
-
             const payload = session.tokens.idToken.payload;
 
-            console.log(payload);
+            const username = payload["cognito:username"];
 
-            setUser({
-                username: payload["cognito:username"]
-            });
+            setUser({ username });
+
+            // Only initialize workouts for a new Google signup
+            if (
+                sessionStorage.getItem(
+                    "createDefaultWorkoutsAfterGoogleSignup"
+                ) === "true"
+            ) {
+                try {
+                    await apiFetch(
+                        "https://workouttracker-production-4d3e.up.railway.app/workouts/create-defaults",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        }
+                    );
+
+                    sessionStorage.removeItem(
+                        "createDefaultWorkoutsAfterGoogleSignup"
+                    );
+
+                    console.log("Default workouts created successfully.");
+                } catch (error) {
+                    console.error("Default workout creation failed:", error);
+                }
+            }
 
         } catch (err) {
             console.error(err);
@@ -30,6 +54,7 @@ export function AuthProvider({ children }) {
             setLoading(false);
         }
     };
+
     const handleSignOut = async () => {
         try {
             await signOut();
@@ -45,7 +70,9 @@ export function AuthProvider({ children }) {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, setUser, handleSignOut, loading, refreshUser }}>
+        <AuthContext.Provider
+            value={{ user, setUser, handleSignOut, loading, refreshUser }}
+        >
             {children}
         </AuthContext.Provider>
     );

@@ -1,10 +1,14 @@
+
 import { useState, useEffect } from 'react';
-import { signIn, getCurrentUser } from 'aws-amplify/auth';
+
+import { signIn, confirmSignIn, getCurrentUser } from 'aws-amplify/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import ResetPassword from '../components/ResetPassword';
 import VerifyAccount from '../components/VerifyAccount';
 import { useAuth } from "../components/AuthContext";
 import Navbar from '../components/Navbar';
+
+import MuscleUpGoogleLogin from "../components/MuscleUpGoogleLogin";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -16,7 +20,7 @@ export default function Login() {
                 await getCurrentUser();
                 navigate('/home');
             } catch {
-                // not logged in
+                // Not logged in
             }
         };
 
@@ -29,6 +33,75 @@ export default function Login() {
 
     const [showVerify, setShowVerify] = useState(false);
     const [resetPassword, setResetPassword] = useState(false);
+
+   
+    const handleGoogleLogin = async (credential) => {
+        try {
+            setError("");
+
+            const response = await fetch(
+                 "https://workouttracker-production-4d3e.up.railway.app/auth/google/signup",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ credential })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Google login failed.");
+            }
+
+            if (data.accountExists === false) {
+                navigate("/select-username", {
+                    state: {
+                        googleCredential: credential
+                    }
+                });
+                return;
+            }
+
+            if (!data.username) {
+                throw new Error("Cognito username was not returned.");
+            }
+
+            // Start custom authentication with Cognito
+            const result = await signIn({
+                username: data.username,
+                options: {
+                    authFlowType: "CUSTOM_WITHOUT_SRP"
+                }
+            });
+
+            if (
+                result.nextStep?.signInStep !==
+                "CONFIRM_SIGN_IN_WITH_CUSTOM_CHALLENGE"
+            ) {
+                throw new Error("Unexpected Cognito authentication step.");
+            }
+
+            // Verify the original Google credential through Lambda
+            const confirmation = await confirmSignIn({
+                challengeResponse: credential
+            });
+
+            if (!confirmation.isSignedIn) {
+                throw new Error("Google authentication was not completed.");
+            }
+
+            await refreshUser();
+            navigate("/home");
+
+        } catch (err) {
+            console.error("Google login error:", err);
+            setError(err.message || "Google login failed. Please try again.");
+        }
+    };
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -49,9 +122,7 @@ export default function Login() {
                 return;
             }
 
-            // Get real Cognito username instead of login input
             await refreshUser();
-
             navigate('/home');
 
         } catch (err) {
@@ -139,6 +210,8 @@ export default function Login() {
                                 </p>
                             )}
 
+                           
+
                             <button
                                 type="submit"
                                 className="main-action-btn"
@@ -146,7 +219,15 @@ export default function Login() {
                             >
                                 Sign In
                             </button>
-
+                            
+                            <div className="google-button">
+                                <MuscleUpGoogleLogin
+                                    onSuccess={handleGoogleLogin}
+                                    onError={() => {
+                                        setError("Google login failed. Please try again.");
+                                    }}
+                                />
+                            </div>
                             <div style={{ marginTop: '15px' }}>
                                 <button
                                     type="button"
@@ -169,16 +250,17 @@ export default function Login() {
                         </form>
                     </>
                 )}
+
                 <div className="privacy-link-container">
                     <h4 onClick={() => navigate("/privacy")}>
                         View Privacy Policy
                     </h4>
                 </div>
+
                 <div style={{
                     fontSize: "10px",
                     opacity: 0.5,
                     textAlign: "center",
-                    
                 }}>
                     <a
                         href="https://www.flaticon.com/free-icons/muscle"

@@ -5426,7 +5426,8 @@ body.welcome-page {
 .workout-date-picker, 
 .toggle,
 .metric-stat-card,
-.btn.btn-secondary {
+.btn.btn-secondary, 
+.google-button {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
@@ -5436,4 +5437,61 @@ body.welcome-page {
 .submitbtn button:active {
   background-color: white !important;
   color: var(--primary) !important;
+}
+
+
+.google-button {
+    width: 100%;
+    margin: 15px auto;
+}
+
+.gsi-material-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    width: 100%;
+    height: 50px;
+    padding: 0 20px;
+    box-sizing: border-box;
+
+    background-color: #ffffff;
+    color: #1f1f1f;
+    border: 1px solid #dadce0;
+    border-radius: 28px;
+
+    font-family: "Roboto", Arial, sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.gsi-material-button:hover:not(:disabled) {
+    background-color: #e8e8e8;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.gsi-material-button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.gsi-material-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.gsi-material-button img {
+    position: absolute;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
