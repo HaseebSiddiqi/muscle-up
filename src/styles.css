@@ -1715,7 +1715,7 @@ td.spanrow2 {
   font-weight: 800 !important;
   
   color: white !important;
-  border: 2px solid ;
+  border: none;
   border-radius: 99px !important;
   text-transform: uppercase !important;
   letter-spacing: 0.06em !important;
@@ -1725,6 +1725,7 @@ td.spanrow2 {
 
 }
 .main-action-btn{
+  
   background-color: var(--primary) !important;
 }
 .second-action-btn{
